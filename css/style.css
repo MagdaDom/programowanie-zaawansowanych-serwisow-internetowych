@@ -34,6 +34,20 @@ body {
     margin: 0;
 }
 
+.card-footer{
+    margin: 25px -30px -30px;     /* na pełną szerokość kontenera, bo container ma padding 30px */
+    padding: 14px 30px;
+    text-align: center;
+
+    background: #f9fafb;          /* subtelnie, jaśniej niż header */
+    color: #555;
+    font-size: 14px;
+
+    border-top: 1px solid #e0e0e0; /* “odwrócony” efekt względem nagłówka */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
 form button{
     width: 100%;
     display: block;

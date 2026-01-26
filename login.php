@@ -20,7 +20,6 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
 <div class="container">
     <div class="card-header">
         <h1>Kalkulator zdolności kredytowej</h1>
-        <h3>Wykonała: Magdalena Domaszczyńska</h3>
     </div>
 
     <div class="auth-tabs">
@@ -34,6 +33,10 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
         <input type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
         <button type="submit">Zaloguj</button>
     </form>
+
+    <div class="card-footer">
+        Wykonała: Magdalena Domaszczyńska
+    </div>
 </div>
 </body>
 </html>
