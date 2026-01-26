@@ -18,12 +18,14 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
 </head>
 <body>
 <div class="container">
-    <h1>Kalkulator zdolności kredytowej</h1>
-    <h3>Wykonała: Magdalena Domaszczyńska</h3>
+    <div class="card-header">
+        <h1>Kalkulator zdolności kredytowej</h1>
+        <h3>Wykonała: Magdalena Domaszczyńska</h3>
+    </div>
 
     <div class="auth-tabs">
-        <a class="auth-tab is-active" href="login.php">Login</a>
-        <a class="auth-tab" href="register.php">Rejestracja</a>
+        <a class="auth-tab is-active" href="login.php">Logowanie</a>
+        <a class="auth-tab" href="register.php">Nowe konto</a>
     </div>
     <form method="GET">
         <label>Login:</label>

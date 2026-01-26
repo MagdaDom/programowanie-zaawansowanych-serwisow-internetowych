@@ -6,12 +6,32 @@ body {
 }
 
 .container {
+    overflow: hidden;
     max-width: 700px;
     margin: auto;
     background: #ffffff;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.card-header{
+    background: #3f5f7a;         /* Twój ciemny niebieski */
+    color: #f2f4f7;
+    margin: -30px -30px 25px;    /* “wyciąga” nagłówek na pełną szerokość kontenera (bo container ma padding 30px) */
+    padding: 22px 30px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.card-header h1{
+    color: #f2f4f7;
+    margin: 0 0 6px 0;
+}
+
+.card-header h3{
+    color: rgba(242,244,247,0.85);
+    margin: 0;
 }
 
 form button{
@@ -140,7 +160,7 @@ button:hover {
     width: 50%;
     margin: 0 auto 18px auto;   /* align with your form width */
     background: #f4f6f8;
-    border: 1px solid #d0d7de;
+    /*border: 1px solid #d0d7de;*/
     border-radius: 10px;
     overflow: hidden;
 }
@@ -152,6 +172,7 @@ button:hover {
     text-decoration: none;
     color: #35536b;
     font-weight: 600;
+    border-bottom: 2px solid #3f5f7a;
     border-right: 1px solid #d0d7de;
     background: transparent;
 }
@@ -167,5 +188,21 @@ button:hover {
 .auth-tab.is-active{
     background: #ffffff;
     color: #222;
-    box-shadow: 0 2px 0 #3f5f7a inset; /* subtle “selected” line */
+    /*box-shadow: 0 2px 0 #3f5f7a inset;*/ /* subtle “selected” line */
+}
+
+.terms{
+    margin-top: 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.terms a{
+    color: #3f5f7a;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.terms a:hover{
+    text-decoration: underline;
 }

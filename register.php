@@ -1,0 +1,43 @@
+<?php
+/*session_start();
+if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
+    $_SESSION['logged'] = true;
+    $_SESSION['user'] = 'admin';
+    header('Location: index.php'); //przekieruj do index.php po ppoprawnym zalogowaniu
+    echo "Zalogowano poprawnie";
+} else {
+    echo "Błędne dane";
+}*/
+?>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Kalkulator zdolności kredytowej</title>
+    <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
+</head>
+<body>
+<div class="container">
+    <h1>Kalkulator zdolności kredytowej</h1>
+    <h3>Wykonała: Magdalena Domaszczyńska</h3>
+
+    <div class="auth-tabs">
+        <a class="auth-tab" href="login.php">Logowanie</a>
+        <a class="auth-tab is-active" href="register.php">Nowe konto</a>
+    </div>
+    <form method="GET">
+        <label>Imię:</label>
+        <input type="text" name="imie"><br>
+        <label>Nazwisko:</label>
+        <input type="text" name="nazwisko"><br>
+        <label>Adres e-mail:</label>
+        <input type="text" name="email"><br>
+        <label>Hasło:</label>
+        <input type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
+        <button type="submit">Zarejestruj się</button>
+        <p class="terms">Rejestrując się potwierdzasz, że akceptujesz
+            <a href="docs/regulamin.pdf" download="Regulamin.pdf">Regulamin</a>.</p>
+    </form>
+</div>
+</body>
+</html>
