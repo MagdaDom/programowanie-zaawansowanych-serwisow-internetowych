@@ -15,23 +15,42 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
-.card-header{
-    background: #3f5f7a;         /* Twój ciemny niebieski */
+/*.card-header{
+    background: #3f5f7a;
     color: #f2f4f7;
-    margin: -30px -30px 25px;    /* “wyciąga” nagłówek na pełną szerokość kontenera (bo container ma padding 30px) */
+    margin: -30px -30px 25px;    // “wyciąga” nagłówek na pełną szerokość kontenera (bo container ma padding 30px)
     padding: 22px 30px;
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-}
+}*/
 
 .card-header h1{
     color: #f2f4f7;
     margin: 0 0 6px 0;
 }
 
-.card-header h3{
-    color: rgba(242,244,247,0.85);
-    margin: 0;
+.card-header{
+    position: relative;
+    margin: -30px -30px 25px;
+    padding: 26px 30px;
+    color: #f2f4f7;
+
+    /* richer look */
+    background: linear-gradient(135deg, #2f4f68 0%, #3f5f7a 45%, #2b4358 100%);
+}
+
+.card-header::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* subtle “shine” */
+    background: radial-gradient(circle at 25% 20%, rgba(255,255,255,0.18), transparent 55%);
+    pointer-events: none;
+}
+
+.card-header > *{
+    position: relative; /* keeps text/icons above the overlay */
+    z-index: 1;
 }
 
 .card-footer{

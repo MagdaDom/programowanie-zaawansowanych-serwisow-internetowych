@@ -18,8 +18,9 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
 </head>
 <body>
 <div class="container">
-    <h1>Kalkulator zdolności kredytowej</h1>
-    <h3>Wykonała: Magdalena Domaszczyńska</h3>
+    <div class="card-header">
+        <h1>Kalkulator zdolności kredytowej</h1>
+    </div>
 
     <div class="auth-tabs">
         <a class="auth-tab" href="login.php">Logowanie</a>
@@ -38,6 +39,10 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
         <p class="terms">Rejestrując się potwierdzasz, że akceptujesz
             <a href="docs/regulamin.pdf" download="Regulamin.pdf">Regulamin</a>.</p>
     </form>
+
+    <div class="card-footer">
+        Wykonała: Magdalena Domaszczyńska
+    </div>
 </div>
 </body>
 </html>
