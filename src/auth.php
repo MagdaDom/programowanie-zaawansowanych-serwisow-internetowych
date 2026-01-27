@@ -18,17 +18,18 @@ function isHintValid($hint) {
 }
 
 function openDbConnection() {
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); //włącza wyrzucanie wyjątków zamiast cichych ostrzeżęń
-    $conn = mysqli_connect("127.0.0.1", "root", "")
-        or exit("Nieudane połączenie z serwerem");
-    $baza = 'kalkulatorkredytowy';
-    mysqli_select_db($conn, $baza)
-        or exit("Nieudane połączenie z bazą");
-    mysqli_set_charset($conn, "utf8");
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // wyjątki [web:431]
 
-    $db = new mysqli("127.0.0.1","root","","kalkulatorkredytowy");
-    $db->set_charset("utf8mb4");
-    return $db;
+    try {
+        $db = new mysqli("127.0.0.1", "root", "", "kalkulatorkredytowy");
+        $db->set_charset("utf8mb4"); // polskie znaki + pełne UTF-8 [web:346]
+        return $db;
+    } catch (mysqli_sql_exception $e) {
+        // zapisywanie błędów do logów
+        error_log("DB connection error: " . $e->getMessage()); // [web:493]
+        // komunikat “dla usera”
+        exit("Błąd połączenia z bazą danych. Spróbuj ponownie później.");
+    }
 }
 
 function closeDbConnection($db) {

@@ -1,5 +1,6 @@
 <?php
-include('src/funkcje.php');
+/*
+include('src/auth.php');
 $users = getQuery("SELECT email, password from uzytkownicy");
 session_start();
 if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
@@ -9,7 +10,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     echo "Zalogowano poprawnie";
 } else {
     echo "Błędne dane";
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -32,7 +33,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     </div>
     <form method="GET">
         <label>Login:</label>
-        <input type="text" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
+        <input type="text" id="email" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
         <div id="emailHint"></div>
 
         <script>
