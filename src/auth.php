@@ -13,9 +13,6 @@ function userEmailExists($email) {
     closeDbConnection($db);
     return $flag;
 }
-function isHintValid($hint) {
-
-}
 
 function openDbConnection() {
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // wyjątki [web:431]

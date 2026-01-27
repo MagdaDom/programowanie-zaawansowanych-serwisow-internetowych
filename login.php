@@ -20,6 +20,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="js/login.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -33,32 +34,11 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     </div>
     <form method="GET">
         <label>Login:</label>
-        <input type="text" id="email" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
+        <input type="email" id="email" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
         <div id="emailHint" class="hint"></div>
-
-        <script>
-            const email = document.querySelector('input[name="login"]'); //document.getElementById('email'); //pobiera wartość email
-            const hint = document.getElementById('emailHint');
-
-            let t = null;
-            email.addEventListener('input', () => {
-                clearTimeout(t);
-                t = setTimeout(async () => {
-                    const v = email.value.trim(); //zapisuje email do zmiennej v
-                    if (!v) { hint.textContent = ''; return; }
-
-                    const res = await fetch('check_email.php?email=' + encodeURIComponent(v));
-                    const data = await res.json();
-                    const exists = data.exists;
-
-                    hint.textContent = exists ? 'Taki e-mail już istnieje' : 'E-mail dostępny';
-                    hint.classList.remove('hint-success', 'hint-warning');
-                    hint.classList.add(exists ? 'hint-warning' : 'hint-success');
-                }, 350); // debounce ~350ms
-            });
-        </script>
         <label>Hasło:</label>
-        <input type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
+        <input type="password" id = "password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
+        <div id="passwordHint" class="hint"></div>
         <button type="submit">Zaloguj</button>
     </form>
 

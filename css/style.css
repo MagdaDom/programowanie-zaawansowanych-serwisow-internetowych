@@ -108,7 +108,7 @@ form button{
     margin-right: auto;
 }
 
-input[type="text"], input[type="password"] {
+input, select, textarea {
     width: 100%;
     box-sizing: border-box;
     padding: 12px 14px;
@@ -118,7 +118,7 @@ input[type="text"], input[type="password"] {
     margin-bottom: 15px;
 }
 
-input[type="text"]:focus, input[type="password"]:focus {
+input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #3f5f7a;
 }
@@ -165,16 +165,47 @@ input[type="text"]:focus, input[type="password"]:focus {
     margin-top: -8px;
     margin-bottom: 12px;
     font-size: 13px;
+    font-weight: 600;
 }
+/* wspólne ustawienia ikony */
+.hint::before{
+    position: relative;
+    top: 3px;
+    padding-right: 8px;
+    font-family: "bootstrap-icons";
+    font-size: 16px;
+    /*line-height: 1;*/
+}
+
 
 .hint.hint-success {
     color: #1f6f3d;
     text-align: right;
 }
+/* ikona OK */
+.hint.hint-success::before{
+    content: "\F270"; /*check-circle "\f26a"; check-circle-fill */
+    color: #1f6f3d; /* #2f9e44;*/
+}
 
 .hint.hint-warning {
     color: #8a4b00;
+}
+/* ikona warning */
+.hint.hint-warning::before{
+    content: "\F333"; /*exclamation-circle "\f33a"; exclamation-triangle-fill */
+    color: #f59f00;
+}
+
+.hint.hint-danger{
     text-align: right;
+    color: #dc3545;
+    display: block;
+    color: #842029;        /* “bootstrapowy” czerwony tekst */
+}
+.hint.hint-danger::before{
+    content: "\F623";      /* x-circle "\f622"; x-circle-fill */
+    color: #dc3545;
 }
 
 .terms{
