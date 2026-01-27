@@ -37,7 +37,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
         <div id="emailHint"></div>
 
         <script>
-            const email = document.getElementById('email'); //pobiera wartość email
+            const email = document.querySelector('input[name="login"]'); //document.getElementById('email'); //pobiera wartość email
             const hint = document.getElementById('emailHint');
 
             let t = null;
