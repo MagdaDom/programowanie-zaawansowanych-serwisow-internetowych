@@ -189,7 +189,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 .hint.hint-warning {
-    color: #8a4b00;
+    text-align: right;
+    color: #E68F00;
 }
 /* ikona warning */
 .hint.hint-warning::before{
@@ -200,8 +201,6 @@ input:focus, select:focus, textarea:focus {
 .hint.hint-danger{
     text-align: right;
     color: #dc3545;
-    display: block;
-    color: #842029;        /* “bootstrapowy” czerwony tekst */
 }
 .hint.hint-danger::before{
     content: "\F623";      /* x-circle "\f622"; x-circle-fill */
