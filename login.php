@@ -34,7 +34,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     <form method="GET">
         <label>Login:</label>
         <input type="text" id="email" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
-        <div id="emailHint"></div>
+        <div id="emailHint" class="hint"></div>
 
         <script>
             const email = document.querySelector('input[name="login"]'); //document.getElementById('email'); //pobiera wartość email
@@ -49,8 +49,11 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
 
                     const res = await fetch('check_email.php?email=' + encodeURIComponent(v));
                     const data = await res.json();
+                    const exists = data.exists;
 
-                    hint.textContent = data.exists ? 'Taki e-mail już istnieje' : 'E-mail dostępny';
+                    hint.textContent = exists ? 'Taki e-mail już istnieje' : 'E-mail dostępny';
+                    hint.classList.remove('hint-success', 'hint-warning');
+                    hint.classList.add(exists ? 'hint-warning' : 'hint-success');
                 }, 350); // debounce ~350ms
             });
         </script>
