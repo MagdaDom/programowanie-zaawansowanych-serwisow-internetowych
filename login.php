@@ -1,5 +1,7 @@
 <?php
-/*session_start();
+include('src/funkcje.php');
+$users = getQuery("SELECT email, password from uzytkownicy");
+session_start();
 if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     $_SESSION['logged'] = true;
     $_SESSION['user'] = 'admin';
@@ -7,7 +9,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     echo "Zalogowano poprawnie";
 } else {
     echo "Błędne dane";
-}*/
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -31,6 +33,26 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     <form method="GET">
         <label>Login:</label>
         <input type="text" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
+        <div id="emailHint"></div>
+
+        <script>
+            const email = document.getElementById('email'); //pobiera wartość email
+            const hint = document.getElementById('emailHint');
+
+            let t = null;
+            email.addEventListener('input', () => {
+                clearTimeout(t);
+                t = setTimeout(async () => {
+                    const v = email.value.trim(); //zapisuje email do zmiennej v
+                    if (!v) { hint.textContent = ''; return; }
+
+                    const res = await fetch('check_email.php?email=' + encodeURIComponent(v));
+                    const data = await res.json();
+
+                    hint.textContent = data.exists ? 'Taki e-mail już istnieje' : 'E-mail dostępny';
+                }, 350); // debounce ~350ms
+            });
+        </script>
         <label>Hasło:</label>
         <input type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
         <button type="submit">Zaloguj</button>
