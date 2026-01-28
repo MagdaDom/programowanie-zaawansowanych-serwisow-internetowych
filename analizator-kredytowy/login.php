@@ -3,9 +3,9 @@ require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/src/auth.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['email'])) {
-    $password  = $_GET['password'];
-    $email = $_GET['email'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'], $_POST['email'])) {
+    $password  = $_POST['password'];
+    $email = $_POST['email'];
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $_SESSION['flash_warning'] = 'Adres e-mail ma niepoprawny format!';
@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['emai
         <a class="auth-tab is-active" href="login.php">Logowanie</a>
         <a class="auth-tab" href="register.php">Nowe konto</a>
     </div>
-    <form method="GET">
+    <form method="POST">
         <label>Login:</label>
         <input type="email" name="email" placeholder="adres e-mail podany przy rejestracji" required><br>
         <label>Hasło:</label>
@@ -59,7 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['emai
 
     <?php
     if(isset($_SESSION['flash_warning'])) {
-        $warning = $_SESSION['flash_warning'];    unset($_SESSION['flash_warning']); // żeby nie wisiało po odświeżeniu
+        $warning = $_SESSION['flash_warning'];
+        unset($_SESSION['flash_warning']); // żeby nie wisiało po odświeżeniu
         echo '<div class="fail"><h4>' . htmlspecialchars($warning) . '</h4></div>';
     }
     ?>

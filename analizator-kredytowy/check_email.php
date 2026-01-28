@@ -2,7 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 include('src/auth.php');
 
-$email = (isset($_GET['email'])) ? $_GET['email'] : '';
+$email = (isset($_POST['email'])) ? $_POST['email'] : '';
 $email = trim($email);
 
 if ($email === '') {
