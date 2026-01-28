@@ -1,16 +1,34 @@
 <?php
-/*
-include('src/auth.php');
-$users = getQuery("SELECT email, password from uzytkownicy");
 session_start();
-if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['email'])) {
+    $password  = $_GET['password'];
+    $email = $_GET['email'];
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['flash_warning'] = 'Adres e-mail ma niepoprawny format!';
+        header('Location: login.php');
+        exit;
+    }
+
+    if (!userEmailExists($email)) {
+        $_SESSION['flash_warning'] = 'Nie ma takiego użytkownika!';
+        header('Location: login.php');
+        exit;
+    }
+
+    if (!credentialsExists($email, $password)) {
+        $_SESSION['flash_warning'] = 'Niepoprawne hasło!';
+        header('Location: login.php');
+        exit;
+    }
+
     $_SESSION['logged'] = true;
-    $_SESSION['user'] = 'admin';
-    header('Location: index.php'); //przekieruj do index.php po ppoprawnym zalogowaniu
-    echo "Zalogowano poprawnie";
-} else {
-    echo "Błędne dane";
-}*/
+    $_SESSION['user_email'] = $email;
+    header('Location: index.php');
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -33,30 +51,14 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
         <label>Login:</label>
         <input type="email" name="email" placeholder="adres e-mail podany przy rejestracji" required><br>
         <label>Hasło:</label>
-        <input type="password" required><br>
+        <input type="password" name="password" required><br>
         <button type="submit">Zaloguj</button>
     </form>
 
     <?php
-    if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['email'])) {
-        $password  = $_GET['password'];
-        $email = $_GET['email'];
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo '<div class="result fail"><h4>Adres e-mail ma niepoprawny format!</h4></div>';
-        } else {
-            $isEmailValid = userEmailExists($email);
-            if(!$isEmailValid) {
-                echo "<div class=\"result fail\"><h4>Nie ma takiego użytkownika!</h4></div>";
-            } else {
-                $isUserValid = credentialsExists($email, $password);
-                if(!$isUserValid) {
-                    echo "<div class=\"result fail\"><h4>Niepoprawne hasło!</h4></div>";
-                } else {
-                    header('Location: index.php');
-                    exit;
-                }
-            }
-        }
+    if(isset($_SESSION['flash_warning'])) {
+        $warning = $_SESSION['flash_warning'];    unset($_SESSION['flash_warning']); // żeby nie wisiało po odświeżeniu
+        echo '<div class="result fail"><h4>Warning: ' . htmlspecialchars($warning) . '</h4></div>';
     }
     ?>
 
