@@ -18,9 +18,6 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="js/login.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -34,13 +31,34 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     </div>
     <form method="GET">
         <label>Login:</label>
-        <input type="email" id="email" name="login" placeholder="adres e-mail podany przy rejestracji"><br>
-        <div id="emailHint" class="hint"></div>
+        <input type="email" name="email" placeholder="adres e-mail podany przy rejestracji" required><br>
         <label>Hasło:</label>
-        <input type="password" id = "password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
-        <div id="passwordHint" class="hint"></div>
+        <input type="password" required><br>
         <button type="submit">Zaloguj</button>
     </form>
+
+    <?php
+    if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['email'])) {
+        $password  = $_GET['password'];
+        $email = $_GET['email'];
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo '<div class="result fail"><h4>Adres e-mail ma niepoprawny format!</h4></div>';
+        } else {
+            $isEmailValid = userEmailExists($email);
+            if(!$isEmailValid) {
+                echo "<div class=\"result fail\"><h4>Nie ma takiego użytkownika!</h4></div>";
+            } else {
+                $isUserValid = credentialsExists($email, $password);
+                if(!$isUserValid) {
+                    echo "<div class=\"result fail\"><h4>Niepoprawne hasło!</h4></div>";
+                } else {
+                    header('Location: index.php');
+                    exit;
+                }
+            }
+        }
+    }
+    ?>
 
     <div class="card-footer">
         Wykonała: Magdalena Domaszczyńska

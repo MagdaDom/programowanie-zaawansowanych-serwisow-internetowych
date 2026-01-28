@@ -14,6 +14,17 @@ function userEmailExists($email) {
     return $flag;
 }
 
+function credentialsExists($email, $password) {
+    $db=openDbConnection();
+    $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? AND password = ? LIMIT 1");
+    $stmt->bind_param("s", $email, $password);
+    $stmt->execute();
+    $flag = $stmt->get_result()->num_rows > 0;
+    $stmt->close();
+    closeDbConnection($db);
+    return $flag;
+}
+
 function openDbConnection() {
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // wyjątki [web:431]
 

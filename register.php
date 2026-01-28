@@ -15,6 +15,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
+    <script src="js/auth_validation.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -32,9 +33,11 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
         <label>Nazwisko:</label>
         <input type="text" name="nazwisko"><br>
         <label>Adres e-mail:</label>
-        <input type="text" name="email"><br>
+        <input id="email" type="email" name="email"><br>
+        <div id="emailHint" class="hint"></div>
         <label>Hasło:</label>
-        <input type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
+        <input id="password" type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
+        <div id="passwordHint" class="hint"></div>
         <button type="submit">Zarejestruj się</button>
         <p class="terms">Rejestrując się potwierdzasz, że akceptujesz
             <a href="docs/regulamin.pdf" download="Regulamin.pdf">Regulamin</a>.</p>
