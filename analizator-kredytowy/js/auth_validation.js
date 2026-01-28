@@ -1,5 +1,5 @@
 //walidacja e-mail
-const email = document.querySelector('input[name="login"]'); //document.getElementById('email'); //pobiera wartość email
+const email = document.querySelector('input[name="email"]'); //document.getElementById('email'); //pobiera wartość email
 const hint = document.getElementById('emailHint');
 
 let t = null;

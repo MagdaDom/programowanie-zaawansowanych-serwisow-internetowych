@@ -15,6 +15,7 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="js/auth_validation.js" defer></script>
 </head>
 <body>
@@ -29,14 +30,14 @@ if ($_POST['login'] === 'admin' && $_POST['password'] === '1234') {
     </div>
     <form method="GET">
         <label>Imię:</label>
-        <input type="text" name="imie"><br>
+        <input type="text" name="imie" required><br>
         <label>Nazwisko:</label>
-        <input type="text" name="nazwisko"><br>
+        <input type="text" name="nazwisko" required><br>
         <label>Adres e-mail:</label>
-        <input id="email" type="email" name="email"><br>
+        <input id="email" type="email" name="email" required><br>
         <div id="emailHint" class="hint"></div>
         <label>Hasło:</label>
-        <input id="password" type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne"><br>
+        <input id="password" type="password" name="password" placeholder="min. 10 znaków, w tym cyfry i znaki specjalne" required><br>
         <div id="passwordHint" class="hint"></div>
         <button type="submit">Zarejestruj się</button>
         <p class="terms">Rejestrując się potwierdzasz, że akceptujesz
