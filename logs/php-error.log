@@ -1,0 +1,9 @@
+[28-Jan-2026 19:43:23 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined function userEmailExists() in C:\xampp\htdocs\php_websites\analizator-kredytowy\login.php:15
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\php_websites\analizator-kredytowy\login.php on line 15
+[28-Jan-2026 19:45:24 Europe/Berlin] PHP Warning:  require_once(C:\xampp\htdocs\php_websites\analizator-kredytowysrc/auth.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\php_websites\analizator-kredytowy\login.php on line 3
+[28-Jan-2026 19:45:24 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\php_websites\analizator-kredytowysrc/auth.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\php_websites\analizator-kredytowy\login.php:3
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\php_websites\analizator-kredytowy\login.php on line 3

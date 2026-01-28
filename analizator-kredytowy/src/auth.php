@@ -5,29 +5,46 @@ function isEmailValid($email) {
 
 function userEmailExists($email) {
     $db=openDbConnection();
-    $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? LIMIT 1");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $flag = $stmt->get_result()->num_rows > 0;
-    $stmt->close();
-    closeDbConnection($db);
-    return $flag;
+    try {
+        $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? LIMIT 1");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        $flag = $stmt->get_result()->num_rows > 0;
+
+        $stmt->close();
+        closeDbConnection($db);
+        return $flag;
+
+    } catch (mysqli_sql_exception $e) {
+        error_log("DB error in userEmailExists: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($db);
+        //exit("Nie udało się sprawdzić email");
+        return false; // albo: throw; jeśli chcesz obsłużyć wyżej
+    }
 }
 
 function credentialsExists($email, $password) {
     $db=openDbConnection();
-    $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? AND password = ? LIMIT 1");
-    $stmt->bind_param("s", $email, $password);
-    $stmt->execute();
-    $flag = $stmt->get_result()->num_rows > 0;
-    $stmt->close();
-    closeDbConnection($db);
-    return $flag;
+    try {
+        $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? AND password = ? LIMIT 1");
+        $stmt->bind_param("ss", $email, $password);
+        $stmt->execute();
+        $flag = $stmt->get_result()->num_rows > 0;
+        $stmt->close();
+        closeDbConnection($db);
+        return $flag;
+
+    } catch (mysqli_sql_exception $e) {
+        error_log("DB error in userEmailExists: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($db);
+        //exit("Nie udało się pobrać credentials?");
+        return false; // albo: throw; jeśli chcesz obsłużyć wyżej
+    }
 }
 
 function openDbConnection() {
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // wyjątki [web:431]
-
     try {
         $db = new mysqli("127.0.0.1", "root", "", "kalkulatorkredytowy");
         $db->set_charset("utf8mb4"); // polskie znaki + pełne UTF-8 [web:346]

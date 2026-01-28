@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/src/auth.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['email'])) {
@@ -12,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['emai
     }
 
     if (!userEmailExists($email)) {
-        $_SESSION['flash_warning'] = 'Nie ma takiego użytkownika!';
+        $_SESSION['flash_warning'] = 'Nie ma takiego użytkownika! Użyj opcji "Nowe konto".';
         header('Location: login.php');
         exit;
     }
@@ -35,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['emai
 <head>
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
-    <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
+    <link rel="stylesheet" href="css/style.css?v=3" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -58,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['password'], $_GET['emai
     <?php
     if(isset($_SESSION['flash_warning'])) {
         $warning = $_SESSION['flash_warning'];    unset($_SESSION['flash_warning']); // żeby nie wisiało po odświeżeniu
-        echo '<div class="result fail"><h4>Warning: ' . htmlspecialchars($warning) . '</h4></div>';
+        echo '<div class="fail"><h4>' . htmlspecialchars($warning) . '</h4></div>';
     }
     ?>
 
