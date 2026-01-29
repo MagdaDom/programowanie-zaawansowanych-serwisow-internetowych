@@ -18,11 +18,11 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 
 $exists = userEmailExists($email);
 if ($exists) {
-    echo json_encode(['ok' => true, 'message' => 'Adres e-mail jest dostępny.']);
+    echo json_encode(['ok' => false, 'message' => 'Taki e-mail już istnieje!']);
     //echo json_encode(['ok' => false, 'exists' => false]);
     exit;
 } else {
-    echo json_encode(['ok' => false, 'message' => 'Taki e-mail już istnieje!']);
+    echo json_encode(['ok' => true, 'message' => 'Adres e-mail jest dostępny.']);
     //echo json_encode(['ok' => false, 'exists' => false]);
     exit;
 }

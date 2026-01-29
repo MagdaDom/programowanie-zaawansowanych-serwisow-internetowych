@@ -7,12 +7,12 @@ email.addEventListener('input', () => {
     clearTimeout(t);
     t = setTimeout(async () => {
         const v = email.value.trim(); //zapisuje email do zmiennej v
-        if (!v) { hint.textContent = ''; return; }
+        //if (!v) { hint.textContent = ''; return; }
         const fd = new FormData();
         fd.append('email', v);
 
         if (!email.checkValidity()) {
-            hint.textContent = 'Niepoprawny format e-mail.';
+            hint.textContent = 'Adres e-mail ma niepoprawny format.';
             hint.classList.remove('hint-success', 'hint-danger');
             hint.classList.add('hint-danger');
             return;
@@ -23,13 +23,9 @@ email.addEventListener('input', () => {
         const data = await res.json();
         //const exists = data.exists; //data.ok
 
-        hint.textContent = data.ok ? '' : data.message;
+        hint.textContent = data.message; // data.ok ? '' : data.message;
         hint.classList.remove('hint-success', 'hint-danger');
-        hint.classList.add(data.ok ? 'hint-danger' : 'hint-success');
-
-    //hint.textContent = exists ? 'Taki e-mail już istnieje' : 'E-mail dostępny';
-   // hint.classList.remove('hint-success', 'hint-danger');
-    //hint.classList.add(exists ? 'hint-danger' : 'hint-success');
+        hint.classList.add(data.ok ? 'hint-success' : 'hint-danger');
     }, 350); // debounce ~350ms
 });
 
