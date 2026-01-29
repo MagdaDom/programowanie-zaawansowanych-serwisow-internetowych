@@ -7,3 +7,6 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in C:\xampp\htdocs\php_websites\analizator-kredytowy\login.php on line 3
+[29-Jan-2026 02:05:06 Europe/Berlin] DB error in userEmailExists: Table 'kalkulatorkredytowy.users' doesn't exist
+[29-Jan-2026 02:12:49 Europe/Berlin] DB error in userEmailExists: Table 'kalkulatorkredytowy.users' doesn't exist
+[29-Jan-2026 02:12:56 Europe/Berlin] DB error in userEmailExists: Table 'kalkulatorkredytowy.users' doesn't exist

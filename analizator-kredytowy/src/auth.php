@@ -27,15 +27,15 @@ function userEmailExists($email) {
 function credentialsExists($email, $password) {
     $db=openDbConnection();
     try {
-        $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? AND password = ? LIMIT 1");
-        $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt->bind_param("ss", $email, $hash);
+        $stmt = $db->prepare("SELECT id, password FROM uzytkownicy WHERE email = ?");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
-        $flag = $stmt->get_result()->num_rows > 0;
+        $result = $stmt->get_result();
+        $user = $result ? $result->fetch_assoc() : null; // associative array [web:169]
+
         $stmt->close();
         closeDbConnection($db);
-        return $flag;
-
+        return $user && password_verify($password, $user['password']);
     } catch (mysqli_sql_exception $e) {
         error_log("DB error in userEmailExists: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
         closeDbConnection($db);
