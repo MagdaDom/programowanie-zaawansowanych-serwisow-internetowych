@@ -68,6 +68,7 @@ function searchPositions($txt) {
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
 <body>
 <div class="container">
