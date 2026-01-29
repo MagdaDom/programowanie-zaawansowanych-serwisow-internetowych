@@ -134,6 +134,11 @@ input:focus, select:focus, textarea:focus {
     color: #dc3545;
 }
 
+.success, .success *  {
+    text-align: center;
+    color: #1f6f3d;
+}
+
 /*LOGOWANIE I REJERSTRACJA */
 
 .auth-tabs{

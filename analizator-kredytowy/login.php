@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'], $_POST['e
 <head>
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
-    <link rel="stylesheet" href="css/style.css?v=3" type="text/css">
+    <link rel="stylesheet" href="css/style.css?v=4" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -62,6 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'], $_POST['e
         $warning = $_SESSION['flash_warning'];
         unset($_SESSION['flash_warning']); // żeby nie wisiało po odświeżeniu
         echo '<div class="fail"><h4>' . htmlspecialchars($warning) . '</h4></div>';
+    }
+    if(isset($_SESSION['flash_success'])) {
+        $msg = $_SESSION['flash_success'];
+        unset($_SESSION['flash_success']); // żeby nie wisiało po odświeżeniu
+        echo '<div class="success"><h4>' . htmlspecialchars($msg) . '</h4></div>';
     }
     ?>
 

@@ -1,6 +1,13 @@
 <?php
 session_start();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // 1) walidacja + zapis do bazy
+    // 2) ustaw flash, jeśli chcesz
+    $_SESSION['flash_success'] = 'Konto utworzone! Zaloguj się.';
+    header('Location: login.php'); // albo register_success.php
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -23,9 +30,9 @@ session_start();
     </div>
     <form method="POST">
         <label>Imię:</label>
-        <input type="text" name="imie" required><br>
+        <input type="text" name="imie" pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]+([ '-][A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]+)" required><br>
         <label>Nazwisko:</label>
-        <input type="text" name="nazwisko" required><br>
+        <input type="text" name="nazwisko" pattern="[A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]+([ '-][A-Za-zĄĆĘŁŃÓŚŹŻąćęłńóśźż]+)" required><br>
         <label>Adres e-mail:</label>
         <input id="email" type="email" name="email" required><br>
         <div id="emailHint" class="hint"></div>
