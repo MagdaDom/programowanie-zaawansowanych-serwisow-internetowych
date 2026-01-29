@@ -1,8 +1,15 @@
 <?php
+require_once __DIR__ . '/src/auth.php';
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // 1) walidacja + zapis do bazy
+    $imie = $_POST['imie'];
+    $nazwisko = $_POST['nazwisko'];
+    $email = $_POST['email'];
+    $pwd = $_POST['password'];
+    $hash = password_hash($pwd, PASSWORD_DEFAULT);
+    addUser($imie, $nazwisko, $email, $hash);
     // 2) ustaw flash, jeśli chcesz
     $_SESSION['flash_success'] = 'Konto utworzone! Zaloguj się.';
     header('Location: login.php'); // albo register_success.php

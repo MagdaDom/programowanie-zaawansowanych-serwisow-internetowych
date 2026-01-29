@@ -61,6 +61,20 @@ function closeDbConnection($db) {
     mysqli_close($db);
 }
 
+function addUser($imie, $nazwisko, $email, $password) {
+    $db=openDbConnection();
+    try {
+        $stmt = $db->prepare("INSERT INTO uzytkownicy VALUES(NULL, ?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $imie, $nazwisko, $email, $password);
+        $stmt->execute();
+        $stmt->close();
+        closeDbConnection($db);
+    } catch (mysqli_sql_exception $e) {
+        error_log("DB error in addUser: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($db);
+    }
+}
+
 function getTable($query) {
     $db = openDbConnection();
     $result = $db->query($query);
