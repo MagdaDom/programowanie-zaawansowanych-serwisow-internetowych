@@ -1,4 +1,11 @@
 <?php
+require_once __DIR__ . '/../config.php';
+session_start();
+// when user not logged, redirect to the login page
+if (empty($_SESSION['logged'])) {
+    header('Location: login.php'); exit;
+}
+
 $books = [
     ['title' => 'Chłopki', 'author' => 'Joanna Kuciel-Frydryszak', 'price' => 45.99],
     ['title' => 'Gra o Tron', 'author' => 'George R. R. Martin', 'price' => 69.90],
@@ -60,12 +67,18 @@ function searchPositions($txt) {
 <head>
     <meta charset="UTF-8">
     <title>Kalkulator zdolności kredytowej</title>
-    <link rel="stylesheet" href="css/style.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
 </head>
 <body>
 <div class="container">
-    <h1>Kalkulator zdolności kredytowej</h1>
-    <h3>Wykonała: Magdalena Domaszczyńska</h3>
+    <div class="card-header">
+        <h1>Kalkulator zdolności kredytowej</h1>
+    </div>
+    <?php if (!empty($_SESSION['user_email'])): ?>
+        <div class="user-bar">
+            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?>!
+        </div>
+    <?php endif; ?>
 
     <form method="GET">
         <label>Wyszukaj książkę po tytule lub autorze:</label>
@@ -106,6 +119,9 @@ function searchPositions($txt) {
         }
         ?>
     </table>
+    <div class="card-footer">
+        Wykonała: Magdalena Domaszczyńska
+    </div>
 </div>
 </body>
 </html>

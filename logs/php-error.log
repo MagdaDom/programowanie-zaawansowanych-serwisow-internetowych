@@ -10,3 +10,5 @@ Stack trace:
 [29-Jan-2026 02:05:06 Europe/Berlin] DB error in userEmailExists: Table 'kalkulatorkredytowy.users' doesn't exist
 [29-Jan-2026 02:12:49 Europe/Berlin] DB error in userEmailExists: Table 'kalkulatorkredytowy.users' doesn't exist
 [29-Jan-2026 02:12:56 Europe/Berlin] DB error in userEmailExists: Table 'kalkulatorkredytowy.users' doesn't exist
+[29-Jan-2026 21:06:02 Europe/Berlin] PHP Warning:  Undefined array key "user_name" in C:\xampp\htdocs\php_websites\analizator-kredytowy\index.php on line 79
+[29-Jan-2026 21:06:02 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\php_websites\analizator-kredytowy\index.php on line 79
