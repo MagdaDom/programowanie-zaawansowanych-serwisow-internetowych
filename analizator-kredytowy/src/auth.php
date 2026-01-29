@@ -28,7 +28,8 @@ function credentialsExists($email, $password) {
     $db=openDbConnection();
     try {
         $stmt = $db->prepare("SELECT id FROM uzytkownicy WHERE email = ? AND password = ? LIMIT 1");
-        $stmt->bind_param("ss", $email, $password);
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt->bind_param("ss", $email, $hash);
         $stmt->execute();
         $flag = $stmt->get_result()->num_rows > 0;
         $stmt->close();
