@@ -5,6 +5,7 @@ const hint = document.getElementById('emailHint');
 let t = null;
 email.addEventListener('input', () => {
     clearTimeout(t);
+    email.setCustomValidity('');
     t = setTimeout(async () => {
         const v = email.value.trim(); //zapisuje email do zmiennej v
         //if (!v) { hint.textContent = ''; return; }
@@ -15,6 +16,7 @@ email.addEventListener('input', () => {
             hint.textContent = 'Adres e-mail ma niepoprawny format.';
             hint.classList.remove('hint-success', 'hint-danger');
             hint.classList.add('hint-danger');
+            email.setCustomValidity('Błędny format e-mail');
             return;
         }
 
@@ -26,6 +28,8 @@ email.addEventListener('input', () => {
         hint.textContent = data.message; // data.ok ? '' : data.message;
         hint.classList.remove('hint-success', 'hint-danger');
         hint.classList.add(data.ok ? 'hint-success' : 'hint-danger');
+
+        email.setCustomValidity(data.ok ? '' : (data.message || 'Niepoprawny e-mail'));
     }, 350); // debounce ~350ms
 });
 
