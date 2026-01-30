@@ -6,6 +6,9 @@ session_start();
 if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
+
+$dochody = getTableFromDb("dochody");
+//echo print_r($dochody);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -26,32 +29,30 @@ if (empty($_SESSION['logged'])) {
         </div>
     <?php endif; ?>
 
-    <form method="GET">
-        <h3>Podaj swoje źródła dochodów</h3>
+    <form method="POST">
+        <h3>DOCHODY</h3>
         <hr class="section-divider">
-        <!--<select name="rodzaj">
-            <?php foreach ($oprocentowanie as $rodzaj => $rrso): ?>
-                <option value="<?php echo $rodzaj; ?>">
-                    <?php echo $rodzaj; ?> (<?php echo $rrso; ?>%)
+
+        <label>Źródło dochodu:</label>
+        <select name="rodzaj" id="category" required>
+            <option value="" disabled selected>Wybierz...</option>
+            <?php foreach ($dochody as $row): ?>
+                <option value="<?php echo $row['id'] ?>">
+                    <?php echo htmlspecialchars($row['rodzaj']); ?>
                 </option>
             <?php endforeach; ?>
-        </select>-->
-        <label>Łączne dochody:</label>
+        </select>
+
+        <label>Wysokość dochodu w zł/msc:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" id="income-display" value="" required
-                   style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()" >
-            <button class = "add-button" type="dochody" onclick="window.location.href='dochody.php'">
-                Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
+            <input class="add-input" type="number" id="income" value="0.00" min=1.00 step=100.00 required>
+            <button class="add-button">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
         </div>
-        <input type="text" name="income-source" placeholder="Użyj przycisku Dodaj+ by dodać dochody" disabled readonly>
-        <label>Łączne wydatki:</label>
-        <div class="inline-input">
-            <input class="add-input" type="number" id="debt-display" value="" required
-                   style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()">
-            <button class="add-button" type="wydatki">Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
-        </div>
-        <input type="text" name="debt-source" placeholder="Użyj przycisku Dodaj+ by dodać wydatki" disabled readonly>
-        <button type="submit">OBLICZ ZDOLNOŚĆ KREDYTOWĄ</button>
+
+        </br>
+        <label>Dochody łącznie:</label>
+        <input type="number" name="income-total" value="" disabled readonly>
+        <button type="submit">ZAPISZ DOCHODY  <i class="bi bi-floppy-fill"></i></button>
     </form>
 
     <div class="card-footer">

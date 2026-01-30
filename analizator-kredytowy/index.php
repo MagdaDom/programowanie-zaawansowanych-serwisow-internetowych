@@ -39,14 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         </div>
     <?php endif; ?>
 
-    <form method="GET">
+    <form method="POST">
         <h3>Informacje o kredytobiorcy</h3>
         <hr class="section-divider">
         <label>Łączne dochody:</label>
         <div class="inline-input">
             <input class="add-input" type="number" id="income-display" value="" required
                    style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()" >
-            <button class = "add-button" type="dochody" onclick="window.location.href='dochody.php'">
+            <button class = "add-button" id="dochody" onclick="window.location.href='dochody.php'">
                 Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
         </div>
         <input type="text" name="income-source" placeholder="Użyj przycisku Dodaj+ by dodać dochody" disabled readonly>
@@ -54,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         <div class="inline-input">
             <input class="add-input" type="number" id="debt-display" value="" required
                    style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()">
-            <button class="add-button" type="wydatki">Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
+            <button class="add-button" id="wydatki" onclick="window.location.href='wydatki.php'">
+                Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
         </div>
         <input type="text" name="debt-source" placeholder="Użyj przycisku Dodaj+ by dodać wydatki" disabled readonly>
 

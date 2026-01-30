@@ -17,6 +17,18 @@ function closeDbConnection($db) {
     mysqli_close($db);
 }
 
+function getTableFromDb($tableName) {
+    $conn = openDbConnection();
+    $query = "SELECT * FROM " . $tableName;
+    $result = mysqli_query($conn, $query);
+    $tablica = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $tablica[] = $row;
+    }
+    closeDbConnection($conn);
+    return $tablica;
+}
+
 function readCsvToTable($file) {
     $result = [];
     if (($handle = fopen($file, "r")) !== FALSE) {

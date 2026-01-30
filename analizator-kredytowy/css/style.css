@@ -117,6 +117,13 @@ button {
     cursor: pointer;
 }
 
+button[type="submit"]  i {
+    font-size: 1.1em;   /* 20% większa ikona */
+    font-weight: 800;   /* maksymalnie bold */
+    line-height: 1;     /* lepsza pionowa centrowanie */
+    padding-left: 10px;
+}
+
 button:hover {
     background-color: #35536b;
 }
