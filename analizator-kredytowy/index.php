@@ -16,6 +16,7 @@ $oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="js/main_form.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -36,16 +37,16 @@ $oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
         <hr class="section-divider">
         <label>Łączne dochody:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" name="income" id="income" required disabled>
+            <input class="add-input" type="number" name="income" id="income" value = "" required readonly>
             <button class = "add-button" type="dochody">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
         </div>
-        <input type="text" name="income-source" disabled>
+        <input type="text" name="income-source" placeholder="Użyj przycisku Dodaj+ by dodać dochody" disabled readonly>
         <label>Łączne wydatki:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" name="debt" id="debt" required disabled>
+            <input class="add-input" type="number" name="debt" id="debt" value = 0 min = 1 required readonly>
             <button class="add-button" type="wydatki">Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
         </div>
-        <input type="text" name="debt-source" disabled>
+        <input type="text" name="debt-source" placeholder="Użyj przycisku Dodaj+ by dodać wydatki" disabled readonly>
 
         <label>Wiek kredytobiorcy:</label>
         <input type="number" name="age" id="age" min="18" max="65" step = 1 required>
