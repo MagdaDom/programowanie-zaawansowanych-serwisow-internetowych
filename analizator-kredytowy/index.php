@@ -37,13 +37,15 @@ $oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
         <hr class="section-divider">
         <label>Łączne dochody:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" name="income" id="income" value = "" required readonly>
+            <input class="add-input" type="number" id="income-display" value="" required
+                   style="pointer-events: none;" onkeydown="return false" onwheel="return false" oninput="event.preventDefault()" >
             <button class = "add-button" type="dochody">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
         </div>
         <input type="text" name="income-source" placeholder="Użyj przycisku Dodaj+ by dodać dochody" disabled readonly>
         <label>Łączne wydatki:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" name="debt" id="debt" value = 0 min = 1 required readonly>
+            <input type="hidden" name="debt" id="debt-hidden" value="" required min="1">
+            <input class="add-input" type="number" id="debt-display" value="" disabled>
             <button class="add-button" type="wydatki">Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
         </div>
         <input type="text" name="debt-source" placeholder="Użyj przycisku Dodaj+ by dodać wydatki" disabled readonly>
@@ -76,13 +78,13 @@ $oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
         <label>Oprocentowanie kredytu (RRSO):</label>
         <input type="number" name="rrso" id="rrso" value = 7.13 min = 1 max = 25 step = 0.01 required>
         <button type="submit">OBLICZ ZDOLNOŚĆ KREDYTOWĄ</button>
-        <select name="rodzaj">
+        <!--<select name="rodzaj">
             <?php foreach ($oprocentowanie as $rodzaj => $rrso): ?>
                 <option value="<?php echo $rodzaj; ?>">
                     <?php echo $rodzaj; ?> (<?php echo $rrso; ?>%)
                 </option>
             <?php endforeach; ?>
-        </select>
+        </select>-->
     </form>
     <!--
     <?php if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['rrso'])):
