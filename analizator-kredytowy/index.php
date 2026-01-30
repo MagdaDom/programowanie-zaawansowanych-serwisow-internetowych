@@ -28,20 +28,32 @@ if (empty($_SESSION['logged'])) {
     <form method="GET">
         <!--<label>Data urodzenia kredytobiorcy:</label>
         <input type="number" name="income" id="age" required>
-        <p>W przypadku kilku współkredytobiorców, podaj datę urodzenia najstarszego/najstarszej z nich.</p>-->
+        <p>W przypadku kilku współkredytobiorców, podaj datę urodzenia najstarszego/najstarszej z nich.</p> <i class="bi bi-cash-coin"></i>-->
+        <h3>Informacje o kredytobiorcy</h3>
+        <hr class="section-divider">
         <label>Łączne dochody:</label>
-        <input type="number" name="income" id="income" required disabled>
-        <button class = "add-button" type="dochody">Dodaj dochody</button>
+        <div class="inline-input">
+            <input class="add-input" type="number" name="income" id="income" required disabled>
+            <button class = "add-button" type="dochody">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
+        </div>
+        <input type="text" name="income-source" disabled>
         <label>Łączne wydatki:</label>
-        <button class="button-add" type="wydatki">Dodaj wydatki</button>
-        <input type="number" name="debt" id="debt" required disabled>
+        <div class="inline-input">
+            <input class="add-input" type="number" name="debt" id="debt" required disabled>
+            <button class="add-button" type="wydatki">Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
+        </div>
+        <input type="text" name="debt-source" disabled>
+
         <label>Wiek kredytobiorcy:</label>
         <input type="number" name="age" id="age" min="18" max="65" step = 1 required>
-        <button class="btn-add" type="wydatki">Dodaj wydatki</button>
         <p class="hint">W przypadku kilku współkredytobiorców, podaj datę urodzenia najstarszego/najstarszej z nich.</p>
         <label>Liczba osób w gospodarstwie domowym:</label>
         <input type="number" name="people" id="people" min = 1 max = 20 step = 1 required>
         <p class="hint">Osoby zamieszkujące razem i wspólnie się utrzymujące.</p>
+
+        </br>
+        <h3>Parametry kredytu</h3>
+        <hr class="section-divider">
         <label>Okres kredytowania:</label>
         <input type="number" name="years" id="years" value="15" min="1" max="40" step="1" required>
         <label>Oprocentowanie kredytu (RRSO):</label>
