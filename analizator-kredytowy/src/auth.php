@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/src/functions.php';
+require_once __DIR__ . '/functions.php';
 
 function userEmailExists($email) {
     $db=openDbConnection();
@@ -59,7 +59,7 @@ function addUser($imie, $nazwisko, $email, $password) {
 function getUserByEmail($email) {
     $db=openDbConnection();
     try {
-        $stmt = $db->prepare("SELECT imie, nazwisko FROM uzytkownicy WHERE email = ?");
+        $stmt = $db->prepare("SELECT id, imie, nazwisko FROM uzytkownicy WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();

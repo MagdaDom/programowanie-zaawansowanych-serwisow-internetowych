@@ -27,8 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'], $_POST['e
 
     $_SESSION['logged'] = true;
     $_SESSION['user_email'] = $email;
-    $user = getUserByEmail($email); // ['first_name' => ..., 'last_name' => ...]
+    $user = getUserByEmail($email);
     $_SESSION['user_name'] = $user['imie'] . ' ' . $user['nazwisko'];
+    $_SESSION['user_id'] = $user['id'];
     header('Location: index.php');
     exit;
 }

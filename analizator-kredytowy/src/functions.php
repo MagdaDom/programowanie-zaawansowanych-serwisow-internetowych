@@ -17,9 +17,8 @@ function closeDbConnection($db) {
     mysqli_close($db);
 }
 
-function getTableFromDb($tableName) {
+function getTableFromDb($query) {
     $conn = openDbConnection();
-    $query = "SELECT * FROM " . $tableName;
     $result = mysqli_query($conn, $query);
     $tablica = [];
     while ($row = mysqli_fetch_assoc($result)) {

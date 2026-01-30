@@ -2,12 +2,13 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/src/functions.php';
 session_start();
+$session_id = session_id();
 // when user not logged, redirect to the login page
 if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
 
-$dochody = getTableFromDb("dochody");
+$dochody = getTableFromDb("SELECT * FROM dochody");
 //echo print_r($dochody);
 ?>
 <!DOCTYPE html>
@@ -45,8 +46,8 @@ $dochody = getTableFromDb("dochody");
 
         <label>Wysokość dochodu w zł/msc:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" id="income" value="0.00" min=1.00 step=100.00 required>
-            <button class="add-button">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
+            <input class="add-input" type="number" id="income" value="0.00" min="0.00" step="100.00" required>
+            <button class="add-button" id="add-income">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
         </div>
 
         </br>
