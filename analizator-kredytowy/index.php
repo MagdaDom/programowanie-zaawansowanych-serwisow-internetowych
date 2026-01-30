@@ -1,10 +1,13 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/src/functions.php';
 session_start();
 // when user not logged, redirect to the login page
 if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
+
+$oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -56,8 +59,12 @@ if (empty($_SESSION['logged'])) {
         <hr class="section-divider">
         <label>Okres kredytowania:</label>
         <input type="number" name="years" id="years" value="15" min="1" max="40" step="1" required>
-        <label>Oprocentowanie kredytu (RRSO):</label>
-        <input type="number" name="rrso" id="rrso" required>
+        <label>Rodzaj raty:</label>
+        <select name="installment" id="installment" required>
+            <option value="" disabled selected hidden>wybierz...</option>
+            <option value="fixed">stała</option>
+            <option value="declining">malejąca</option>
+        </select>
         <label>Rodzaj oprocentowania:</label>
         <select name="rate" id="rate" required>
             <option value="" disabled selected hidden>wybierz...</option>
@@ -65,18 +72,22 @@ if (empty($_SESSION['logged'])) {
             <option value="0">stałe</option>
             <option value="2.5">okresowo stałe</option>
         </select>
-        <label>Rodzaj raty:</label>
-        <select name="installment" id="installment" required>
-            <option value="" disabled selected hidden>wybierz...</option>
-            <option value="fixed">stała</option>
-            <option value="declining">malejąca</option>
-        </select>
+        <label>Oprocentowanie kredytu (RRSO):</label>
+        <input type="number" name="rrso" id="rrso" value = 7.13 min = 1 max = 25 step = 0.01 required>
         <button type="submit">OBLICZ ZDOLNOŚĆ KREDYTOWĄ</button>
+        <select name="rodzaj">
+            <?php foreach ($oprocentowanie as $rodzaj => $rrso): ?>
+                <option value="<?php echo $rodzaj; ?>">
+                    <?php echo $rodzaj; ?> (<?php echo $rrso; ?>%)
+                </option>
+            <?php endforeach; ?>
+        </select>
     </form>
+    <!--
     <?php if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['rrso'])):
         $txt = $_GET['rrso'];
 
-    endif; ?>
+    endif; ?>-->
 
     <div class="card-footer">
         Wykonała: Magdalena Domaszczyńska
