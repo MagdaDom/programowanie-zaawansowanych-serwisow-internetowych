@@ -162,6 +162,71 @@ input:focus, select:focus, textarea:focus {
     color: #1f6f3d;
 }
 
+.add-button {
+    background: linear-gradient(135deg, #2e7d32, #43a047);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(46, 125, 50, 0.25);
+}
+
+.add-button:hover {
+    background: linear-gradient(135deg, #1b5e20, #2e7d32);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(46, 125, 50, 0.35);
+}
+
+.add-button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(46, 125, 50, 0.25);
+}
+
+.add-button:focus {
+    outline: 2px solid #2196F3;
+    outline-offset: 2px;
+}
+
+.button-add {
+    background: transparent;
+    color: #2e7d32;
+    border: 2px solid #2e7d32;
+    border-radius: 12px;
+    padding: 12px 26px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.button-add:hover {
+    background: #2e7d32;
+    color: #ffffff;
+}
+
+.btn-add {
+    background: linear-gradient(135deg, #355f7c, #2e7d32);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-add:hover {
+    background: linear-gradient(135deg, #2b4e66, #1b5e20);
+    transform: translateY(-1px);
+}
+
+
 /*LOGOWANIE I REJERSTRACJA */
 
 .auth-tabs{
@@ -205,6 +270,8 @@ input:focus, select:focus, textarea:focus {
     margin-bottom: 12px;
     font-size: 13px;
     font-weight: 600;
+    text-align: right;
+    color: #888;
 }
 /* wspólne ustawienia ikony */
 .hint::before{
@@ -219,7 +286,6 @@ input:focus, select:focus, textarea:focus {
 
 .hint.hint-success {
     color: #1f6f3d;
-    text-align: right;
 }
 /* ikona OK */
 .hint.hint-success::before{
@@ -228,7 +294,6 @@ input:focus, select:focus, textarea:focus {
 }
 
 .hint.hint-warning {
-    text-align: right;
     color: #E68F00;
 }
 /* ikona warning */
@@ -238,7 +303,6 @@ input:focus, select:focus, textarea:focus {
 }
 
 .hint.hint-danger{
-    text-align: right;
     color: #dc3545;
 }
 .hint.hint-danger::before{
