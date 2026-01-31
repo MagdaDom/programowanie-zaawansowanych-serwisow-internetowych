@@ -26,6 +26,16 @@ body {
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
 }
 
+.container-very-long {
+    overflow: hidden;
+    max-width: 1200px;
+    margin: auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
 .card-header h1{
     color: #f2f4f7;
     margin: 0 0 6px 0;
@@ -154,7 +164,7 @@ form button{
     margin-top: 15px;
 }
 
-.container form, .container-long form {
+.container form, .container-long form, .container-very-long form {
     width: 50%;
     margin-left: auto;
     margin-right: auto;

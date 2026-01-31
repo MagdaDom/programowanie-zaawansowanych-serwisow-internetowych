@@ -79,9 +79,10 @@ if(($minSocjalne[0]["min_wydatki"]==null)) {
     $mw = number_format($_SESSION["min_wydatkow"], 2, '.', '');
 }
 
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
+//śledzenie sesji do testów
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="pl">

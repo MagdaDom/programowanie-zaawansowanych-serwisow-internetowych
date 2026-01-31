@@ -17,9 +17,20 @@ $rata     = $_SESSION['rata']     ?? 0;
 $zs = number_format($zdolnosc, 0, ".", " ");
 $rs = number_format($rata, 2, ".", " ");
 
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
+//historia wyszukiwań
+$query = "select u.imie, u.nazwisko, p.data_czas_dodania,  w.sesja, w.zdolnosc, w.rata, w.minusy, w.plusy 
+, w.suma_dochodow, w.suma_dlugu, w.min_wydatkow*p.osoby as koszta_utrzymania
+, p.wiek, p.osoby, p.okres, p.rodzaj_rata, p.rodzaj_prct, p.rrso 
+from wyniki w 
+left join uzytkownicy u on u.id = w.id_uzytkownika 
+left join parametry p on w.sesja = p.sesja and p.id_uzytkownika = w.id_uzytkownika 
+         WHERE w.id_uzytkownika = $user_id ORDER BY p.data_czas_dodania DESC";
+$historia = getTableFromDb($query);
+
+//śledzenie sesji do testów
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
 
 //po kliknięciu "Oblicz ponownie"
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
@@ -37,15 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     header('Location: index.php');
     exit;
 }
-
-$query = "select u.imie, u.nazwisko, p.data_czas_dodania,  w.sesja, w.zdolnosc, w.rata, w.minusy, w.plusy 
-, w.suma_dochodow, w.suma_dlugu, w.min_wydatkow*p.osoby as koszta_utrzymania
-, p.wiek, p.osoby, p.okres, p.rodzaj_rata, p.rodzaj_prct, p.rrso 
-from wyniki w 
-left join uzytkownicy u on u.id = w.id_uzytkownika 
-left join parametry p on w.sesja = p.sesja and p.id_uzytkownika = w.id_uzytkownika 
-         WHERE w.id_uzytkownika = $user_id and w.sesja = '$session_id'";
-$historia = getTableFromDb($query);
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -57,7 +59,7 @@ $historia = getTableFromDb($query);
     <script src="js/expenses.js" defer></script>
 </head>
 <body>
-<div class="container-long">
+<div class="container-very-long">
     <div class="card-header">
         <h1>Kalkulator zdolności kredytowej</h1>
     </div>
@@ -68,8 +70,9 @@ $historia = getTableFromDb($query);
     <?php endif; ?>
     <form method="POST">
     <?php if ($zdolnosc > 0): ?>
-        <h1 class="success">Decyzja kredytowa: POZYTYWNA!</h1>
-        <h2 class="success">Maksymalnie możesz otrzymać <?php echo $zs; ?> zł kredytu z ratą <?php echo $rs?> zł/msc.</h2>
+        <h1 class="success">Decyzja kredytowa: POZYTYWNA!</h1>    </br>
+        <h2 class="success">Maksymalnie możesz otrzymać <?php echo $zs; ?> zł kredytu </br>
+            (rata ok. <?php echo $rs?> zł/msc).</h2>    </br>
 
         <h3>Szczegóły</h3>
         <hr class="section-divider">
@@ -97,6 +100,7 @@ $historia = getTableFromDb($query);
         <button type="submit">OBLICZ PONOWNIE</button>
     </form>
 
+    </br>
     <label>Historia obliczeń:</label>
     <table>
         <thead>
@@ -110,6 +114,8 @@ $historia = getTableFromDb($query);
             <th>RRSO</th>
             <th>Rodzaj oprocentowania</th>
             <th>Rodzaj raty</th>
+            <th>Dochody</th>
+            <th>Zobowiązania</th>
         </tr>
         </thead>
         <tbody>
@@ -120,10 +126,12 @@ $historia = getTableFromDb($query);
                 <td><?php echo number_format($row['zdolnosc'], 2, ',', ' '); ?></td>
                 <td><?php echo number_format($row['rata'], 2, ',', ' '); ?></td>
                 <td><?php echo $row['osoby']; ?></td>
-                <td><?php echo $row['okres']; ?></td>
+                <td><?php echo $row['okres']; ?> lat</td>
                 <td><?php echo $row['rrso']; ?>%</td>
-                <td><?php echo $row['rodzaj_rata']; ?></td>
                 <td><?php echo $row['rodzaj_prct']; ?></td>
+                <td><?php echo $row['rodzaj_rata']; ?></td>
+                <td><?php echo number_format($row['suma_dochodow'], 0, ',', ' '); ?></td>
+                <td><?php echo number_format($row['suma_dlugu'], 0, ',', ' '); ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

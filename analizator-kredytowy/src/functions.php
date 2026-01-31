@@ -91,7 +91,7 @@ function saveUserExpensesToDb($session_id, $user_id, $id_wydatku, $wysokosc, $na
 function updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id, $session_id) {
     $conn = openDbConnection();
     try {
-        $stmt = $conn->prepare("UPDATE uzytkownik_wydatki SET id_wydatku = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ? and sesja = $session_id");
+        $stmt = $conn->prepare("UPDATE uzytkownik_wydatki SET id_wydatku = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ? and sesja = ?");
         $stmt->bind_param("idsiis", $id_wydatku, $wysokosc, $nazwa, $id, $user_id, $session_id);
         $stmt->execute();
         $stmt->close();

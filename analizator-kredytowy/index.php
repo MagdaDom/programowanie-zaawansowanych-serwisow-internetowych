@@ -16,9 +16,10 @@ $sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow']
 $minWydatkow = (isset($_SESSION['min_wydatkow'])) ? $_SESSION['min_wydatkow'] : null;
 $sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
 
-echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
+//śledzenie sesji
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
 
 //po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
@@ -34,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     if($id_user_wydatki != null || $id_user_dochody != null) {
         //czase zero przy prechodzeniu od strony do strony
         saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
-        calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+        $wynik = calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+        saveCreditworthiness($session_id, $user_id, $sumaDochodow, $minWydatkow, $sumaDlugu, $wynik);
         header('Location: podsumowanie.php');
         exit;
     } else {

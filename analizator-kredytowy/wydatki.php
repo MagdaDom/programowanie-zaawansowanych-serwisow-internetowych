@@ -20,7 +20,7 @@ if (isset($_GET['edit'])) {
         $query = "SELECT ud.id, d.rodzaj, ud.id_wydatku, ud.nazwa, ud.wysokosc
                   FROM uzytkownik_wydatki ud
                   LEFT JOIN dochody d ON d.id = ud.id_wydatku
-                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id and and ud.sesja = '$session_id'";
+                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id and ud.sesja = '$session_id'";
         $edit_data = getTableFromDb($query)[0]; //będziemy używać tylko pierwszego wiersza o indeksie 0
     }
 }
