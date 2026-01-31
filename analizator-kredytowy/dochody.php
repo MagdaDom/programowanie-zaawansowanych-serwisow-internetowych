@@ -8,12 +8,32 @@ if (empty($_SESSION['logged'])) {
 }
 $session_id = session_id();
 $user_id = $_SESSION['user_id'];
+$is_edit = false;
+$edit_id = 0;
+$edit_data = null;
+
+if (isset($_GET['edit'])) {
+    $edit_id = (int) $_GET['edit'];
+    if ($edit_id > 0) {
+        $is_edit = true;
+        $query = "SELECT ud.id, d.rodzaj, ud.id_dochodu, ud.nazwa, ud.wysokosc
+                  FROM uzytkownik_dochody ud
+                  LEFT JOIN dochody d ON d.id = ud.id_dochodu
+                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id";
+        $edit_data = getTableFromDb($query)[0]; //będziemy używać tylko pierwszego wiersza o indeksie 0
+    }
+}
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_dochodu = (int) ($_POST['rodzaj']);
     $wysokosc   = (float) ($_POST['wysokosc']);
     $nazwa      = trim($_POST['nazwa']);
-    saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazwa);
+    $id = $edit_data["id"];
+    if($is_edit) {
+        updateUserIncomeToDb($id_dochodu, $wysokosc, $nazwa, $id, $user_id);
+    } else {
+        saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazwa);
+    }
     // po zapisie przeładowujemy stronę, żeby nowy rekord się pojawił w tabeli
     header('Location: dochody.php');
     exit;
@@ -28,22 +48,6 @@ $dochodyUzytkownika = getTableFromDb($query);
 $sumaDochodow = 0.0;
 foreach ($dochodyUzytkownika as $dochod) {
     $sumaDochodow += (float) $dochod['wysokosc'];
-}
-
-$is_edit = false;
-$edit_id = 0;
-$edit_data = null;
-
-if (isset($_GET['edit'])) {
-    $edit_id = (int) $_GET['edit'];
-    if ($edit_id > 0) {
-        $is_edit = true;
-        $query = "SELECT d.rodzaj, ud.id_dochodu, ud.nazwa, ud.wysokosc
-                  FROM uzytkownik_dochody ud
-                  LEFT JOIN dochody d ON d.id = ud.id_dochodu
-                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id";
-        $edit_data = getTableFromDb($query)[0]; //do edycji tylko 1. wiersz danych nam się przyda
-    }
 }
 //echo print_r($dochody);
 //echo print_r($edit_data);
@@ -82,12 +86,8 @@ if (isset($_GET['edit'])) {
                     <?php echo htmlspecialchars($row['rodzaj']); ?>
                 </option>
             <?php endforeach; ?>
-            <?php foreach ($dochody as $row): ?>
-                <option value="<?php echo $row['id'] ?>">
-                    <?php echo htmlspecialchars($row['rodzaj']); ?>
-                </option>
-            <?php endforeach; ?>
         </select>
+
 
         <label>Nazwa:</label>
         <!--<input type="text" id="nazwa" name="nazwa" required>-->

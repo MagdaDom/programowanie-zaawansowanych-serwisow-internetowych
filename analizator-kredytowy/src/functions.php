@@ -42,6 +42,20 @@ function saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazw
     }
 }
 
+function updateUserIncomeToDb($id_dochodu, $wysokosc, $nazwa, $id, $user_id) {
+    $conn = openDbConnection();
+    try {
+        $stmt = $conn->prepare("UPDATE uzytkownik_dochody SET id_dochodu = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ?");
+        $stmt->bind_param("idsii", $id_dochodu, $wysokosc, $nazwa, $id, $user_id);
+        $stmt->execute();
+        $stmt->close();
+        closeDbConnection($conn);
+    }  catch (mysqli_sql_exception $e) {
+        error_log("DB error in saveUserIncomeToDb: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($conn);
+    }
+}
+
 function removeUserIncome($id) {
     $conn = openDbConnection();
     try {
