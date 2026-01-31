@@ -8,7 +8,8 @@ if (empty($_SESSION['logged'])) {
 }
 $session_id = session_id();
 $user_id = $_SESSION['user_id'];
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_dochodu = (int) ($_POST['rodzaj']);
     $wysokosc   = (float) ($_POST['wysokosc']);
     $nazwa      = trim($_POST['nazwa']);
@@ -19,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $dochody = getTableFromDb("SELECT * FROM dochody");
-$query = "SELECT d.rodzaj, ud.wysokosc, ud.nazwa FROM uzytkownik_dochody ud 
+$query = "SELECT ud.id, d.rodzaj, ud.wysokosc, ud.nazwa FROM uzytkownik_dochody ud 
          LEFT JOIN dochody d on d.id = ud.id_dochodu
          WHERE ud.id_uzytkownika = $user_id";
 $dochodyUzytkownika = getTableFromDb($query);
@@ -98,8 +99,8 @@ foreach ($dochodyUzytkownika as $dochod) {
                     <td><?php echo htmlspecialchars($dochod['nazwa']); ?></td>
                     <td><?php echo number_format($dochod['wysokosc'], 2, ',', ' '); ?></td>
                     <td class="actions" style="display: none;">
-                        <button type="button" class="table-btn edit-btn">Edytuj <i class="bi bi-pencil-fill"></i></button>
-                        <button type="button" class="table-btn delete-btn">Usuń <i class="bi bi-trash2-fill"></i></button>
+                        <button type="button" class="table-btn edit-btn" data-id="<?php echo $dochod['id'];?>">Edytuj <i class="bi bi-pencil-fill"></i></button>
+                        <button type="button" class="table-btn delete-btn" data-id="<?php echo $dochod['id'];?>">Usuń <i class="bi bi-trash2-fill"></i></button>
                     </td>
                 </tr>
             <?php endforeach; ?>

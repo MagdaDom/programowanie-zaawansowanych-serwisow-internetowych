@@ -42,6 +42,20 @@ function saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazw
     }
 }
 
+function removeUserIncome($id) {
+    $conn = openDbConnection();
+    try {
+        $stmt = $conn->prepare("DELETE FROM uzytkownik_dochody WHERE id=?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->close();
+        closeDbConnection($conn);
+    }  catch (mysqli_sql_exception $e) {
+        error_log("DB error in removeUserIncome: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($conn);
+    }
+}
+
 function readCsvToTable($file) {
     $result = [];
     if (($handle = fopen($file, "r")) !== FALSE) {

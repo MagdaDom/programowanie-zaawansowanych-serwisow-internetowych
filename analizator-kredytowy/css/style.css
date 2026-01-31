@@ -386,18 +386,38 @@ td:first-child {
 }
 
 /* TABLE ACTION BUTTONS */
-
+/*
 .table-btn {
-    padding: 6px 12px;          /* smaller than global */
+    padding: 6px 12px;
     font-size: 13px;
     border-radius: 6px;
-    margin: 0 3px;              /* small gap between buttons */
+    margin: 0 3px;
     line-height: 1.2;
     font-weight: 600;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
+    transition: all 0.2s ease;
+}*/
+
+.table-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    /* Bigger button */
+    padding: 8px 14px;        /* more vertical size */
+
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+
+    border-radius: 7px;
+
+    /* Less space around */
+    margin: 0 1px;           /* almost no outer gap */
 
     transition: all 0.2s ease;
 }
