@@ -30,12 +30,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nazwa      = trim($_POST['nazwa']);
     $id = $edit_data["id"];
     if($is_edit) {
-        updateUserExpenseToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id);
+        updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id);
     } else {
-        saveUserExpenseToDb($session_id, $user_id, $id_wydatku, $wysokosc, $nazwa);
+        saveUserExpensesToDb($session_id, $user_id, $id_wydatku, $wysokosc, $nazwa);
     }
     // po zapisie przeładowujemy stronę, żeby nowy rekord się pojawił w tabeli
-    header('Location: dochody.php');
+    header('Location: wydatki.php');
     exit;
 }
 
@@ -89,7 +89,7 @@ $_SESSION['suma_wydatkow'] = $sumaWydatkow;
             <?php endforeach; ?>
         </select>
 
-        <label>Nazwa:</label>
+        <label>Dodatkowe informacje:</label>
         <!--<input type="text" id="nazwa" name="nazwa" required>-->
         <input type="text" id="nazwa" name="nazwa" placeholder="opcjonalnie"
                value="<?php echo htmlspecialchars($edit_data['nazwa'] ?? ' '); ?>" required>
@@ -105,7 +105,7 @@ $_SESSION['suma_wydatkow'] = $sumaWydatkow;
                 <i class="bi <?php echo $is_edit ? '' : 'bi-currency-exchange'; ?>"></i>
             </button>
             <?php if ($is_edit): ?>
-                <button type="button" class="cancel-btn" onclick="window.location.href='dochody.php'">Anuluj</button>
+                <button type="button" class="cancel-btn" onclick="window.location.href='wydatki.php'">Anuluj</button>
             <?php endif; ?>
 
         </div>

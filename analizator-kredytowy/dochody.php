@@ -89,7 +89,7 @@ $_SESSION['suma_dochodow'] = $sumaDochodow;
         </select>
 
 
-        <label>Nazwa:</label>
+        <label>Dodatkowe informacje:</label>
         <!--<input type="text" id="nazwa" name="nazwa" required>-->
         <input type="text" id="nazwa" name="nazwa"
                value="<?php echo htmlspecialchars($edit_data['nazwa'] ?? ''); ?>" required>
