@@ -71,7 +71,7 @@ $_SESSION['suma_dlugu'] = $sumaDlugu
     <script src="js/expenses.js" defer></script>
 </head>
 <body>
-<div class="container">
+<div class="container-long">
     <div class="card-header">
         <h1>Kalkulator zdolności kredytowej</h1>
     </div>
@@ -128,9 +128,9 @@ $_SESSION['suma_dlugu'] = $sumaDlugu
             <thead>
             <tr>
                 <th>Lp.</th>
-                <th>Rodzaj</th>
-                <th>Nazwa</th>
-                <th>Wysokość [zł/msc]</th>
+                <th>Kategoria</th>
+                <th>Informacje</th>
+                <th>Wysokość</th>
                 <th>Opcje</th>
             </tr>
             </thead>
@@ -154,34 +154,22 @@ $_SESSION['suma_dlugu'] = $sumaDlugu
     <label class="hint">Wybierz wiersz kliknięciem w celu edycji lub usunięcia danych.</label>
 
     </br>
-    <label>Wydatki razem:</label>
-    <div class="inline-input">
-        <input class="add-input" type="number" name="expenses-total" step="0.01"
-               value="<?php echo number_format($sumaWydatkow, 2, '.', ''); ?>" disabled readonly>
-        <div class="debt-label-container">
-            <label class="debt-label">Długi razem</label>
-            <input class="add-input" type="number" name="debt-total" step="0.01"
-                   value="<?php echo number_format($sumaDlugu, 2, '.', ''); ?>" disabled readonly>
-        </div>
-        <button class="end-button" id="koniec" onclick="window.location.href='index.php'">ZAKOŃCZ <i class="bi bi-box-arrow-left"></i></button>
-    </div>
-
     <div class="form-row">
         <div class="field">
-            <label class="debt-label">Wydatki razem</label>
+            <label class="debt-label">Wydatki razem:</label>
             <input class="add-input" type="number" name="expenses-total" step="0.01"
                    value="<?php echo number_format($sumaWydatkow, 2, '.', ''); ?>" disabled readonly>
-            <p class="hint">Łączna kwota wydatków</p>
+            <p class="hint">bez limitów na koncie i karcie</p>
         </div>
 
         <div class="field">
-            <label class="debt-label">Długi razem</label>
+            <label class="debt-label">Długi razem (msc):</label>
             <input class="add-input" type="number" name="debt-total" step="0.01"
                    value="<?php echo number_format($sumaDlugu, 2, '.', ''); ?>" disabled readonly>
-            <p class="hint">Łączna kwota długów</p>
+            <p class="hint">bez wydatków na życie i innych</p>
         </div>
 
-        <div class="actions">
+        <div class="actions-col">
             <button class="end-button" id="koniec" onclick="window.location.href='index.php'">
                 ZAKOŃCZ <i class="bi bi-box-arrow-left"></i>
             </button>

@@ -122,7 +122,7 @@ $_SESSION['suma_dochodow'] = $sumaDochodow;
             <tr>
                 <th>Lp.</th>
                 <th>Rodzaj</th>
-                <th>Nazwa</th>
+                <th>Informacje</th>
                 <th>Wysokość [zł/msc]</th>
                 <th>Opcje</th>
             </tr>
