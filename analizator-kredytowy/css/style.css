@@ -384,3 +384,52 @@ td:first-child {
     width: 60px;
     font-weight: 600;
 }
+
+/* TABLE ACTION BUTTONS */
+
+.table-btn {
+    padding: 6px 12px;          /* smaller than global */
+    font-size: 13px;
+    border-radius: 6px;
+    margin: 0 3px;              /* small gap between buttons */
+    line-height: 1.2;
+    font-weight: 600;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+}
+
+/* EDIT – yellow-ish, matches your blue/gray theme */
+.edit-btn {
+    background: linear-gradient(135deg, #f4b942, #f39c12);
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgba(243, 156, 18, 0.3);
+}
+
+.edit-btn:hover {
+    background: linear-gradient(135deg, #f7c85c, #f5a623);
+    box-shadow: 0 3px 7px rgba(243, 156, 18, 0.4);
+}
+
+
+/* DELETE – muted red, not aggressive */
+.delete-btn {
+    background: linear-gradient(135deg, #e35d6a, #c94a4a);
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(201, 74, 74, 0.25);
+}
+
+.delete-btn:hover {
+    background: linear-gradient(135deg, #eb6f7b, #d9534f);
+    box-shadow: 0 3px 7px rgba(201, 74, 74, 0.35);
+}
+
+
+/* Optional: tighter buttons inside table only */
+td .table-btn {
+    padding: 5px 10px;
+}
+

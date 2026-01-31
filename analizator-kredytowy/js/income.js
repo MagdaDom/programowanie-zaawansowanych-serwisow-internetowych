@@ -1,14 +1,16 @@
-const input = document.getElementById('wysokosc');
+document.addEventListener('DOMContentLoaded', function() {
+    const rows = document.querySelectorAll('.income-row');
 
-input.addEventListener('keydown', function(e) {
-    const step = 100.0;
-    const val = parseFloat(input.value) || 0;
+    rows.forEach(row => {
+        row.addEventListener('click', function() {
+            // ukryj przyciski we wszystkich wierszach
+            document.querySelectorAll('.actions').forEach(cell => {
+                cell.style.display = 'none';
+            });
 
-    if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        input.value = (val + step).toFixed(2);
-    } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        input.value = Math.max(0, val - step).toFixed(2);
-    }
+            // pokazuj przyciski tylko w klikniętym wierszu
+            const actionsCell = row.querySelector('.actions');
+            actionsCell.style.display = 'table-cell';
+        });
+    });
 });

@@ -37,6 +37,7 @@ foreach ($dochodyUzytkownika as $dochod) {
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="js/income.js" defer></script>
 </head>
 <body>
 <div class="container">
@@ -86,20 +87,27 @@ foreach ($dochodyUzytkownika as $dochod) {
                 <th>Rodzaj</th>
                 <th>Nazwa</th>
                 <th>Wysokość [zł/msc]</th>
+                <th>Opcje</th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($dochodyUzytkownika as $index => $dochod): ?>
-                <tr>
+                <tr class="income-row" data-id="<?php echo $index; ?>">
                     <td><?php echo $index + 1; ?></td>
                     <td><?php echo htmlspecialchars($dochod['rodzaj']); ?></td>
                     <td><?php echo htmlspecialchars($dochod['nazwa']); ?></td>
                     <td><?php echo number_format($dochod['wysokosc'], 2, ',', ' '); ?></td>
+                    <td class="actions" style="display: none;">
+                        <button type="button" class="table-btn edit-btn">Edytuj <i class="bi bi-pencil-fill"></i></button>
+                        <button type="button" class="table-btn delete-btn">Usuń <i class="bi bi-trash2-fill"></i></button>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
         </table>
     <?php endif; ?>
+    </br>
+    <label class="hint">Wybierz wiersz kliknięciem w celu edycji lub usunięcia danych.</label>
 
     </br>
     <label>Razem:</label>
@@ -113,6 +121,5 @@ foreach ($dochodyUzytkownika as $dochod) {
         Wykonała: Magdalena Domaszczyńska
     </div>
 </div>
-<script src="js/income.js"></script>
 </body>
 </html>
