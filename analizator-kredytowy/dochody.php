@@ -23,6 +23,11 @@ $query = "SELECT d.rodzaj, ud.wysokosc, ud.nazwa FROM uzytkownik_dochody ud
          LEFT JOIN dochody d on d.id = ud.id_dochodu
          WHERE ud.id_uzytkownika = $user_id";
 $dochodyUzytkownika = getTableFromDb($query);
+
+$sumaDochodow = 0.0;
+foreach ($dochodyUzytkownika as $dochod) {
+    $sumaDochodow += (float) $dochod['wysokosc'];
+}
 //echo print_r($dochody);
 ?>
 <!DOCTYPE html>
@@ -88,7 +93,8 @@ $dochodyUzytkownika = getTableFromDb($query);
                 <tr>
                     <td><?php echo $index + 1; ?></td>
                     <td><?php echo htmlspecialchars($dochod['rodzaj']); ?></td>
-                    <td><?php echo number_format($dochod['wysokosc'], 2, ',', ' '); ?> zł</td>
+                    <td><?php echo htmlspecialchars($dochod['nazwa']); ?></td>
+                    <td><?php echo number_format($dochod['wysokosc'], 2, ',', ' '); ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -98,7 +104,8 @@ $dochodyUzytkownika = getTableFromDb($query);
     </br>
     <label>Razem:</label>
     <div class="inline-input">
-        <input class="add-input" type="number" name="income-total" value="" disabled readonly>
+        <input class="add-input" type="number" name="income-total" step="0.01"
+               value="<?php echo number_format($sumaDochodow, 2, '.', ''); ?>" disabled readonly>
         <button class="end-button" id="koniec" onclick="window.location.href='index.php'">ZAKOŃCZ <i class="bi bi-box-arrow-left"></i></button>
     </div>
 
@@ -106,5 +113,6 @@ $dochodyUzytkownika = getTableFromDb($query);
         Wykonała: Magdalena Domaszczyńska
     </div>
 </div>
+<script src="js/income.js"></script>
 </body>
 </html>
