@@ -77,24 +77,24 @@ $_SESSION['suma_wydatkow'] = $sumaWydatkow;
         <h3><?php echo $is_edit ? 'EDYTUJ WYDATKI '.$edit_id.'.' : 'DODAJ WYDATKI'; ?></h3>
         <hr class="section-divider">
 
-        <label>Źródło dochodu:</label>
+        <label>Kategoria:</label>
         <select name="rodzaj" id="rodzaj" required>
             <option value="" disabled selected>Wybierz...</option>
             <?php foreach ($wydatki as $row): ?>
                 <option value="<?php echo $row['id'] ?>"
+                        data-opis="<?php echo htmlspecialchars($row['opis']); ?>"
                         <?php echo ($edit_data && $edit_data['id_wydatku'] == $row['id']) ? 'selected' : ''; ?>>
                     <?php echo htmlspecialchars($row['rodzaj']); ?>
                 </option>
             <?php endforeach; ?>
         </select>
 
-
         <label>Nazwa:</label>
         <!--<input type="text" id="nazwa" name="nazwa" required>-->
-        <input type="text" id="nazwa" name="nazwa"
-               value="<?php echo htmlspecialchars($edit_data['nazwa'] ?? ''); ?>" required>
+        <input type="text" id="nazwa" name="nazwa" placeholder="opcjonalnie"
+               value="<?php echo htmlspecialchars($edit_data['nazwa'] ?? ' '); ?>" required>
 
-        <label>Wysokość w zł/msc:</label>
+        <label id="income-label">Wysokość w zł:</label>
         <div class="inline-input">
             <input class="add-input" type="number" id="wysokosc" name="wysokosc"
                    value="<?php echo $edit_data['wysokosc'] ?? '0.00'; ?>"
@@ -115,7 +115,7 @@ $_SESSION['suma_wydatkow'] = $sumaWydatkow;
     <hr class="section-divider">
     <?php
     if (true): ?>
-        <label>Twoje dochody:</label>
+        <label>Twoje wydatki:</label>
         <table>
             <thead>
             <tr>
