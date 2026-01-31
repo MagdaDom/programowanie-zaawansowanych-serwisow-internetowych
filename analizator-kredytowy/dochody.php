@@ -54,8 +54,10 @@ if(count($dochodyUzytkownika)>0) {
         $sumaDochodow += (float) $dochod['wysokosc'];
     }
     $_SESSION['suma_dochodow'] = $sumaDochodow;
+    $sd = number_format($_SESSION['suma_dochodow'], 2, '.', '');
 } else {
     unset($_SESSION['suma_dochodow']);
+    $sd = "";
 }
 
 //tu liczymy szacowane średnie wydatki na życie gospodarstwa domowego na osobę na bazie źródła uzyskiwania dochodu oraz danych z GUS
@@ -71,13 +73,15 @@ select ROUND(SUM(wydatki_weighted),2) as min_wydatki from presummary";
 $minSocjalne = getTableFromDb($queryWydatki);
 if(($minSocjalne[0]["min_wydatki"]==null)) {
     unset($_SESSION['min_wydatkow']);
+    $mw = '';
 } else {
     $_SESSION["min_wydatkow"] = $minSocjalne[0]["min_wydatki"];
+    $mw = number_format($_SESSION["min_wydatkow"], 2, '.', '');
 }
 
-//echo '<pre>';
-//print_r($_SESSION);
-//echo '</pre>';
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -177,14 +181,14 @@ if(($minSocjalne[0]["min_wydatki"]==null)) {
         <div class="field">
             <label class="debt-label">Dochody razem:</label>
             <input class="add-input" type="number" name="income-total" step="0.01"
-                   value="<?php echo number_format($sumaDochodow, 2, '.', ''); ?>" disabled readonly>
+                   value="<?php echo $sd ?>" disabled readonly>
             <p class="hint"> suma</p>
         </div>
 
         <div class="field">
             <label class="debt-label">Szacowane wydatki (msc/osoba):</label>
             <input class="add-input" type="number" name="min-spendings" step="0.01"
-                   value="<?php echo number_format($minWydatkow, 2, '.', ''); ?>" disabled readonly>
+                   value="<?php echo $mw ?>" disabled readonly>
             <p class="hint">w zależności od źródła dochodu</p>
         </div>
 

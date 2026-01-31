@@ -57,15 +57,19 @@ if(count($wydatkiUzytkownika) > 0) {
         }
     }
     $_SESSION['suma_wydatkow'] = $sumaWydatkow;
+    $sw = number_format($_SESSION["suma_wydatkow"], 2, '.', '');
     //sumę długu potrzebną do DTI liczymy oddzielnie, ponieważ koszta życia nie wliczają się do DTI, ale nie możemy też udzielić raty wyższej niż dochód rozporządzalny
     $sumaDlugu = 0.0;
     foreach ($wydatkiUzytkownika as $wydatek) {
         $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;
     }
     $_SESSION['suma_dlugu'] = $sumaDlugu;
+    $sd = number_format($_SESSION["suma_dlugu"], 2, '.', '');
 } else {
     unset($_SESSION['suma_wydatkow']);
     unset($_SESSION['suma_dlugu']);
+    $sw = "";
+    $sd = "";
 }
 
 //echo '<pre>';
@@ -169,14 +173,14 @@ if(count($wydatkiUzytkownika) > 0) {
         <div class="field">
             <label class="debt-label">Wydatki razem:</label>
             <input class="add-input" type="number" name="expenses-total" step="0.01"
-                   value="<?php echo number_format($sumaWydatkow, 2, '.', ''); ?>" disabled readonly>
+                   value="<?php echo $sw;?>" disabled readonly>
             <p class="hint">bez limitów na koncie i karcie</p>
         </div>
 
         <div class="field">
             <label class="debt-label">Długi razem (msc):</label>
             <input class="add-input" type="number" name="debt-total" step="0.01"
-                   value="<?php echo number_format($sumaDlugu, 2, '.', ''); ?>" disabled readonly>
+                   value="<?php echo $sd;?>" disabled readonly>
             <p class="hint">bez wydatków na życie i innych</p>
         </div>
 

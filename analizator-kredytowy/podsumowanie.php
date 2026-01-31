@@ -14,16 +14,9 @@ $plusy    = $_SESSION['plusy']    ?? [];
 $zdolnosc = $_SESSION['zdolnosc'] ?? 0;
 $rata     = $_SESSION['rata']     ?? 0;
 
-echo "</br>".print_r($minusy);
-echo "</br>".print_r($plusy);
-echo "</br>".$zdolnosc;
-echo "</br>".$rata;
-echo "</br>";
-$parametry = readParametersFromCsv("src/dodatkowe_parametry.csv"); //dodatkowe parametry wczytywane z pliku CSV
-$avgSalaryNet = getKpiValue($parametry, 'średnia krajowa');
-echo "</br>".print_r($parametry);
-echo "</br>".$avgSalaryNet;
-
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     //zacznij nową sesję (bez wylogowania) dla kolejnych obliczeń
     session_regenerate_id(false);
