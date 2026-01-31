@@ -192,7 +192,8 @@ input:focus, select:focus, textarea:focus {
 
 .add-input {
     width: 65%;
-    margin-bottom: 5px;
+    height: 42px;
+    /*margin-bottom: 5px;*/
 }
 
 .add-button {
@@ -515,7 +516,7 @@ td .table-btn {
     padding: 0.5rem 0.75rem;    /* przywrócone padding */
     font-size: 1rem;
     box-sizing: border-box;
-    margin-top: 26px;
+    margin-top: 28px;
     margin-right: 30px;
     /* height: 100% niepotrzebne - align-items flex-end załatwia */
 }

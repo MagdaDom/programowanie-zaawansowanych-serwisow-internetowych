@@ -182,7 +182,6 @@ echo $_SESSION['suma_wydatkow'];
         </div>
     </div>
 
-
     <div class="card-footer">
         Wykonała: Magdalena Domaszczyńska
     </div>

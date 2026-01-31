@@ -12,7 +12,8 @@ $session_id = session_id();
 $user_id = $_SESSION['user_id'] ?? null;
 //parametry przekazywane między sesjamy - zajrzyj do dochody.php i wydatki.php po szczegóły
 $sumaDochodow = (isset($_SESSION['suma_dochodow'])) ? $_SESSION['suma_dochodow'] : null;
-$sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow'] : null;
+//$sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow'] : null; //nie potrzebujemy sumy realnych wydatków do liczenia zdolności, tylko zakładane przez bank średnie wydatki
+$minWydatkow = (isset($_SESSION['min_wydatkow'])) ? $_SESSION['min_wydatkow'] : null;
 $sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
 
 //po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok

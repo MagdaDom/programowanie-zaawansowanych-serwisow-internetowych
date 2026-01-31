@@ -54,8 +54,22 @@ foreach ($dochodyUzytkownika as $dochod) {
     $sumaDochodow += (float) $dochod['wysokosc'];
 }
 $_SESSION['suma_dochodow'] = $sumaDochodow;
-//echo print_r($dochody);
-//echo print_r($edit_data);
+
+//tu liczymy szacowane średnie wydatki na życie gospodarstwa domowego na osobę na bazie źródła uzyskiwania dochodu oraz danych z GUS
+$queryWydatki = "with presummary as (
+SELECT ud.id, d.rodzaj, ud.wysokosc, ud.nazwa, d.wydatki_msc 
+, (ud.wysokosc/SUM(ud.wysokosc) OVER (PARTITION BY ud.id_uzytkownika))*d.wydatki_msc as wydatki_weighted
+FROM uzytkownik_dochody ud 
+LEFT JOIN dochody d on d.id = ud.id_dochodu
+where ud.id_uzytkownika = $user_id
+)
+select ROUND(SUM(wydatki_weighted),2) as min_wydatki from presummary";
+$minWydatkow = 0.0;
+$minSocjalne = getTableFromDb($queryWydatki);
+if (!empty($minSocjalne) && isset($minSocjalne[0]["min_wydatki"])) {
+    $minWydatkow = $minSocjalne[0]["min_wydatki"];
+}
+$SESSION["min_wydatkow"] = $minWydatkow;
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -151,11 +165,24 @@ $_SESSION['suma_dochodow'] = $sumaDochodow;
     <label class="hint">Wybierz wiersz kliknięciem w celu edycji lub usunięcia danych.</label>
 
     </br>
-    <label>Razem:</label>
-    <div class="inline-input">
-        <input class="add-input" type="number" name="income-total" step="0.01"
-               value="<?php echo number_format($sumaDochodow, 2, '.', ''); ?>" disabled readonly>
-        <button class="end-button" id="koniec" onclick="window.location.href='index.php'">ZAKOŃCZ <i class="bi bi-box-arrow-left"></i></button>
+    <div class="form-row">
+        <div class="field">
+            <label class="debt-label">Dochody razem:</label>
+            <input class="add-input" type="number" name="income-total" step="0.01"
+                   value="<?php echo number_format($sumaDochodow, 2, '.', ''); ?>" disabled readonly>
+            <p class="hint"> suma</p>
+        </div>
+
+        <div class="field">
+            <label class="debt-label">Szacowane wydatki (msc):</label>
+            <input class="add-input" type="number" name="min-spendings" step="0.01"
+                   value="<?php echo number_format($minWydatkow, 2, '.', ''); ?>" disabled readonly>
+            <p class="hint">w zależności od źródła dochodu</p>
+        </div>
+
+        <div class="actions-col">
+            <button class="end-button" id="koniec" onclick="window.location.href='index.php'">ZAKOŃCZ <i class="bi bi-box-arrow-left"></i></button>
+        </div>
     </div>
 
     <div class="card-footer">
