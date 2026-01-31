@@ -98,7 +98,7 @@ $_SESSION['suma_dochodow'] = $sumaDochodow;
         <input type="text" id="nazwa" name="nazwa"
                value="<?php echo htmlspecialchars($edit_data['nazwa'] ?? ''); ?>" required>
 
-        <label>Wysokość w zł/msc:</label>
+        <label>Wysokość w zł/msc (netto):</label>
         <div class="inline-input">
             <input class="add-input" type="number" id="wysokosc" name="wysokosc"
                    value="<?php echo $edit_data['wysokosc'] ?? '0.00'; ?>"

@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
+mb_internal_encoding('UTF-8'); //polskie znaki obsługa
 //obsługa połączenia z bazą
 function openDbConnection() {
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // wyjątki [web:431]
@@ -168,11 +170,11 @@ function saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatk
 }
 
 //zapisuje wartości obliczone na bazie wybranych przez użytkownika parametrów
-function saveCreditworthiness($session_id, $user_id, $id_parametrow, $sumaDochodow, $sumaWydatkow, $sumaDlugu, $zdolnosc, $rata) {
+function saveCreditworthiness($session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata) {
     $conn = openDbConnection();
     try {
         $stmt = $conn->prepare("INSERT INTO wyniki VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siifffif", $session_id, $user_id, $id_parametrow, $sumaDochodow, $sumaWydatkow, $sumaDlugu, $zdolnosc, $rata);
+        $stmt->bind_param("siifffif", $session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata);
         $stmt->execute();
         $stmt->close();
         closeDbConnection($conn);
@@ -180,5 +182,138 @@ function saveCreditworthiness($session_id, $user_id, $id_parametrow, $sumaDochod
         error_log("DB error in saveCreditworthiness: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
         closeDbConnection($conn);
     }
+}
+
+//wczytywanie dodatkowych parametrów z pliku CSV
+function readParametersFromCsv($filepath) {
+    $data = [];
+
+    if (($handle = fopen($filepath, 'r')) !== false) {
+        // BOM (Byte Order Mark) dla UTF-8 – pomiń 3 pierwsze bajty jeśli istnieją
+        $bom = fread($handle, 3);
+        if ($bom != pack("CCC", 0xef, 0xbb, 0xbf)) {
+            rewind($handle); // cofnij jeśli nie ma BOM
+        }
+
+        fgetcsv($handle, 1000, ';'); // odczytaj pierwszy wiersz "na pusto" by pominąć nagłówki
+
+        while (($row = fgetcsv($handle, 1000, ';')) !== false) {
+            $data[] = [
+                'kpi' => trim($row[0] ?? ''),  // polskie znaki OK
+                'wartosc' => (float) str_replace(',', '.', trim($row[1] ?? '0'))
+            ];
+        }
+        fclose($handle);
+    }
+    return $data;
+}
+
+function getKpiValue($results, $kpiName) {
+    foreach ($results as $item) {
+        if ($item['kpi'] == $kpiName) {
+            return $item['wartosc'];
+        }
+    }
+    return null; // domyślna wartość
+}
+
+//oblicza zdolność kredytową na bazie wybranych przez użytkownika parametrów
+function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso) {
+
+    $parametry = readParametersFromCsv("src/dodatkowe_parametry.csv"); //dodatkowe parametry wczytywane z pliku CSV
+    //tu powody podjęcia danej decyzji kredytowej
+    $negatives = [];
+    $positives = [];
+    //przy braku zdolności będzie 0, w przypadku błędu zapisu prawdopodobnie null
+    $zdolnosc = 0;
+    $rata = 0.0;
+
+    //odmowa z powodu nieodpowiedniego wieku kredytobiorcy
+    $maxAge = getKpiValue($parametry, 'maksymalny wiek kredytobiorcy');
+    $minAge = getKpiValue($parametry, 'minimalny wiek kredytobiorcy');
+    if($wiek>$maxAge) {
+        $negatives[] = "Banki nie udzielają kredytu ludziom po 75. roku życia - zbyt wysokie ryzyko śmierci przed spłatą.";
+        return [
+            'minusy'    => $negatives,
+            'plusy'     => $positives,
+            'zdolnosc'  => $zdolnosc,
+            'rata'      => $rata,
+        ];
+    } else if($wiek<$minAge) {
+        $negatives[] = "Kredytobiorca musi być pełnoletni.";
+        return [
+            'minusy'    => $negatives,
+            'plusy'     => $positives,
+            'zdolnosc'  => $zdolnosc,
+            'rata'      => $rata,
+        ];
+    }
+
+    //skrócenie okresu kredytowania z powodu wieku kredytobiorcy
+    if($okres+$wiek>$maxAge) {
+        $negatives[] = "Okres kredytowania musiał zostać skrócony do ". ($maxAge-$wiek) . " lat - spłata kredytu musi się zakończyć przed 75 rokiem życia kredytobiorcy.";
+        //procedujemy dalej, no return
+    }
+    $okres = ($okres+$wiek>$maxAge) ? $maxAge-$wiek : $okres;
+
+    //liczymy bufor do estymacji RRSO w zależności od rodzaju oprocentowania kredytu
+    $highRiskBuffer = getKpiValue($parametry, 'bufor stopa zmienna');
+    $moderateRiskBuffer = getKpiValue($parametry, 'bufor stopa okresowo zmienna');
+    $bufor = 0;
+    switch($rodzaj_prct) {
+        case "zmienne":
+            $bufor = 5; //największe ryzyko zmiany stopy procentowej
+            break;
+        case "okresowo stałe":
+            $bufor = 2.5; //umiarkowane ryzyko
+            break;
+        default:
+            $bufor = 0; //przy stopie stałej przez cały okres kredytowania - brak ryzyka
+            break;
+    }
+    $estimatedRRSO = $rrso+$bufor;
+    if($estimatedRRSO>$rrso) {
+        $negatives[] = "Z powodu ryzyka zmiennej stopy procentowej estymacja RRSO musiała zostać zwiększona.";
+        //procedujemy dalej, no return
+    }
+
+    //dopuszczalne DTI zależy od dochodu
+    $avgSalaryNet = getKpiValue($parametry, 'średnia krajowa');
+    $dtiReg = getKpiValue($parametry, 'DTI regularne')/100.0;
+    $dtiHigh = getKpiValue($parametry, 'DTI powyżej średniej')/100.0;
+    $dti = ($sumaDochodow>$avgSalaryNet) ? $dtiHigh : $dtiReg;
+    if($sumaDochodow>$avgSalaryNet) {
+        $positives[] = "Z powodu zarobków powyżej średniej krajowej zastosowano podwyższony DTI (Debt To Income ratio) do kalkulacji zdolności.";
+    }
+    $maxMonthlyDebt = $dti*$sumaDochodow;
+    if($sumaDlugu>$maxMonthlyDebt) {
+        $negatives[] = "Z powodu zbyt dużej ilości długu nie można udzielić kolejnego kredytu.";
+        return [
+            'minusy'    => $negatives,
+            'plusy'     => $positives,
+            'zdolnosc'  => $zdolnosc,
+            'rata'      => $rata,
+        ];
+    }
+
+    $maxRata = $sumaDlugu-$maxMonthlyDebt;
+    $maxTotalDebt = $okres*1.0*$maxRata;
+    $minMortgage = getKpiValue($parametry, 'minimalna wysokość kredytu');
+    if($maxTotalDebt<$minMortgage) {
+        $negatives[] = "Zbyt mała zdolność kredytowa";
+        return [
+            'minusy'    => $negatives,
+            'plusy'     => $positives,
+            'zdolnosc'  => $zdolnosc,
+            'rata'      => $rata,
+        ];
+    }
+
+    return [
+        'minusy'    => $negatives,
+        'plusy'     => $positives,
+        'zdolnosc'  => $zdolnosc,
+        'rata'      => $rata,
+    ];
 }
 ?>
