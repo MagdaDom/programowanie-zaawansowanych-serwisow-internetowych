@@ -6,21 +6,22 @@ session_start();
 if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
+$session_id = session_id();
+$user_id = $_SESSION['user_id'];
+$id_user_dochody = getIdDochodu($session_id, $user_id);
+$id_user_wydatki = getIdWydatku($session_id, $user_id);
 //parametry przekazywane między sesjamy - zajrzyj do dochody.php i wydatki.php po szczegóły
 $sumaDochodow = (isset($_SESSION['suma_dochodow'])) ? $_SESSION['suma_dochodow'] : null;
 $sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow'] : null;
 $minWydatkow = (isset($_SESSION['min_wydatkow'])) ? $_SESSION['min_wydatkow'] : null;
 $sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
 
-echo "</br>".$sumaDochodow;
-echo "</br>".$sumaWydatkow;
-echo "</br>".$minWydatkow; echo "</br>".$_SESSION['min_wydatkow'];
-echo "</br>".$sumaDlugu;
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
 
 //po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
-    $session_id = session_id();
-    $user_id = $_SESSION['user_id'];
     $id_user_dochody = getIdDochodu($session_id, $user_id);
     $id_user_wydatki = getIdWydatku($session_id, $user_id);
     $wiek = $_POST['age'];
@@ -30,13 +31,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     $rodzaj_prct = $_POST['rodzaj_prct'];
     $rrso = $_POST['rrso'];
 
-    saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
-    calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
-    //nowe session id dla kolejnych zapytań
-    //session_regenerate_id(false);
-    //przechodzimy do strony z wynikiem
-    header('Location: podsumowanie.php');
-    exit;
+    if($id_user_wydatki != null || $id_user_dochody != null) {
+        //czase zero przy prechodzeniu od strony do strony
+        saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+        calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+        header('Location: podsumowanie.php');
+        exit;
+    } else {
+        //reload session?
+        header('Location: index.php');
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -55,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     </div>
     <?php if (!empty($_SESSION['user_email'])): ?>
         <div class="user-bar">
-            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?>!
+            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $session_id?>)!
         </div>
     <?php endif; ?>
 

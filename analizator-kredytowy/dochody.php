@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nazwa      = trim($_POST['nazwa']);
     $id = $edit_data["id"];
     if($is_edit) {
-        updateUserIncomeToDb($id_dochodu, $wysokosc, $nazwa, $id, $user_id);
+        updateUserIncomeToDb($id_dochodu, $wysokosc, $nazwa, $id, $user_id, $session_id);
     } else {
         saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazwa);
     }
@@ -45,15 +45,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 $dochody = getTableFromDb("SELECT * FROM dochody");
 $query = "SELECT ud.id, d.rodzaj, ud.wysokosc, ud.nazwa FROM uzytkownik_dochody ud 
          LEFT JOIN dochody d on d.id = ud.id_dochodu
-         WHERE ud.id_uzytkownika = $user_id";
+         WHERE ud.id_uzytkownika = $user_id and ud.sesja = '$session_id'";
 $dochodyUzytkownika = getTableFromDb($query);
-
-//utworzona tutaj suma dochodów przenoszona będzie pomiędzy widokami z użyciem mechanizmu sesji
-$sumaDochodow = 0.0;
-foreach ($dochodyUzytkownika as $dochod) {
-    $sumaDochodow += (float) $dochod['wysokosc'];
+if(count($dochodyUzytkownika)>0) {
+    //utworzona tutaj suma dochodów przenoszona będzie pomiędzy widokami z użyciem mechanizmu sesji
+    $sumaDochodow = 0.0;
+    foreach ($dochodyUzytkownika as $dochod) {
+        $sumaDochodow += (float) $dochod['wysokosc'];
+    }
+    $_SESSION['suma_dochodow'] = $sumaDochodow;
+} else {
+    unset($_SESSION['suma_dochodow']);
 }
-$_SESSION['suma_dochodow'] = $sumaDochodow;
 
 //tu liczymy szacowane średnie wydatki na życie gospodarstwa domowego na osobę na bazie źródła uzyskiwania dochodu oraz danych z GUS
 $queryWydatki = "with presummary as (
@@ -61,19 +64,20 @@ SELECT ud.id, d.rodzaj, ud.wysokosc, ud.nazwa, d.wydatki_msc
 , (ud.wysokosc/SUM(ud.wysokosc) OVER (PARTITION BY ud.id_uzytkownika))*d.wydatki_msc as wydatki_weighted
 FROM uzytkownik_dochody ud 
 LEFT JOIN dochody d on d.id = ud.id_dochodu
-where ud.id_uzytkownika = $user_id
+where ud.id_uzytkownika = $user_id and ud.sesja = '$session_id'
 )
 select ROUND(SUM(wydatki_weighted),2) as min_wydatki from presummary";
-$minWydatkow = 0.0;
-$minSocjalne = getTableFromDb($queryWydatki);
-if (!empty($minSocjalne) && isset($minSocjalne[0]["min_wydatki"])) {
-    $minWydatkow = $minSocjalne[0]["min_wydatki"];
-}
-$_SESSION["min_wydatkow"] = $minWydatkow;
 
-//echo $minWydatkow;
-//echo "</br>".print_r($minSocjalne);
-//echo "</br>".$_SESSION["min_wydatkow"];
+$minSocjalne = getTableFromDb($queryWydatki);
+if(($minSocjalne[0]["min_wydatki"]==null)) {
+    unset($_SESSION['min_wydatkow']);
+} else {
+    $_SESSION["min_wydatkow"] = $minSocjalne[0]["min_wydatki"];
+}
+
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -91,7 +95,7 @@ $_SESSION["min_wydatkow"] = $minWydatkow;
     </div>
     <?php if (!empty($_SESSION['user_email'])): ?>
         <div class="user-bar">
-            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $_SESSION['user_id'] ?>)!
+            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $session_id; ?>)!
         </div>
     <?php endif; ?>
 

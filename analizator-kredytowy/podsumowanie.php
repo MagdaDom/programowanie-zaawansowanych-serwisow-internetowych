@@ -25,8 +25,16 @@ echo "</br>".print_r($parametry);
 echo "</br>".$avgSalaryNet;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
-    //nowe session id dla kolejnych zapytań
+    //zacznij nową sesję (bez wylogowania) dla kolejnych obliczeń
     session_regenerate_id(false);
+    unset($_SESSION['suma_dochodow']);
+    unset($_SESSION['suma_wydatkow']);
+    unset($_SESSION['min_wydatkow']);
+    unset($_SESSION['suma_dlugu']);
+    unset($_SESSION['minusy']);
+    unset($_SESSION['plusy']);
+    unset($_SESSION['zdolnosc']);
+    unset($_SESSION['rata']);
     //przechodzimy do strony głównej w celu ponownego obliczenia zdolności kredytowej
     header('Location: index.php');
     exit;
@@ -52,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
             Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $_SESSION['user_id'] ?>)!
         </div>
     <?php endif; ?>
+    <form method="POST">
     <?php if ($zdolnosc > 0): ?>
         <h1 class="success">Decyzja kredytowa: POZYTYWNA!</h1>
         <h2 class="success">Przyznano <?php $zdolnosc ?> kredytu z miesięczną ratą <?php $rata?> .</h2>
@@ -71,7 +80,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     <?php else: ?>
         <h1 class="fail">Decyzja kredytowa: NEGATYWNA!</h1>
     </br>
-    <form>
         <h3>Szczegóły</h3>
         <hr class="section-divider">
         <ul>
@@ -79,9 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
                 <li class = "fail"><?= htmlspecialchars($tekst) ?></li>
             <?php endforeach; ?>
         </ul>
+    <?php endif; ?>
         <button type="submit">OBLICZ PONOWNIE</button>
     </form>
-    <?php endif; ?>
 
 
     <div class="card-footer">

@@ -46,11 +46,11 @@ function saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazw
     }
 }
 
-function updateUserIncomeToDb($id_dochodu, $wysokosc, $nazwa, $id, $user_id) {
+function updateUserIncomeToDb($id_dochodu, $wysokosc, $nazwa, $id, $user_id, $session_id) {
     $conn = openDbConnection();
     try {
-        $stmt = $conn->prepare("UPDATE uzytkownik_dochody SET id_dochodu = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ?");
-        $stmt->bind_param("idsii", $id_dochodu, $wysokosc, $nazwa, $id, $user_id);
+        $stmt = $conn->prepare("UPDATE uzytkownik_dochody SET id_dochodu = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ? and sesja = ?");
+        $stmt->bind_param("idsiis", $id_dochodu, $wysokosc, $nazwa, $id, $user_id, $session_id);
         $stmt->execute();
         $stmt->close();
         closeDbConnection($conn);
@@ -88,11 +88,11 @@ function saveUserExpensesToDb($session_id, $user_id, $id_wydatku, $wysokosc, $na
     }
 }
 
-function updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id) {
+function updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id, $session_id) {
     $conn = openDbConnection();
     try {
-        $stmt = $conn->prepare("UPDATE uzytkownik_wydatki SET id_wydatku = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ?");
-        $stmt->bind_param("idsii", $id_wydatku, $wysokosc, $nazwa, $id, $user_id);
+        $stmt = $conn->prepare("UPDATE uzytkownik_wydatki SET id_wydatku = ?, wysokosc = ?, nazwa = ? WHERE id = ? AND id_uzytkownika = ? and sesja = $session_id");
+        $stmt->bind_param("idsiis", $id_wydatku, $wysokosc, $nazwa, $id, $user_id, $session_id);
         $stmt->execute();
         $stmt->close();
         closeDbConnection($conn);
@@ -126,7 +126,7 @@ function getIdDochodu($session_id, $user_id) {
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         closeDbConnection($conn);
-        return $rows[0]["id_dochodu"];
+        return $rows[0]["id_dochodu"] ?? null;
     }  catch (mysqli_sql_exception $e) {
         error_log("DB error in getIdDochodu: " . $e->getMessage());
         closeDbConnection($conn);
@@ -144,7 +144,7 @@ function getIdWydatku($session_id, $user_id) {
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         closeDbConnection($conn);
-        return $rows[0]["id_wydatku"];
+        return $rows[0]["id_wydatku"] ?? null;
     }  catch (mysqli_sql_exception $e) {
         error_log("DB error in getIdWydatku: " . $e->getMessage());
         closeDbConnection($conn);

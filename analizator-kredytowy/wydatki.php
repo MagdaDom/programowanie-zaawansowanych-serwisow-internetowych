@@ -20,7 +20,7 @@ if (isset($_GET['edit'])) {
         $query = "SELECT ud.id, d.rodzaj, ud.id_wydatku, ud.nazwa, ud.wysokosc
                   FROM uzytkownik_wydatki ud
                   LEFT JOIN dochody d ON d.id = ud.id_wydatku
-                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id";
+                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id and and ud.sesja = '$session_id'";
         $edit_data = getTableFromDb($query)[0]; //będziemy używać tylko pierwszego wiersza o indeksie 0
     }
 }
@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nazwa      = trim($_POST['nazwa']);
     $id = $edit_data["id"];
     if($is_edit) {
-        updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id);
+        updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id, $session_id);
     } else {
         saveUserExpensesToDb($session_id, $user_id, $id_wydatku, $wysokosc, $nazwa);
     }
@@ -45,27 +45,32 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 $wydatki = getTableFromDb("SELECT * FROM wydatki");
 $query = "SELECT uw.id, w.rodzaj, uw.wysokosc, uw.nazwa, w.dti_prct, w.jest_wydatkiem FROM uzytkownik_wydatki uw
          LEFT JOIN wydatki w on w.id = uw.id_wydatku
-         WHERE uw.id_uzytkownika = $user_id";
+         WHERE uw.id_uzytkownika = $user_id and uw.sesja = '$session_id'";
 $wydatkiUzytkownika = getTableFromDb($query);
 
-//utworzona tutaj suma wydatków i długu przenoszona będzie pomiędzy widokami z użyciem mechanizmu sesji
-$sumaWydatkow = 0.0;
-foreach ($wydatkiUzytkownika as $wydatek) {
-    if($wydatek["jest_wydatkiem"]) {
-        $sumaWydatkow += (float) $wydatek['wysokosc'];
+if(count($wydatkiUzytkownika) > 0) {
+    //utworzona tutaj suma wydatków i długu przenoszona będzie pomiędzy widokami z użyciem mechanizmu sesji
+    $sumaWydatkow = 0.0;
+    foreach ($wydatkiUzytkownika as $wydatek) {
+        if($wydatek["jest_wydatkiem"]) {
+            $sumaWydatkow += (float) $wydatek['wysokosc'];
+        }
     }
+    $_SESSION['suma_wydatkow'] = $sumaWydatkow;
+    //sumę długu potrzebną do DTI liczymy oddzielnie, ponieważ koszta życia nie wliczają się do DTI, ale nie możemy też udzielić raty wyższej niż dochód rozporządzalny
+    $sumaDlugu = 0.0;
+    foreach ($wydatkiUzytkownika as $wydatek) {
+        $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;
+    }
+    $_SESSION['suma_dlugu'] = $sumaDlugu;
+} else {
+    unset($_SESSION['suma_wydatkow']);
+    unset($_SESSION['suma_dlugu']);
 }
-$_SESSION['suma_wydatkow'] = $sumaWydatkow;
 
-//sumę długu potrzebną do DTI liczymy oddzielnie, ponieważ koszta życia nie wliczają się do DTI, ale nie możemy też udzielić raty wyższej niż dochód rozporządzalny
-$sumaDlugu = 0.0;
-foreach ($wydatkiUzytkownika as $wydatek) {
-    $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;
-}
-$_SESSION['suma_dlugu'] = $sumaDlugu;
-//echo print_r($wydatkiUzytkownika);
-//echo print_r($sumaWydatkow);
-//echo $_SESSION['suma_wydatkow'];
+//echo '<pre>';
+//print_r($_SESSION);
+//echo '</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="pl">
