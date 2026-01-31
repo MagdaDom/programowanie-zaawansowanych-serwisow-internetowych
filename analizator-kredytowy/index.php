@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
     <title>Kalkulator zdolności kredytowej</title>
     <link rel="stylesheet" href="css/style.css?v=2" type="text/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="js/credit_calculation.js" defer></script>
 </head>
 <body>
 <div class="container">

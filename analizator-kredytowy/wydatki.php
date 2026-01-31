@@ -64,8 +64,8 @@ foreach ($wydatkiUzytkownika as $wydatek) {
 }
 $_SESSION['suma_dlugu'] = $sumaDlugu;
 //echo print_r($wydatkiUzytkownika);
-echo print_r($sumaWydatkow);
-echo $_SESSION['suma_wydatkow'];
+//echo print_r($sumaWydatkow);
+//echo $_SESSION['suma_wydatkow'];
 ?>
 <!DOCTYPE html>
 <html lang="pl">

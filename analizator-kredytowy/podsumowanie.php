@@ -9,6 +9,16 @@ if (empty($_SESSION['logged'])) {
 $session_id = session_id();
 $user_id = $_SESSION['user_id'];
 
+$minusy   = $_SESSION['minusy']   ?? [];
+$plusy    = $_SESSION['plusy']    ?? [];
+$zdolnosc = $_SESSION['zdolnosc'] ?? 0;
+$rata     = $_SESSION['rata']     ?? 0;
+
+echo "</br>".$minusy;
+echo "</br>".$plusy;
+echo "</br>".$zdolnosc;
+echo "</br>".$rata;
+
 /*
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {

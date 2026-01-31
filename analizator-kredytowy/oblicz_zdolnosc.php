@@ -32,7 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         $rrso      = (float)$_POST['rrso'];
 
         saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
-        calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
+        $wynik = calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
+
+        //zapisujemy wyniki do zmiennych sesji, by móc je potem wyświetlić w innym oknie (podsumoania)
+        $_SESSION['minusy']   = $wynik['minusy'];
+        $_SESSION['plusy']    = $wynik['plusy'];
+        $_SESSION['zdolnosc'] = $wynik['zdolnosc'];
+        $_SESSION['rata']     = $wynik['rata'];
         //nowe session id dla kolejnych zapytań
         //session_regenerate_id(false);
         // po zakończeniu obliczeń zwróć sukces do AJAXa, gdzie nastąpi przekierowanie do strony z podsumowaniem
