@@ -130,7 +130,7 @@ $_SESSION['suma_dlugu'] = $sumaDlugu
                 <th>Lp.</th>
                 <th>Kategoria</th>
                 <th>Informacje</th>
-                <th>Wysokość</th>
+                <th>Wysokość [zł]</th>
                 <th>Opcje</th>
             </tr>
             </thead>
