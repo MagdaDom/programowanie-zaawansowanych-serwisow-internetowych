@@ -356,9 +356,23 @@ li {
     margin-bottom: 10px;
     background: #f9fafb;
     border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    /*display: block;
+    justify-content: flex-start;*/
+    text-align: left;
+    align-items: left;
+    /*align-items: center;*/
+}
+
+li.fail {
+    background-color: #ffe6f2;
+    border-left: 4px solid #ffb6c1; /* delikatny różowy pasek */
+    border-radius: 4px;
+}
+
+li.success {
+    background-color: #ffe6f2;
+    background-color: #e6ffe6; /* bardzo jasna zieleń */
+    border-left: 4px solid #90ee90; /* jasnozielony pasek */
 }
 
 table {

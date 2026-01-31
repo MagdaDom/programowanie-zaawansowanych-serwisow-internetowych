@@ -24,45 +24,6 @@ $avgSalaryNet = getKpiValue($parametry, 'średnia krajowa');
 echo "</br>".print_r($parametry);
 echo "</br>".$avgSalaryNet;
 
-/*
-
-if($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_wydatku = (int) ($_POST['rodzaj']);
-    $wysokosc   = (float) ($_POST['wysokosc']);
-    $nazwa      = trim($_POST['nazwa']);
-    $id = $edit_data["id"];
-    if($is_edit) {
-        updateUserExpensesToDb($id_wydatku, $wysokosc, $nazwa, $id, $user_id);
-    } else {
-        saveUserExpensesToDb($session_id, $user_id, $id_wydatku, $wysokosc, $nazwa);
-    }
-    // po zapisie przeładowujemy stronę, żeby nowy rekord się pojawił w tabeli
-    header('Location: wydatki.php');
-    exit;
-}
-
-$wydatki = getTableFromDb("SELECT * FROM wydatki");
-$query = "SELECT uw.id, w.rodzaj, uw.wysokosc, uw.nazwa, w.dti_prct, w.jest_wydatkiem FROM uzytkownik_wydatki uw
-         LEFT JOIN wydatki w on w.id = uw.id_wydatku
-         WHERE uw.id_uzytkownika = $user_id";
-$wydatkiUzytkownika = getTableFromDb($query);
-
-$sumaWydatkow = 0.0;
-foreach ($wydatkiUzytkownika as $wydatek) {
-    if($wydatek["jest_wydatkiem"]) {
-        $sumaWydatkow += (float) $wydatek['wysokosc'];
-    }
-}
-$_SESSION['suma_wydatkow'] = $sumaWydatkow;
-
-$sumaDlugu = 0.0;
-foreach ($wydatkiUzytkownika as $wydatek) {
-    $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;
-}
-$_SESSION['suma_dlugu'] = $sumaDlugu;
-//echo print_r($wydatkiUzytkownika);
-echo print_r($sumaWydatkow);
-echo $_SESSION['suma_wydatkow'];*/
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -83,7 +44,36 @@ echo $_SESSION['suma_wydatkow'];*/
             Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $_SESSION['user_id'] ?>)!
         </div>
     <?php endif; ?>
-    <label>Podsumowanie</label>
+    <?php if ($zdolnosc > 0): ?>
+        <h1 class="success">Decyzja kredytowa: POZYTYWNA!</h1>
+        <h2 class="success">Przyznano <?php $zdolnosc ?> kredytu z miesięczną ratą <?php $rata?> .</h2>
+
+        <h3>Szczegóły</h3>
+        <hr class="section-divider">
+        <ul>
+            <?php foreach ($minusy as $klucz => $tekst): ?>
+                <li class = "fail"><?= htmlspecialchars($tekst) ?></li>
+            <?php endforeach; ?>
+        </ul>
+        <ul>
+            <?php foreach ($plusy as $klucz => $tekst): ?>
+                <li class = "success"><?= htmlspecialchars($tekst) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php else: ?>
+        <h1 class="fail">Decyzja kredytowa: NEGATYWNA!</h1>
+    </br>
+    <form>
+        <h3>Szczegóły</h3>
+        <hr class="section-divider">
+        <ul>
+            <?php foreach ($minusy as $klucz => $tekst): ?>
+                <li class = "fail"><?= htmlspecialchars($tekst) ?></li>
+            <?php endforeach; ?>
+        </ul>
+    </form>
+    <?php endif; ?>
+
 
     <div class="card-footer">
         Wykonała: Magdalena Domaszczyńska
