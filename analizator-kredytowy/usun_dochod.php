@@ -11,7 +11,8 @@ if (empty($_SESSION['logged'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $id = (int) $_POST['id'];
     removeUserIncome($id);
-    echo json_encode(['success' => true]);
+    //header('Location: dochody.php');
+    echo json_encode(['success' => true]); //niepotrzebne po przeładowaniu strony
     exit;
 }
 

@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        const row = this.closest('tr');
-                        row.remove();
+                        window.location.reload();
                     } else {
                         alert('Błąd usuwania');
                     }
