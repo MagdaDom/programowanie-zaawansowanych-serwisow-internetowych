@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     header('Location: index.php');
     exit;
 }
-
+$zs = number_format($zdolnosc, 0, ".", " ");
+$rs = number_format($rata, 2, ".", " ");
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -50,13 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
     </div>
     <?php if (!empty($_SESSION['user_email'])): ?>
         <div class="user-bar">
-            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $_SESSION['user_id'] ?>)!
+            Witaj, <?php echo htmlspecialchars($_SESSION['user_name'], ENT_COMPAT, 'UTF-8'); ?> (<?php echo $session_id ?>)!
         </div>
     <?php endif; ?>
     <form method="POST">
     <?php if ($zdolnosc > 0): ?>
         <h1 class="success">Decyzja kredytowa: POZYTYWNA!</h1>
-        <h2 class="success">Przyznano <?php $zdolnosc ?> kredytu z miesięczną ratą <?php $rata?> .</h2>
+        <h2 class="success">Maksymalnie możesz otrzymać <?php echo $zs; ?> zł kredytu z ratą <?php echo $rs?> zł/msc.</h2>
 
         <h3>Szczegóły</h3>
         <hr class="section-divider">

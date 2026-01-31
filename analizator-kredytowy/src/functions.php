@@ -325,8 +325,8 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
     return [
         'minusy'    => $negatives,
         'plusy'     => $positives,
-        'zdolnosc'  => round($zdolnosc-3),
-        'rata'      => $rata,
+        'zdolnosc'  => round($zdolnosc,-3, PHP_ROUND_HALF_EVEN),
+        'rata'      => round($rata,2, PHP_ROUND_HALF_EVEN),
     ];
 }
 
