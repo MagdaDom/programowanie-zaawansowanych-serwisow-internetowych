@@ -174,7 +174,7 @@ $SESSION["min_wydatkow"] = $minWydatkow;
         </div>
 
         <div class="field">
-            <label class="debt-label">Szacowane wydatki (msc):</label>
+            <label class="debt-label">Szacowane wydatki (msc/osoba):</label>
             <input class="add-input" type="number" name="min-spendings" step="0.01"
                    value="<?php echo number_format($minWydatkow, 2, '.', ''); ?>" disabled readonly>
             <p class="hint">w zależności od źródła dochodu</p>

@@ -286,7 +286,7 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
         $positives[] = "Z powodu zarobków powyżej średniej krajowej zastosowano podwyższony DTI (Debt To Income ratio) do kalkulacji zdolności.";
     }
     $maxMonthlyDebt = $dti*$sumaDochodow;
-    if($sumaDlugu>$maxMonthlyDebt) {
+    if($sumaDlugu>$maxMonthlyDebt || ($maxMonthlyDebt-$sumaDlugu-$minWydatkow)<0) {
         $negatives[] = "Z powodu zbyt dużej ilości długu nie można udzielić kolejnego kredytu.";
         return [
             'minusy'    => $negatives,
@@ -296,7 +296,7 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
         ];
     }
 
-    $maxRata = $sumaDlugu-$maxMonthlyDebt;
+    $maxRata = $maxMonthlyDebt-$sumaDlugu-$minWydatkow;
     $maxTotalDebt = $okres*1.0*$maxRata;
     $minMortgage = getKpiValue($parametry, 'minimalna wysokość kredytu');
     if($maxTotalDebt<$minMortgage) {
@@ -307,6 +307,34 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
             'zdolnosc'  => $zdolnosc,
             'rata'      => $rata,
         ];
+    }
+
+    //liczymy maksymalną kwotę kredytu do udzielenia z odwróconych wzorów na ratę annuitetową i malejącą
+    $n=$okres*12; //liczba rat
+    $r=$estimatedRRSO/100.0/12.0; //miesięczna stopa procentowa
+    if($rata == "stała") {
+        $zdolnosc = $maxRata*((1+$r)**$n-1) / ($r*(1+$r)**$n);
+        //$zdolnosc = $maxRata*((1+$r)^$n-1) / ($r*(1+$r)^$n); //matematycznie
+    } else {
+        $zdolnosc = $maxRata / (1/$n + $r);
+    }
+
+    //ponownie sprawdzamy czy jest minimalna zdolność, bo wcześniej liczyliśmy ile klient może spłacić z odsetkami, a teraz policzyliśmy ile kapitału bez odsetek może dostać
+    if($zdolnosc<$minMortgage) {
+        $negatives[] = "Zbyt mała zdolność kredytowa.";
+        return [
+            'minusy'    => $negatives,
+            'plusy'     => $positives,
+            'zdolnosc'  => 0,
+            'rata'      => $rata,
+        ];
+    }
+
+    $positives[] = "Zdolność kredytowa wystarczająca do wzięcia kredytu hipotecznego!";
+    if($rata == "stała") {
+        $rata = $zdolnosc/$n;
+    } else {
+        $rata = $maxRata / (1/$n + $r);
     }
 
     return [
