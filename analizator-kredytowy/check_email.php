@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 include('src/auth.php');
-
+//zwracamy JSON do AJAX (Asynchronous JS) by móc dynamicznie przeanalizować adres e-mail w momencie jego wprowadzania
+//i pokazać użytkownikowi na ekranie stosowne podpowiedzi
 $email = (isset($_POST['email'])) ? $_POST['email'] : '';
 $email = trim($email);
 

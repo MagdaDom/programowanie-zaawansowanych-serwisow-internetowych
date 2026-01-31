@@ -8,6 +8,7 @@ if (empty($_SESSION['logged'])) {
 }
 $session_id = session_id();
 $user_id = $_SESSION['user_id'];
+//obsługa edytowania - jest ono realizowane na tym samym formularzu co dodawanie, więc trzeba było zrealizować przełączanie widoku i logiki biznesowej
 $is_edit = false;
 $edit_id = 0;
 $edit_data = null;
@@ -24,6 +25,7 @@ if (isset($_GET['edit'])) {
     }
 }
 
+//po wysłaniu formularza (przycisk Dodaj wydatek) dane są zapisywane, a widok odświeżany
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_wydatku = (int) ($_POST['rodzaj']);
     $wysokosc   = (float) ($_POST['wysokosc']);
@@ -39,12 +41,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+//dodawane przez użytkownika wydatki są wyświetlane, by umożliwić ich edycję i kasowanie
 $wydatki = getTableFromDb("SELECT * FROM wydatki");
 $query = "SELECT uw.id, w.rodzaj, uw.wysokosc, uw.nazwa, w.dti_prct, w.jest_wydatkiem FROM uzytkownik_wydatki uw
          LEFT JOIN wydatki w on w.id = uw.id_wydatku
          WHERE uw.id_uzytkownika = $user_id";
 $wydatkiUzytkownika = getTableFromDb($query);
 
+//utworzona tutaj suma wydatków i długu przenoszona będzie pomiędzy widokami z użyciem mechanizmu sesji
 $sumaWydatkow = 0.0;
 foreach ($wydatkiUzytkownika as $wydatek) {
     if($wydatek["jest_wydatkiem"]) {
@@ -53,6 +57,7 @@ foreach ($wydatkiUzytkownika as $wydatek) {
 }
 $_SESSION['suma_wydatkow'] = $sumaWydatkow;
 
+//sumę długu potrzebną do DTI liczymy oddzielnie, ponieważ koszta życia nie wliczają się do DTI, ale nie możemy też udzielić raty wyższej niż dochód rozporządzalny
 $sumaDlugu = 0.0;
 foreach ($wydatkiUzytkownika as $wydatek) {
     $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;

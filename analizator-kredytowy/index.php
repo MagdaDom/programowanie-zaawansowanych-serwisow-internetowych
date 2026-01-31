@@ -6,19 +6,33 @@ session_start();
 if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
+//parametry przekazywane między sesjamy - zajrzyj do dochody.php i wydatki.php po szczegóły
 $sumaDochodow = (isset($_SESSION['suma_dochodow'])) ? $_SESSION['suma_dochodow'] : null;
 $sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow'] : null;
 $sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
 
+//po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
     if ($_POST['oblicz']) {
+        //zapisujemy ID do bazy
         $session_id = session_id();
+        $user_id = $_SESSION['user_id'];
+        $id_user_dochody = getIdDochodu($session_id, $user_id);
+        $id_user_wydatki = getIdWydatku($session_id, $user_id);
+        $wiek = $_POST['wiek'];
+        $osoby = $_POST['osoby'];
+        $okres = $_POST['okres'];
+        $rata = $_POST['rata'];
+        $rodzaj_prct = $_POST['rodzaj_prct'];
+        $rrso = $_POST['rrso'];
 
-        // 3. Zapisz
-        //$stmt = $pdo->prepare("INSERT INTO wyniki (wynik_id, session_id, user_email, zdolnosc, created_at) VALUES (?, ?, ?, ?, NOW())");
-        //$stmt->execute([$wynik_id, $session_id, $_SESSION['user_email'], $zdolnosc]);
-        //nowe id dla nowego wyniku
-        session_regenerate_id(false);
+        saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
+        calculateCreditworthiness($sumaDochodow, $sumaWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
+        //nowe session id dla kolejnych zapytań
+        //session_regenerate_id(false);
+        //przechodzimy do strony z wynikiem
+        header('Location: podsumowanie.php');
+        exit;
     }
 }
 ?>

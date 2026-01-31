@@ -1,4 +1,4 @@
-<?php
+<?php //formularz do dodawania dochodów (z CRUDem)
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/src/functions.php';
 session_start();
@@ -8,6 +8,7 @@ if (empty($_SESSION['logged'])) {
 }
 $session_id = session_id();
 $user_id = $_SESSION['user_id'];
+//obsługa edytowania - jest ono realizowane na tym samym formularzu co dodawanie, więc trzeba było zrealizować przełączanie widoku i logiki biznesowej
 $is_edit = false;
 $edit_id = 0;
 $edit_data = null;
@@ -24,6 +25,7 @@ if (isset($_GET['edit'])) {
     }
 }
 
+//po wysłaniu formularza (przycisk Dodaj dochód) dane są zapisywane, a widok odświeżany
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_dochodu = (int) ($_POST['rodzaj']);
     $wysokosc   = (float) ($_POST['wysokosc']);
@@ -39,12 +41,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+//dodawane przez użytkownika dochody są wyświetlane, by umożliwić ich edycję i kasowanie
 $dochody = getTableFromDb("SELECT * FROM dochody");
 $query = "SELECT ud.id, d.rodzaj, ud.wysokosc, ud.nazwa FROM uzytkownik_dochody ud 
          LEFT JOIN dochody d on d.id = ud.id_dochodu
          WHERE ud.id_uzytkownika = $user_id";
 $dochodyUzytkownika = getTableFromDb($query);
 
+//utworzona tutaj suma dochodów przenoszona będzie pomiędzy widokami z użyciem mechanizmu sesji
 $sumaDochodow = 0.0;
 foreach ($dochodyUzytkownika as $dochod) {
     $sumaDochodow += (float) $dochod['wysokosc'];

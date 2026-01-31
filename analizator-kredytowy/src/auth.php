@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/functions.php';
-
+//funkcje potrzebne do walidacji nowego użytkownika podczas rejestracji
 function userEmailExists($email) {
     $db=openDbConnection();
     try {
