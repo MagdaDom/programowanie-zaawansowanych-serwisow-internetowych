@@ -34,12 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-if (!isset($_POST['oblicz'])) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Brak parametru "oblicz"']);
-    exit;
-}
-
 //po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok
 //zapisujemy wybrane na formularzu parametry do bazy
 $id_user_dochody = getIdDochodu($session_id, $user_id);

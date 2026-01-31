@@ -69,7 +69,11 @@ $minSocjalne = getTableFromDb($queryWydatki);
 if (!empty($minSocjalne) && isset($minSocjalne[0]["min_wydatki"])) {
     $minWydatkow = $minSocjalne[0]["min_wydatki"];
 }
-$SESSION["min_wydatkow"] = $minWydatkow;
+$_SESSION["min_wydatkow"] = $minWydatkow;
+
+//echo $minWydatkow;
+//echo "</br>".print_r($minSocjalne);
+//echo "</br>".$_SESSION["min_wydatkow"];
 ?>
 <!DOCTYPE html>
 <html lang="pl">

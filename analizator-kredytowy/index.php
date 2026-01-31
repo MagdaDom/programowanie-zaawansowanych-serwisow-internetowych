@@ -14,32 +14,29 @@ $sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
 
 echo "</br>".$sumaDochodow;
 echo "</br>".$sumaWydatkow;
-echo "</br>".$minWydatkow;
+echo "</br>".$minWydatkow; echo "</br>".$_SESSION['min_wydatkow'];
 echo "</br>".$sumaDlugu;
 
 //po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
-    if ($_POST['oblicz']) {
-        //zapisujemy ID do bazy
-        $session_id = session_id();
-        $user_id = $_SESSION['user_id'];
-        $id_user_dochody = getIdDochodu($session_id, $user_id);
-        $id_user_wydatki = getIdWydatku($session_id, $user_id);
-        $wiek = $_POST['age'];
-        $osoby = $_POST['people'];
-        $okres = $_POST['years'];
-        $rodzaj_rata = $_POST['rodzaj_rata'];
-        $rodzaj_prct = $_POST['rodzaj_prct'];
-        $rrso = $_POST['rrso'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
+    $session_id = session_id();
+    $user_id = $_SESSION['user_id'];
+    $id_user_dochody = getIdDochodu($session_id, $user_id);
+    $id_user_wydatki = getIdWydatku($session_id, $user_id);
+    $wiek = $_POST['age'];
+    $osoby = $_POST['people'];
+    $okres = $_POST['years'];
+    $rodzaj_rata = $_POST['rodzaj_rata'];
+    $rodzaj_prct = $_POST['rodzaj_prct'];
+    $rrso = $_POST['rrso'];
 
-        saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
-        calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
-        //nowe session id dla kolejnych zapytań
-        //session_regenerate_id(false);
-        //przechodzimy do strony z wynikiem
-        header('Location: podsumowanie.php');
-        exit;
-    }
+    saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+    calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+    //nowe session id dla kolejnych zapytań
+    //session_regenerate_id(false);
+    //przechodzimy do strony z wynikiem
+    header('Location: podsumowanie.php');
+    exit;
 }
 ?>
 <!DOCTYPE html>
