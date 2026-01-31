@@ -24,6 +24,14 @@ $avgSalaryNet = getKpiValue($parametry, 'średnia krajowa');
 echo "</br>".print_r($parametry);
 echo "</br>".$avgSalaryNet;
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {        //zapisujemy ID do bazy
+    //nowe session id dla kolejnych zapytań
+    session_regenerate_id(false);
+    //przechodzimy do strony głównej w celu ponownego obliczenia zdolności kredytowej
+    header('Location: index.php');
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -71,6 +79,7 @@ echo "</br>".$avgSalaryNet;
                 <li class = "fail"><?= htmlspecialchars($tekst) ?></li>
             <?php endforeach; ?>
         </ul>
+        <button type="submit">OBLICZ PONOWNIE</button>
     </form>
     <?php endif; ?>
 
