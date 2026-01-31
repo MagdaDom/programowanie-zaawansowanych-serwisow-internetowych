@@ -153,13 +153,13 @@ function getIdWydatku($session_id, $user_id) {
 }
 
 //zapisuje wybrane przez użytkownika parametry do kredytu
-function saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso) {
+function saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso) {
     $conn = openDbConnection();
     try {
         date_default_timezone_set('Europe/Warsaw');
         $now = date('Y-m-d H:i:s');  // np. 2026-01-31 13:02:00
         $stmt = $conn->prepare("INSERT INTO parametry VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siiiiiissds", $session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso, $now);
+        $stmt->bind_param("siiiiiissds", $session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso, $now);
         $stmt->execute();
         $stmt->close();
         closeDbConnection($conn);

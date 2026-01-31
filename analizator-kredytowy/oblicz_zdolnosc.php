@@ -38,12 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 //zapisujemy wybrane na formularzu parametry do bazy
 $id_user_dochody = getIdDochodu($session_id, $user_id);
 $id_user_wydatki = getIdWydatku($session_id, $user_id);
-$wiek      = (int)$_POST['age'] ?? null;
-$osoby     = (int)$_POST['people'] ?? null;
-$okres     = (int)$_POST['years'] ?? null;
-$rodzaj_rata      = (float)$_POST['rodzaj_rata'] ?? null;
-$rodzaj_prct = $_POST['rodzaj_prct'] ?? null;
-$rrso      = (float)$_POST['rrso'] ?? null;
+$wiek           = (int)$_POST['age'] ?? null;
+$osoby          = (int)$_POST['people'] ?? null;
+$okres          = (int)$_POST['years'] ?? null;
+$rodzaj_rata    = $_POST['rodzaj_rata'] ?? null;
+$rodzaj_prct    = $_POST['rodzaj_prct'] ?? null;
+$rrso           = (float)$_POST['rrso'] ?? null;
 
 // walidacja, czy wszystkie pola są przekazane
 if ($id_user_dochody===null || $id_user_wydatki===null || $wiek===null || $osoby===null || $okres===null || $rodzaj_rata===null || $rodzaj_prct===null || $rrso===null) {
