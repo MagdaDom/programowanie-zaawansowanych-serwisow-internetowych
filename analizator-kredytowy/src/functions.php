@@ -264,11 +264,11 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
 
     //dopuszczalne DTI zależy od dochodu
     $avgSalaryNet = getKpiValue($parametry, 'średnia krajowa');
-    $dtiReg = getKpiValue($parametry, 'DTI regularne')/100.0;
-    $dtiHigh = getKpiValue($parametry, 'DTI powyżej średniej')/100.0;
-    $dti = ($sumaDochodow>$avgSalaryNet) ? $dtiHigh : $dtiReg;
+    $dtiReg = getKpiValue($parametry, 'DTI regularne');
+    $dtiHigh = getKpiValue($parametry, 'DTI powyżej średniej');
+    $dti = ($sumaDochodow>$avgSalaryNet) ? $dtiHigh/100.0 : $dtiReg/100.0;
     if($sumaDochodow>$avgSalaryNet) {
-        $positives[] = "Z powodu zarobków powyżej średniej krajowej zastosowano podwyższony DTI (Debt To Income ratio) do kalkulacji zdolności.";
+        $positives[] = "Z powodu zarobków powyżej średniej krajowej zastosowano podwyższony DTI (Debt To Income ratio: ".$dtiHigh. "%) do kalkulacji zdolności.";
     }
     $maxMonthlyDebt = $dti*$sumaDochodow;
     if($sumaDlugu>$maxMonthlyDebt || ($maxMonthlyDebt-$sumaDlugu-$minWydatkow)<0) {
@@ -282,7 +282,7 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
     }
 
     $maxRata = $maxMonthlyDebt-$sumaDlugu-$minWydatkow*$osoby;
-    $maxTotalDebt = $okres*1.0*$maxRata;
+    $maxTotalDebt = $okres*12.0*$maxRata;
     $minMortgage = getKpiValue($parametry, 'minimalna wysokość kredytu');
     if($maxTotalDebt<$minMortgage) {
         $negatives[] = "Zbyt mała zdolność kredytowa";
@@ -317,15 +317,15 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
 
     $positives[] = "Zdolność kredytowa wystarczająca do wzięcia kredytu hipotecznego!";
     if($rodzaj_rata == "stała") {
-        $rata = $zdolnosc/$n;
+        $rata = $maxRata;
     } else {
-        $rata = $maxRata / (1/$n + $r);
+        $rata = $zdolnosc*$estimatedRRSO/100.0/12.0+$zdolnosc/$n; //rata odsetkowa + rata kapitałowa od pierwszej raty
     }
 
     return [
         'minusy'    => $negatives,
         'plusy'     => $positives,
-        'zdolnosc'  => $zdolnosc,
+        'zdolnosc'  => round($zdolnosc-3),
         'rata'      => $rata,
     ];
 }
