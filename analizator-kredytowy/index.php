@@ -25,10 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         $user_id = $_SESSION['user_id'];
         $id_user_dochody = getIdDochodu($session_id, $user_id);
         $id_user_wydatki = getIdWydatku($session_id, $user_id);
-        $wiek = $_POST['wiek'];
-        $osoby = $_POST['osoby'];
-        $okres = $_POST['okres'];
-        $rodzaj_rata = $_POST['rata'];
+        $wiek = $_POST['age'];
+        $osoby = $_POST['people'];
+        $okres = $_POST['years'];
+        $rodzaj_rata = $_POST['rodzaj_rata'];
         $rodzaj_prct = $_POST['rodzaj_prct'];
         $rrso = $_POST['rrso'];
 
@@ -95,17 +95,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         <label>Okres kredytowania:</label>
         <input type="number" name="years" id="years" value="15" min="1" max="40" step="1" required>
         <label>Rodzaj raty:</label>
-        <select name="installment" id="installment" required>
+        <select name="rodzaj_rata" id="rodzaj_rata" required>
             <option value="" disabled selected hidden>wybierz...</option>
-            <option value="fixed">stała</option>
-            <option value="declining">malejąca</option>
+            <option value="stała">stała</option>
+            <option value="malejąca">malejąca</option>
         </select>
         <label>Rodzaj oprocentowania:</label>
-        <select name="rate" id="rate" required>
+        <select name="rodzaj_prct" id="rodzaj_prct" required>
             <option value="" disabled selected hidden>wybierz...</option>
-            <option value="5">zmienne</option>
-            <option value="0">stałe</option>
-            <option value="2.5">okresowo stałe</option>
+            <option value="zmienna">zmienne</option>
+            <option value="stałe">stałe</option>
+            <option value="okresowo stałe">okresowo stałe</option>
         </select>
         <label>Oprocentowanie kredytu (RRSO):</label>
         <input type="number" name="rrso" id="rrso" value = 7.13 min = 1 max = 25 step = 0.01 required>
