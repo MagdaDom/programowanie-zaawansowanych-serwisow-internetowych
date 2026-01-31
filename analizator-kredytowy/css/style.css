@@ -470,3 +470,54 @@ td .table-btn {
     padding: 5px 10px;
 }
 
+/*3-kolumnowy layout długi vs wydatki*/
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    align-items: end;  /* przycisk na wysokości inputów */
+    margin-top: 0.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+}
+
+.field input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;  /* miejsce na hint */
+}
+
+.debt-label {
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+/*
+.hint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+}*/
+
+.actions button {
+    width: 80%;
+    height: 100%;           /* wysokość inputu */
+    /*padding: 0.5rem 0.75rem;*/
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* responsywność – na mobile 1 kolumna */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .actions button {
+        height: auto;
+    }
+}

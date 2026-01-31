@@ -40,16 +40,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $wydatki = getTableFromDb("SELECT * FROM wydatki");
-$query = "SELECT uw.id, w.rodzaj, uw.wysokosc, uw.nazwa FROM uzytkownik_wydatki uw
+$query = "SELECT uw.id, w.rodzaj, uw.wysokosc, uw.nazwa, w.dti_prct, w.jest_wydatkiem FROM uzytkownik_wydatki uw
          LEFT JOIN wydatki w on w.id = uw.id_wydatku
          WHERE uw.id_uzytkownika = $user_id";
 $wydatkiUzytkownika = getTableFromDb($query);
 
-$sumaWydatkow= 0.0;
-foreach ($wydatkiUzytkownika as $dochod) {
-    $sumaWydatkow += (float) $dochod['wysokosc'];
+$sumaWydatkow = 0.0;
+foreach ($wydatkiUzytkownika as $wydatek) {
+    if($wydatek["jest_wydatkiem"]) {
+        $sumaWydatkow += (float) $wydatek['wysokosc'];
+    }
 }
 $_SESSION['suma_wydatkow'] = $sumaWydatkow;
+
+$sumaDlugu = 0.0;
+foreach ($wydatkiUzytkownika as $wydatek) {
+    $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;
+}
+$_SESSION['suma_dlugu'] = $sumaDlugu
 //echo print_r($wydatki);
 //echo print_r($edit_data);
 ?>
@@ -74,7 +82,7 @@ $_SESSION['suma_wydatkow'] = $sumaWydatkow;
     <?php endif; ?>
 
     <form method="POST">
-        <h3><?php echo $is_edit ? 'EDYTUJ WYDATKI '.$edit_id.'.' : 'DODAJ WYDATKI'; ?></h3>
+        <h3><?php echo $is_edit ? 'EDYTUJ WYDATKI / PRODUKTY KREDYTOWE '.$edit_id.'.' : 'DODAJ WYDATKI / PRODUKTY KREDYTOWE'; ?></h3>
         <hr class="section-divider">
 
         <label>Kategoria:</label>
@@ -146,12 +154,40 @@ $_SESSION['suma_wydatkow'] = $sumaWydatkow;
     <label class="hint">Wybierz wiersz kliknięciem w celu edycji lub usunięcia danych.</label>
 
     </br>
-    <label>Razem:</label>
+    <label>Wydatki razem:</label>
     <div class="inline-input">
         <input class="add-input" type="number" name="expenses-total" step="0.01"
                value="<?php echo number_format($sumaWydatkow, 2, '.', ''); ?>" disabled readonly>
+        <div class="debt-label-container">
+            <label class="debt-label">Długi razem</label>
+            <input class="add-input" type="number" name="debt-total" step="0.01"
+                   value="<?php echo number_format($sumaDlugu, 2, '.', ''); ?>" disabled readonly>
+        </div>
         <button class="end-button" id="koniec" onclick="window.location.href='index.php'">ZAKOŃCZ <i class="bi bi-box-arrow-left"></i></button>
     </div>
+
+    <div class="form-row">
+        <div class="field">
+            <label class="debt-label">Wydatki razem</label>
+            <input class="add-input" type="number" name="expenses-total" step="0.01"
+                   value="<?php echo number_format($sumaWydatkow, 2, '.', ''); ?>" disabled readonly>
+            <p class="hint">Łączna kwota wydatków</p>
+        </div>
+
+        <div class="field">
+            <label class="debt-label">Długi razem</label>
+            <input class="add-input" type="number" name="debt-total" step="0.01"
+                   value="<?php echo number_format($sumaDlugu, 2, '.', ''); ?>" disabled readonly>
+            <p class="hint">Łączna kwota długów</p>
+        </div>
+
+        <div class="actions">
+            <button class="end-button" id="koniec" onclick="window.location.href='index.php'">
+                ZAKOŃCZ <i class="bi bi-box-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
 
     <div class="card-footer">
         Wykonała: Magdalena Domaszczyńska
