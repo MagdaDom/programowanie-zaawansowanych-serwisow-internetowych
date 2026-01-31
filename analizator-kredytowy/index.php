@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         </div>
     <?php endif; ?>
 
-    <form method="POST">
+    <form id="creditForm" method="POST">
         <h3>Informacje o kredytobiorcy</h3>
         <hr class="section-divider">
         <label>Łączne dochody:</label>
@@ -104,6 +104,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         <input type="number" name="rrso" id="rrso" value = 7.13 min = 1 max = 25 step = 0.01 required>
         <button type="submit">OBLICZ ZDOLNOŚĆ KREDYTOWĄ</button>
     </form>
+
+    <div id="loadingPane">
+        <div class="box">
+            <p>Trwa obliczanie zdolności kredytowej...</p>
+            <div class="spinner">⏳</div>
+        </div>
+    </div>
 
     <div class="card-footer">
         Wykonała: Magdalena Domaszczyńska
