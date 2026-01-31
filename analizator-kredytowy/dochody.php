@@ -49,9 +49,9 @@ $sumaDochodow = 0.0;
 foreach ($dochodyUzytkownika as $dochod) {
     $sumaDochodow += (float) $dochod['wysokosc'];
 }
+$_SESSION['suma_dochodow'] = $sumaDochodow;
 //echo print_r($dochody);
 //echo print_r($edit_data);
-
 ?>
 <!DOCTYPE html>
 <html lang="pl">

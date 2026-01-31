@@ -6,6 +6,7 @@ session_start();
 if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
+$sumaDochodow = (isset($_SESSION['suma_dochodow'])) ? $_SESSION['suma_dochodow'] : null;
 //$oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
@@ -44,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         <hr class="section-divider">
         <label>Łączne dochody:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" id="income-display" value="" required
-                   style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()" >
+            <input class="add-input" type="number" id="income-display" style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()"
+                   value="<?php echo number_format($sumaDochodow, 2, '.', ''); ?>" required>
             <button class = "add-button" id="dochody" onclick="window.location.href='dochody.php'">
                 Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
         </div>
