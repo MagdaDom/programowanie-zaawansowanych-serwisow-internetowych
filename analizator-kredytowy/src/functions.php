@@ -218,7 +218,7 @@ function getKpiValue($results, $kpiName) {
 }
 
 //oblicza zdolność kredytową na bazie wybranych przez użytkownika parametrów
-function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso) {
+function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso) {
 
     $parametry = readParametersFromCsv("src/dodatkowe_parametry.csv"); //dodatkowe parametry wczytywane z pliku CSV
     //tu powody podjęcia danej decyzji kredytowej
@@ -296,7 +296,7 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
         ];
     }
 
-    $maxRata = $maxMonthlyDebt-$sumaDlugu-$minWydatkow;
+    $maxRata = $maxMonthlyDebt-$sumaDlugu-$minWydatkow*$osoby;
     $maxTotalDebt = $okres*1.0*$maxRata;
     $minMortgage = getKpiValue($parametry, 'minimalna wysokość kredytu');
     if($maxTotalDebt<$minMortgage) {
@@ -312,7 +312,7 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
     //liczymy maksymalną kwotę kredytu do udzielenia z odwróconych wzorów na ratę annuitetową i malejącą
     $n=$okres*12; //liczba rat
     $r=$estimatedRRSO/100.0/12.0; //miesięczna stopa procentowa
-    if($rata == "stała") {
+    if($rodzaj_rata == "stała") {
         $zdolnosc = $maxRata*((1+$r)**$n-1) / ($r*(1+$r)**$n);
         //$zdolnosc = $maxRata*((1+$r)^$n-1) / ($r*(1+$r)^$n); //matematycznie
     } else {
@@ -331,7 +331,7 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
     }
 
     $positives[] = "Zdolność kredytowa wystarczająca do wzięcia kredytu hipotecznego!";
-    if($rata == "stała") {
+    if($rodzaj_rata == "stała") {
         $rata = $zdolnosc/$n;
     } else {
         $rata = $maxRata / (1/$n + $r);

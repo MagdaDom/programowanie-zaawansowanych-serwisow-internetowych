@@ -9,7 +9,13 @@ if (empty($_SESSION['logged'])) {
 //parametry przekazywane między sesjamy - zajrzyj do dochody.php i wydatki.php po szczegóły
 $sumaDochodow = (isset($_SESSION['suma_dochodow'])) ? $_SESSION['suma_dochodow'] : null;
 $sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow'] : null;
+$minWydatkow = (isset($_SESSION['min_wydatkow'])) ? $_SESSION['min_wydatkow'] : null;
 $sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
+
+echo "</br>".$sumaDochodow;
+echo "</br>".$sumaWydatkow;
+echo "</br>".$minWydatkow;
+echo "</br>".$sumaDlugu;
 
 //po wprowadzeniu przez użytkownika wszystkich parametrów i przesłania formularza zapisujemy dane do bazy i przełączamy widok
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
@@ -22,12 +28,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         $wiek = $_POST['wiek'];
         $osoby = $_POST['osoby'];
         $okres = $_POST['okres'];
-        $rata = $_POST['rata'];
+        $rodzaj_rata = $_POST['rata'];
         $rodzaj_prct = $_POST['rodzaj_prct'];
         $rrso = $_POST['rrso'];
 
-        saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
-        calculateCreditworthiness($sumaDochodow, $sumaWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
+        saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+        calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
         //nowe session id dla kolejnych zapytań
         //session_regenerate_id(false);
         //przechodzimy do strony z wynikiem
