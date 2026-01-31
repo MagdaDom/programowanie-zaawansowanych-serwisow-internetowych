@@ -7,7 +7,8 @@ if (empty($_SESSION['logged'])) {
     header('Location: login.php'); exit;
 }
 $sumaDochodow = (isset($_SESSION['suma_dochodow'])) ? $_SESSION['suma_dochodow'] : null;
-//$oprocentowanie = readCsvToTable("src/oprocentowanie.csv");
+$sumaWydatkow = (isset($_SESSION['suma_wydatkow'])) ? $_SESSION['suma_wydatkow'] : null;
+$sumaDlugu = (isset($_SESSION['suma_dlugu'])) ? $_SESSION['suma_dlugu'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
     if ($_POST['oblicz']) {
@@ -53,8 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oblicz'])) {
         <input type="text" name="income-source" placeholder="Użyj przycisku Dodaj+ by dodać dochody" disabled readonly>
         <label>Łączne wydatki:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" id="debt-display" value="" required
-                   style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()">
+            <input class="add-input" type="number" id="expenses-display" style="pointer-events: none;" onkeydown="return false" onfocus="this.blur()"
+                   value="<?php echo number_format($sumaWydatkow, 2, '.', ''); ?>" required>
             <button class="add-button" id="wydatki" onclick="window.location.href='wydatki.php'">
                 Dodaj <i class="bi bi-plus"></i><i class="bi bi-credit-card"></i></button>
         </div>

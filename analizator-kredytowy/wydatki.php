@@ -57,9 +57,10 @@ $sumaDlugu = 0.0;
 foreach ($wydatkiUzytkownika as $wydatek) {
     $sumaDlugu += (float) $wydatek['wysokosc'] * (float) $wydatek['dti_prct']/100.0;
 }
-$_SESSION['suma_dlugu'] = $sumaDlugu
-//echo print_r($wydatki);
-//echo print_r($edit_data);
+$_SESSION['suma_dlugu'] = $sumaDlugu;
+//echo print_r($wydatkiUzytkownika);
+echo print_r($sumaWydatkow);
+echo $_SESSION['suma_wydatkow'];
 ?>
 <!DOCTYPE html>
 <html lang="pl">
