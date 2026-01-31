@@ -14,10 +14,15 @@ $plusy    = $_SESSION['plusy']    ?? [];
 $zdolnosc = $_SESSION['zdolnosc'] ?? 0;
 $rata     = $_SESSION['rata']     ?? 0;
 
-echo "</br>".$minusy;
-echo "</br>".$plusy;
+echo "</br>".print_r($minusy);
+echo "</br>".print_r($plusy);
 echo "</br>".$zdolnosc;
 echo "</br>".$rata;
+echo "</br>";
+$parametry = readParametersFromCsv("src/dodatkowe_parametry.csv"); //dodatkowe parametry wczytywane z pliku CSV
+$avgSalaryNet = getKpiValue($parametry, 'średnia krajowa');
+echo "</br>".print_r($parametry);
+echo "</br>".$avgSalaryNet;
 
 /*
 

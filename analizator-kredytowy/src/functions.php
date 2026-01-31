@@ -144,9 +144,9 @@ function getIdWydatku($session_id, $user_id) {
         $rows = $result->fetch_all(MYSQLI_ASSOC);
         $stmt->close();
         closeDbConnection($conn);
-        return $rows[0]["id_dochodu"];
+        return $rows[0]["id_wydatku"];
     }  catch (mysqli_sql_exception $e) {
-        error_log("DB error in getIdDochodu: " . $e->getMessage());
+        error_log("DB error in getIdWydatku: " . $e->getMessage());
         closeDbConnection($conn);
         return null;
     }
@@ -159,7 +159,7 @@ function saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatk
         date_default_timezone_set('Europe/Warsaw');
         $now = date('Y-m-d H:i:s');  // np. 2026-01-31 13:02:00
         $stmt = $conn->prepare("INSERT INTO parametry VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siiiiiissfs", $session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso, $now);
+        $stmt->bind_param("siiiiiissds", $session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso, $now);
         $stmt->execute();
         $stmt->close();
         closeDbConnection($conn);
@@ -174,7 +174,7 @@ function saveCreditworthiness($session_id, $user_id, $id_parametrow, $sumaDochod
     $conn = openDbConnection();
     try {
         $stmt = $conn->prepare("INSERT INTO wyniki VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siifffif", $session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata);
+        $stmt->bind_param("siidddid", $session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata);
         $stmt->execute();
         $stmt->close();
         closeDbConnection($conn);
