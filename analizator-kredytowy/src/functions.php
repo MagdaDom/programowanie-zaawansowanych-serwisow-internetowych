@@ -169,21 +169,6 @@ function saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatk
     }
 }
 
-//zapisuje wartości obliczone na bazie wybranych przez użytkownika parametrów
-function saveCreditworthiness($session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata) {
-    $conn = openDbConnection();
-    try {
-        $stmt = $conn->prepare("INSERT INTO wyniki VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siidddid", $session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata);
-        $stmt->execute();
-        $stmt->close();
-        closeDbConnection($conn);
-    }  catch (mysqli_sql_exception $e) {
-        error_log("DB error in saveCreditworthiness: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
-        closeDbConnection($conn);
-    }
-}
-
 //wczytywanie dodatkowych parametrów z pliku CSV
 function readParametersFromCsv($filepath) {
     $data = [];
@@ -343,5 +328,45 @@ function calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wie
         'zdolnosc'  => $zdolnosc,
         'rata'      => $rata,
     ];
+}
+
+//zapisuje wartości obliczone na bazie wybranych przez użytkownika parametrów
+
+function getParametryId($session_id, $user_id) {
+    $db = openDbConnection();
+    try {
+        $stmt = $db->prepare("SELECT id FROM parametry WHERE sesja = ? AND id_uzytkownika = ? LIMIT 1");
+        $stmt->bind_param("si", $session_id, $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result ? $result->fetch_assoc() : null; // associative array [web:169]
+        $stmt->close();
+        closeDbConnection($db);
+        return $row['id'];
+    } catch (mysqli_sql_exception $e) {
+        error_log("DB error in getParametryId: " . $e->getMessage());
+        closeDbConnection($db);
+        return false;
+    }
+}
+function saveCreditworthiness($session_id, $user_id, $sumaDochodow, $minWydatkow, $sumaDlugu, $wynik) {
+
+    $id_parametrow = getParametryId($session_id, $user_id) ?? null;
+    $minusy     = implode(";", $wynik['minusy']) ?? [];
+    $plusy      = implode(";", $wynik['plusy']) ?? [];
+    $zdolnosc   = $wynik['zdolnosc'] ?? 0;
+    $rata       = $wynik['rata'] ?? 0.0;
+
+    $conn = openDbConnection();
+    try {
+        $stmt = $conn->prepare("INSERT INTO wyniki VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("siidddidss", $session_id, $user_id, $id_parametrow, $sumaDochodow, $minWydatkow, $sumaDlugu, $zdolnosc, $rata, $minusy, $plusy);
+        $stmt->execute();
+        $stmt->close();
+        closeDbConnection($conn);
+    }  catch (mysqli_sql_exception $e) {
+        error_log("DB error in saveCreditworthiness: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($conn);
+    }
 }
 ?>

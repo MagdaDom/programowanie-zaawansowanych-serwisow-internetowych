@@ -41,26 +41,29 @@ $id_user_wydatki = getIdWydatku($session_id, $user_id);
 $wiek      = (int)$_POST['age'] ?? null;
 $osoby     = (int)$_POST['people'] ?? null;
 $okres     = (int)$_POST['years'] ?? null;
-$rata      = (float)$_POST['rodzaj_rata'] ?? null;
+$rodzaj_rata      = (float)$_POST['rodzaj_rata'] ?? null;
 $rodzaj_prct = $_POST['rodzaj_prct'] ?? null;
 $rrso      = (float)$_POST['rrso'] ?? null;
 
 // walidacja, czy wszystkie pola są przekazane
-if ($id_user_dochody===null || $id_user_wydatki===null || $wiek===null || $osoby===null || $okres===null || $rata===null || $rodzaj_prct===null || $rrso===null) {
+if ($id_user_dochody===null || $id_user_wydatki===null || $wiek===null || $osoby===null || $okres===null || $rodzaj_rata===null || $rodzaj_prct===null || $rrso===null) {
     http_response_code(400);
     echo json_encode(['success' => false, 'message' => 'Nie wszystkie pola formularza zostały przekazane']);
     exit;
 }
 
 try {
-    saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
-    $wynik = calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rata, $rodzaj_prct, $rrso);
+    saveParameters($session_id, $user_id, $id_user_dochody, $id_user_wydatki, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+    $wynik = calculateCreditworthiness($sumaDochodow, $minWydatkow, $sumaDlugu, $wiek, $osoby, $okres, $rodzaj_rata, $rodzaj_prct, $rrso);
+    //zapisujemy wyniki do bazy
+    saveCreditworthiness($session_id, $user_id, $sumaDochodow, $minWydatkow, $sumaDlugu, $wynik);
 
 //zapisujemy wyniki do zmiennych sesji, by móc je potem wyświetlić w innym oknie (podsumowania)
     $_SESSION['minusy']   = $wynik['minusy'] ?? [];
     $_SESSION['plusy']    = $wynik['plusy'] ?? [];
     $_SESSION['zdolnosc'] = $wynik['zdolnosc'] ?? 0;
     $_SESSION['rata']     = $wynik['rata'] ?? 0.0;
+
 //nowe session id dla kolejnych zapytań
 //session_regenerate_id(false);
 // po zakończeniu obliczeń zwróć sukces do AJAXa, gdzie nastąpi przekierowanie do strony z podsumowaniem
