@@ -28,6 +28,20 @@ function getTableFromDb($query) {
     return $tablica;
 }
 
+function saveUserIncomeToDb($session_id, $user_id, $id_dochodu, $wysokosc, $nazwa) {
+    $conn = openDbConnection();
+    try {
+        $stmt = $conn->prepare("INSERT INTO uzytkownik_dochody VALUES (NULL, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("siids", $session_id, $user_id, $id_dochodu, $wysokosc, $nazwa);
+        $stmt->execute();
+        $stmt->close();
+        closeDbConnection($conn);
+    }  catch (mysqli_sql_exception $e) {
+        error_log("DB error in saveUserIncomeToDb: " . $e->getMessage()); // zapis do pliku ustawionego w error_log [web:123]
+        closeDbConnection($conn);
+    }
+}
+
 function readCsvToTable($file) {
     $result = [];
     if (($handle = fopen($file, "r")) !== FALSE) {

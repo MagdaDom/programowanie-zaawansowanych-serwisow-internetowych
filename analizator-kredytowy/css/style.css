@@ -116,13 +116,13 @@ button {
     font-size: 15px;
     cursor: pointer;
 }
-
+/*
 button[type="submit"]  i {
-    font-size: 1.1em;   /* 20% większa ikona */
-    font-weight: 800;   /* maksymalnie bold */
-    line-height: 1;     /* lepsza pionowa centrowanie */
+    font-size: 1.1em;
+    font-weight: 800;
+    line-height: 1;
     padding-left: 10px;
-}
+}*/
 
 button:hover {
     background-color: #35536b;
@@ -216,6 +216,16 @@ input:focus, select:focus, textarea:focus {
 .add-button:focus {
     outline: 2px solid #2196F3;
     outline-offset: 2px;
+}
+
+.end-button {
+    margin: 0px; /*margin: 0px 0px 0px 15px;*/
+    width: 35%;
+    height: 42px;
+}
+
+.end-button i {
+    margin-left: 15px;
 }
 
 .icon {
