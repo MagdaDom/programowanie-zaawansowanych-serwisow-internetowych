@@ -29,7 +29,25 @@ $sumaDochodow = 0.0;
 foreach ($dochodyUzytkownika as $dochod) {
     $sumaDochodow += (float) $dochod['wysokosc'];
 }
+
+$is_edit = false;
+$edit_id = 0;
+$edit_data = null;
+
+if (isset($_GET['edit'])) {
+    $edit_id = (int) $_GET['edit'];
+    if ($edit_id > 0) {
+        $is_edit = true;
+        $query = "SELECT d.rodzaj, ud.id_dochodu, ud.nazwa, ud.wysokosc
+                  FROM uzytkownik_dochody ud
+                  LEFT JOIN dochody d ON d.id = ud.id_dochodu
+                  WHERE ud.id = $edit_id AND ud.id_uzytkownika = $user_id";
+        $edit_data = getTableFromDb($query)[0]; //do edycji tylko 1. wiersz danych nam się przyda
+    }
+}
 //echo print_r($dochody);
+//echo print_r($edit_data);
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -52,12 +70,18 @@ foreach ($dochodyUzytkownika as $dochod) {
     <?php endif; ?>
 
     <form method="POST">
-        <h3>DODAJ DOCHÓD</h3>
+        <h3><?php echo $is_edit ? 'EDYTUJ DOCHÓD '.$edit_id.'.' : 'DODAJ DOCHÓD'; ?></h3>
         <hr class="section-divider">
 
         <label>Źródło dochodu:</label>
         <select name="rodzaj" id="rodzaj" required>
             <option value="" disabled selected>Wybierz...</option>
+            <?php foreach ($dochody as $row): ?>
+                <option value="<?php echo $row['id'] ?>"
+                        <?php echo ($edit_data && $edit_data['id_dochodu'] == $row['id']) ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($row['rodzaj']); ?>
+                </option>
+            <?php endforeach; ?>
             <?php foreach ($dochody as $row): ?>
                 <option value="<?php echo $row['id'] ?>">
                     <?php echo htmlspecialchars($row['rodzaj']); ?>
@@ -66,12 +90,24 @@ foreach ($dochodyUzytkownika as $dochod) {
         </select>
 
         <label>Nazwa:</label>
-        <input type="text" id="nazwa" name="nazwa" required>
+        <!--<input type="text" id="nazwa" name="nazwa" required>-->
+        <input type="text" id="nazwa" name="nazwa"
+               value="<?php echo htmlspecialchars($edit_data['nazwa'] ?? ''); ?>" required>
 
         <label>Wysokość w zł/msc:</label>
         <div class="inline-input">
-            <input class="add-input" type="number" id="wysokosc" name="wysokosc" value="0.00" min="0.00" step="100.00" required>
-            <button class="add-button" type="submit">Dodaj <i class="bi bi-plus"></i><i class="bi bi-currency-exchange"></i></button>
+            <input class="add-input" type="number" id="wysokosc" name="wysokosc"
+                   value="<?php echo $edit_data['wysokosc'] ?? '0.00'; ?>"
+                   min="0.00" step="100.00" required>
+            <button class="add-button <?php echo $is_edit ? 'edit-btn' : ''; ?>" type="submit" id="submit-btn">
+                <?php echo $is_edit ? 'Edytuj' : 'Dodaj'; ?>
+                <i class="bi <?php echo $is_edit ? 'bi-pencil-fill' : 'bi-plus'; ?>"></i>
+                <i class="bi <?php echo $is_edit ? '' : 'bi-currency-exchange'; ?>"></i>
+            </button>
+            <?php if ($is_edit): ?>
+                <button type="button" class="cancel-btn" onclick="window.location.href='dochody.php'">Anuluj</button>
+            <?php endif; ?>
+
         </div>
     </form>
 
@@ -99,7 +135,7 @@ foreach ($dochodyUzytkownika as $dochod) {
                     <td><?php echo htmlspecialchars($dochod['nazwa']); ?></td>
                     <td><?php echo number_format($dochod['wysokosc'], 2, ',', ' '); ?></td>
                     <td class="actions" style="display: none;">
-                        <button type="button" class="table-btn edit-btn" data-id="<?php echo $dochod['id'];?>">Edytuj <i class="bi bi-pencil-fill"></i></button>
+                        <button type="button" class="table-btn edit-btn" onclick="location.href='dochody.php?edit=<?php echo $dochod['id']; ?>'">Edytuj <i class="bi bi-pencil-fill"></i></button>
                         <button type="button" class="table-btn delete-btn" data-id="<?php echo $dochod['id'];?>">Usuń <i class="bi bi-trash2-fill"></i></button>
                     </td>
                 </tr>

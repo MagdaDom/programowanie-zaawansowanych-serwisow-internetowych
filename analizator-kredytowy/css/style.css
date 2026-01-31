@@ -442,9 +442,26 @@ td:first-child {
     box-shadow: 0 2px 5px rgba(201, 74, 74, 0.25);
 }
 
-.delete-btn:hover {
+.delete-btn:hover, .cancel-btn:hover {
     background: linear-gradient(135deg, #eb6f7b, #d9534f);
     box-shadow: 0 3px 7px rgba(201, 74, 74, 0.35);
+}
+
+.cancel-btn {
+    background: linear-gradient(135deg, #e35d6a, #c94a4a);
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(201, 74, 74, 0.25);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 14px;
+    /*padding: 14px 28px;*/
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin: 0px; /*margin: 0px 0px 0px 15px;*/
+    width: 35%;
+    height: 42px;
 }
 
 
