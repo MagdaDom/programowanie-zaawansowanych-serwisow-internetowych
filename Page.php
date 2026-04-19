@@ -26,7 +26,7 @@ abstract class Page {
     protected abstract function edit(): void;
     protected abstract function addNew(): void;
     protected abstract function enterModelDataFromForm(): void;
-    protected function delete() : void {};
+    protected function delete(): void {}
 
     public function initialize(): void
     {
@@ -93,14 +93,14 @@ abstract class Page {
                             </div>
                         </div>
                     </div>
-                    <hr>'
-    };
+                    <hr>';
+    }
 
     public function generateFooter(): string {
         return '<script src="js/bootstrap.min.js"></script>
 </body>
 
-</html>'
+</html>';
     }
 }
 

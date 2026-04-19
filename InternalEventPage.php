@@ -7,6 +7,10 @@ class InternalEventPage extends Page {
         return "";
     }
 
+    function passTableName(): string {
+        return "";
+    }
+
     function generateViewAll(): string 
     {
         return "";
