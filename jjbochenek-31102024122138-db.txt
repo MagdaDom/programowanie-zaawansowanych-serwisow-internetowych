@@ -1,0 +1,18 @@
+create table InternalEvents
+(
+Id int AUTO_INCREMENT primary key,
+Title varchar(64) not null,
+Link varchar(64) not null,
+IsPublic bit not null,
+IsCancelled bit not null,
+EventDateTime datetime not null,
+CreationDateTime datetime not null,
+EditDateTime datetime not null,
+PublishDateTime datetime not null,
+ShortDescription varchar(128) not null,
+ContentHTML text not null,
+MetaDescription text,
+MetaTags text,
+Notes text,
+IsActive bit not null
+);
