@@ -8,13 +8,45 @@ class InternalEventPage extends Page {
     }
 
     function passTableName(): string {
-        return "";
+        return "internalevents";
     }
 
-    function generateViewAll(): string 
+    public function generateViewAll(): string 
     {
-        return "";
+        $db = $this->openConnection();
+
+        $sql = "SELECT * FROM $this->tableName WHERE IsActive=1";
+
+        $result = $db->query($sql);
+
+        $views = [];        
+
+        foreach($result as $row) {
+            $views[] = '<div class="col-sm-12 col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title h5">'. $row["Title"] .'</p>
+                        <p><strong>'. $row["ShortDescription"] .'</strong></p>
+                        '. $row["Notes"] .'
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary">Edit</button>
+                        <button class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
+            </div>';
+        }
+
+        $html = '<div class="container">
+        <div class="row gy-3">'. implode('', $views) . '</div>
+</div>';
+
+$db=null;
+
+return $html;
     }
+
+
     function generateViewAdd(): string 
     {
         return "";

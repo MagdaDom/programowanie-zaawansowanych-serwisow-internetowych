@@ -24,9 +24,17 @@ abstract class Page {
     protected abstract function generateViewAdd(): string;
     protected abstract function generateViewEdit(): string;
     protected abstract function edit(): void;
-    protected abstract function addNew(): void;
-    protected abstract function enterModelDataFromForm(): void;
+    protected abstract function addNew(): void;    
     protected function delete(): void {}
+    protected abstract function enterModelDataFromForm(): void;
+
+
+    protected static function openConnection(): PDO 
+    {
+        return new PDO("mysql:host=localhost;dbname=phpadvanced", "root");
+    }
+
+
 
     public function initialize(): void
     {
