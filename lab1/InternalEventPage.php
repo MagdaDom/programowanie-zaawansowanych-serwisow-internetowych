@@ -31,19 +31,21 @@ class InternalEventPage extends Page {
                     </div>
                     <div class="card-footer">
                         <button class="btn btn-primary">Edit</button>
-                        <button class="btn btn-danger">Delete</button>
+
+                        <form method="POST">
+                            <input name="Id" value="'. $row["Id"] .'">
+                            <button type="submit" name="'.self::ACTION.'" value="'.self::DELETE.'" class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
                 </div>
             </div>';
         }
 
-        $html = '<div class="container">
-        <div class="row gy-3">'. implode('', $views) . '</div>
-</div>';
+        $html = '<div class="container"><div class="row gy-3">'. implode('', $views) . '</div></div>';
 
-$db=null;
+        $db=null;
 
-return $html;
+        return $html;
     }
 
 

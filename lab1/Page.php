@@ -25,7 +25,6 @@ abstract class Page {
     protected abstract function generateViewEdit(): string;
     protected abstract function edit(): void;
     protected abstract function addNew(): void;    
-    protected function delete(): void {}
     protected abstract function enterModelDataFromForm(): void;
 
 
@@ -34,14 +33,33 @@ abstract class Page {
         return new PDO("mysql:host=localhost;dbname=phpadvanced", "root");
     }
 
+    protected function delete(): void {
 
+        try {
+            $id = (int)$_POST["Id"];
+
+            $sql = "UPDATE $this->tableName SET IsActive=0 WHERE Id=:id";
+
+            $db = $this->openConnection();
+
+            $statement = $db->prepare($sql);
+            $statement->bindParam(":id", $id, PDO::PARAM_INT);
+            $statement->execute();
+
+            $sql = "SELECT * FROM $this->tableName WHERE IsActive=1";
+
+            $result = $db->query($sql);
+        } catch(Exception $e) {
+            echo $e;
+        }
+    }
 
     public function initialize(): void
     {
         echo $this->generateHeader();
         print_r($_POST);
-        echo "
-";
+        echo "";
+
         switch ($_POST[self::ACTION] ?? null) {
             case self::ADD_NEW:
                 $this->addNew();
