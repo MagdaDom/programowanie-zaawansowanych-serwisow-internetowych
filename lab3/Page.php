@@ -63,7 +63,8 @@ abstract class Page {
         switch ($_POST[self::ACTION] ?? null) {
             case self::ADD_NEW:
                 $this->addNew();
-                echo $this->generateViewAll();
+                header("Location: /php_websites/phpadvanced/lab1/index.php");
+                #echo $this->generateViewAll();
                 break;
             case self::CREATE_VIEW:
                 echo $this->generateViewAdd();
