@@ -179,8 +179,8 @@ class InternalEventPage extends Page {
 
             $title = $_POST["Title"] ?? null;
             $link = $_POST["Link"] ?? null;
-            $isPublic = isset($_POST['isPublic']) ? 1 : 0;
-            $isCancelled = isset($_POST['isCancelled']) ? 1 : 0;
+            $isPublic = isset($_POST['IsPublic']) ? 1 : 0;
+            $isCancelled = isset($_POST['IsCancelled']) ? 1 : 0;
             $eventDate = $_POST['EventDate'];
             $publishDate = $_POST['PublishDate'];
             $shortDescription = $_POST['ShortDescription'];
@@ -191,9 +191,8 @@ class InternalEventPage extends Page {
 
             $statement = $db->prepare("
             INSERT INTO InternalEvents (Title, Link, IsPublic, IsCancelled, EventDateTime, CreationDateTime, EditDateTime, PublishDateTime, ShortDescription, ContentHTML, MetaDescription, MetaTags, Notes, IsActive)
-            VALUES(:Title, :Link, :isPublic, :isCancelled, :EventDateTime, NOW(), NOW(), :PublishDateTime, :ShortDescription, :ContentHTML, :MetaDescription, :MetaTags, :Notes, 1)
+            VALUES(:Title, :Link, :IsPublic, :IsCancelled, :EventDateTime, NOW(), NOW(), :PublishDateTime, :ShortDescription, :ContentHTML, :MetaDescription, :MetaTags, :Notes, 1)
             ");
-            $statement->bindParam(":id", $id, PDO::PARAM_INT);
             $statement->execute([
                 'Title'=> $title,
                 'Link'=> $link,
