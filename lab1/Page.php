@@ -20,7 +20,7 @@ abstract class Page {
 
     abstract protected function passTitle(): string; //abstract function don't have a body
     abstract protected function passTableName(): string; //type of value returned by function is added after function definition, can be multiple like string | int;
-    protected abstract function generateViewAll(): string;
+    protected abstract function generateViewAll(): string;    
     protected abstract function generateViewAdd(): string;
     protected abstract function generateViewEdit(): string;
     protected abstract function edit(): void;
@@ -89,37 +89,37 @@ abstract class Page {
     public function generateHeader(): string 
     {
         return '<!DOCTYPE html>
-                <html>
+<html>
 
-                <head>
-                    <meta charset="utf-8" />
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                    <title>
-                        Internal Events - All
-                    </title>
-                    <link rel="stylesheet" href="css/bootstrap.min.css" />
-                    <link
-                        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-                        rel="stylesheet">
-                </head>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        Internal Events - All
+    </title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
+</head>
 
-                <body>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h1>Internal Events - All</h1>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form method="POST">
-                                    <button class="btn btn-primary"> Create new </button>
-                                    <button class="btn btn-primary">All</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>';
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Internal Events - All</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form method="POST">
+                    <button type="submit" name="'.self::ACTION.'" value="'.self::CREATE_VIEW.'" class="btn btn-primary">Create new</button>
+                    <button type="submit" name="ACTION" value="" class="btn btn-primary">All</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>';
     }
 
     public function generateFooter(): string {
