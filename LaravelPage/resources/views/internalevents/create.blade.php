@@ -8,7 +8,13 @@
 </head>
 <body>
 <div class="container py-4">
-    <h1 class="mb-4">Internal Events - Create</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Internal Events - Create</h1>
+        <div class="d-flex gap-2">
+            <a href="{{ route('home.index') }}" class="btn btn-outline-dark">Strona główna</a>
+            <a href="{{ route('internalevents.index') }}" class="btn btn-outline-secondary">All</a>
+        </div>
+    </div>
 
     <form method="POST" action="{{ route('internalevents.store') }}">
         @csrf

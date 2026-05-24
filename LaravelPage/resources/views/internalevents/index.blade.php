@@ -10,10 +10,11 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Internal Events - All</h1>
-        <div class="d-flex gap-2">
-            <a href="{{ route('internalevents.create') }}" class="btn btn-primary">Create new</a>
-            <a href="{{ route('internalevents.index') }}" class="btn btn-outline-secondary">All</a>
-        </div>
+    <div class="d-flex gap-2">
+        <a href="{{ route('home.index') }}" class="btn btn-outline-dark">Strona główna</a>
+        <a href="{{ route('internalevents.create') }}" class="btn btn-primary">Create new</a>
+        <a href="{{ route('internalevents.index') }}" class="btn btn-outline-secondary">All</a>
+    </div>
     </div>
 
     <div class="row g-3">
