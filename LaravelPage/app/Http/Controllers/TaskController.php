@@ -13,7 +13,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('internalEvent')->orderByDesc('Id')->get();
+        $tasks = Task::with('internalEvent')->where('IsActive', 1)->orderByDesc('Id')->get();
         return view('tasks.index', compact('tasks'));
     }
 
@@ -97,7 +97,9 @@ class TaskController extends Controller
     //public function destroy(string $id)
     public function destroy(Task $task)
     {
-        $task->delete();
+        $task->IsActive = 0;
+        $task->EditDateTime = now();
+        $task->save();
         return redirect()->route('tasks.index');
     }
 }
