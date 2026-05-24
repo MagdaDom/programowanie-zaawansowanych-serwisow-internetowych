@@ -11,10 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        /*Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-        });
+        });*/
+
+                Schema::create('Tasks', function (Blueprint $table) {
+                    $table->increments('Id');
+                    $table->string('Title', 64);
+                    $table->boolean('IsDone');
+                    $table->dateTime('StartDateTime');
+                    $table->text('Description');
+                    $table->dateTime('Deadline');
+                    $table->integer('InternalEventId');
+                    $table->dateTime('CreationDateTime');
+                    $table->dateTime('EditDateTime');
+                    $table->text('Notes')->nullable();
+                    $table->boolean('IsActive');
+
+                    $table->foreign('InternalEventId')->references('Id')->on('internalevents');
+                });
     }
 
     /**
@@ -22,6 +38,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        //Schema::dropIfExists('tasks');
+        Schema::dropIfExists('Tasks');
     }
 };
