@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Edytuj zadanie</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 </head>
 <body>
     <h1>Edytuj zadanie</h1>

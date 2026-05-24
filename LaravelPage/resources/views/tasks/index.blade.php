@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Lista zadań</title>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 </head>
 <body>
     <h1>Lista zadań</h1>
