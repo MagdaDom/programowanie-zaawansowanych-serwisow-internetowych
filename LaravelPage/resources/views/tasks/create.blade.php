@@ -2,70 +2,78 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Dodaj zadanie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks - Create</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 </head>
 <body>
-    <h1>Dodaj zadanie</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Tasks - Create</h1>
+        <div class="d-flex gap-2">
+            <a href="{{ route('home.index') }}" class="btn btn-outline-dark">Strona główna</a>
+            <a href="{{ route('tasks.index') }}" class="btn btn-outline-secondary">All</a>
+        </div>
+    </div>
 
     <form method="POST" action="{{ route('tasks.store') }}">
         @csrf
 
-        <p>
-            <label>Tytuł:</label><br>
-            <input type="text" name="Title" value="{{ old('Title') }}">
-        </p>
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" name="Title" class="form-control" value="{{ old('Title') }}">
+        </div>
 
-        <p>
-            <label>Czy wykonane:</label><br>
-            <select name="IsDone">
-                <option value="0">Nie</option>
-                <option value="1">Tak</option>
+        <div class="mb-3">
+            <label class="form-label">Is Done</label>
+            <select name="IsDone" class="form-select">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
             </select>
-        </p>
+        </div>
 
-        <p>
-            <label>Data rozpoczęcia:</label><br>
-            <input type="datetime-local" name="StartDateTime" value="{{ old('StartDateTime') }}">
-        </p>
+        <div class="mb-3">
+            <label class="form-label">Start Date Time</label>
+            <input type="datetime-local" name="StartDateTime" class="form-control" value="{{ old('StartDateTime') }}">
+        </div>
 
-        <p>
-            <label>Opis:</label><br>
-            <textarea name="Description">{{ old('Description') }}</textarea>
-        </p>
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="Description" class="form-control" rows="4">{{ old('Description') }}</textarea>
+        </div>
 
-        <p>
-            <label>Deadline:</label><br>
-            <input type="datetime-local" name="Deadline" value="{{ old('Deadline') }}">
-        </p>
+        <div class="mb-3">
+            <label class="form-label">Deadline</label>
+            <input type="datetime-local" name="Deadline" class="form-control" value="{{ old('Deadline') }}">
+        </div>
 
-        <p>
-            <label>Wydarzenie wewnętrzne:</label><br>
-            <select name="InternalEventId">
+        <div class="mb-3">
+            <label class="form-label">Internal Event</label>
+            <select name="InternalEventId" class="form-select">
                 @foreach($internalEvents as $event)
                     <option value="{{ $event->Id }}">{{ $event->Title }}</option>
                 @endforeach
             </select>
-        </p>
+        </div>
 
-        <p>
-            <label>Notatki:</label><br>
-            <textarea name="Notes">{{ old('Notes') }}</textarea>
-        </p>
+        <div class="mb-3">
+            <label class="form-label">Notes</label>
+            <textarea name="Notes" class="form-control" rows="3">{{ old('Notes') }}</textarea>
+        </div>
 
-        <p>
-            <label>Czy aktywne:</label><br>
-            <select name="IsActive">
-                <option value="1">Tak</option>
-                <option value="0">Nie</option>
+        <div class="mb-3">
+            <label class="form-label">Is Active</label>
+            <select name="IsActive" class="form-select">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
             </select>
-        </p>
+        </div>
 
-        <button type="submit">Zapisz</button>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{{ route('tasks.index') }}" class="btn btn-secondary">Back</a>
+        </div>
     </form>
-
-    <p>
-        <a href="{{ route('tasks.index') }}">Powrót do listy</a>
-    </p>
+</div>
 </body>
 </html>
