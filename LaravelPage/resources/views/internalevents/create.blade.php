@@ -16,6 +16,16 @@
         </div>
     </div>
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
     <form method="POST" action="{{ route('internalevents.store') }}">
         @csrf
 
@@ -78,14 +88,6 @@
         <div class="mb-3">
             <label class="form-label">Notes</label>
             <textarea name="Notes" class="form-control" rows="3">{{ old('Notes') }}</textarea>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Is Active</label>
-            <select name="IsActive" class="form-select">
-                <option value="1">Yes</option>
-                <option value="0">No</option>
-            </select>
         </div>
 
         <div class="d-flex gap-2">

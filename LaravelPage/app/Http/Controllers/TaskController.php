@@ -39,9 +39,9 @@ class TaskController extends Controller
             'Deadline' => 'required|date',
             'InternalEventId' => 'required|exists:internalevents,Id',
             'Notes' => 'nullable|string',
-            'IsActive' => 'required|boolean',
         ]);
 
+        $data['IsActive'] = 1;
         $data['CreationDateTime'] = now();
         $data['EditDateTime'] = now();
 
@@ -51,19 +51,11 @@ class TaskController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Task $task) //edit(string $id)
     {
-        $internalEvents = InternalEvent::orderBy('Title')->get();
+        $internalEvents = InternalEvent::where('IsActive', 1)->orderBy('Title')->get();
         return view('tasks.edit', compact('task', 'internalEvents'));
     }
 
@@ -81,7 +73,6 @@ class TaskController extends Controller
             'Deadline' => 'required|date',
             'InternalEventId' => 'required|exists:internalevents,Id',
             'Notes' => 'nullable|string',
-            'IsActive' => 'required|boolean',
         ]);
 
         $data['EditDateTime'] = now();
@@ -100,6 +91,7 @@ class TaskController extends Controller
         $task->IsActive = 0;
         $task->EditDateTime = now();
         $task->save();
+
         return redirect()->route('tasks.index');
     }
 }

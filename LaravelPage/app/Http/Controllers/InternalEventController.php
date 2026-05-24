@@ -9,10 +9,7 @@ class InternalEventController extends Controller
 {
     public function index()
     {
-        $internalEvents = InternalEvent::where('IsActive', 1)
-            ->orderByDesc('Id')
-            ->get();
-
+        $internalEvents = InternalEvent::where('IsActive', 1)->orderByDesc('Id')->get();
         return view('internalevents.index', compact('internalEvents'));
     }
 
@@ -35,9 +32,9 @@ class InternalEventController extends Controller
             'MetaDescription' => 'nullable|string',
             'MetaTags' => 'nullable|string',
             'Notes' => 'nullable|string',
-            'IsActive' => 'required|boolean',
         ]);
 
+        $data['IsActive'] = 1;
         $data['CreationDateTime'] = now();
         $data['EditDateTime'] = now();
 
@@ -65,7 +62,6 @@ class InternalEventController extends Controller
             'MetaDescription' => 'nullable|string',
             'MetaTags' => 'nullable|string',
             'Notes' => 'nullable|string',
-            'IsActive' => 'required|boolean',
         ]);
 
         $data['EditDateTime'] = now();

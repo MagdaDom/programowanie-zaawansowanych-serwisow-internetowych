@@ -81,14 +81,6 @@
             <textarea name="Notes" class="form-control" rows="3">{{ old('Notes', $internalEvent->Notes) }}</textarea>
         </div>
 
-        <div class="mb-3">
-            <label class="form-label">Is Active</label>
-            <select name="IsActive" class="form-select">
-                <option value="1" {{ old('IsActive', $internalEvent->IsActive) ? 'selected' : '' }}>Yes</option>
-                <option value="0" {{ old('IsActive', $internalEvent->IsActive) ? '' : 'selected' }}>No</option>
-            </select>
-        </div>
-
         <div class="d-flex gap-2">
             <button type="submit" class="btn btn-primary">Save changes</button>
             <a href="{{ route('internalevents.index') }}" class="btn btn-secondary">Back</a>
