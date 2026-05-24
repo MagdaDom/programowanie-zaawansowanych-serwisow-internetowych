@@ -8,11 +8,12 @@
 </head>
 <body>
     <div class="container py-5">
-        <h1 class="mb-4">System CRUD</h1>
+        <h1 class="mb-4">CRUD w Laravel (PHP obiektowy)</h1>
         <p class="lead">Wybierz moduł, który chcesz otworzyć.</p>
 
         <div class="d-flex gap-3 mt-4">
             <a href="{{ route('tasks.index') }}" class="btn btn-primary">Przejdź do Tasks</a>
+            <a href="{{ route('internalevents.index') }}" class="btn btn-outline-primary">Przejdź do InternalEvents</a>
         </div>
     </div>
 </body>
