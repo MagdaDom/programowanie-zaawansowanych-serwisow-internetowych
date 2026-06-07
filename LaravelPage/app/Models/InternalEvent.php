@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class InternalEvent extends Model
 {
-    protected $table = 'internalevents';
+    protected $table = 'internalevents'; //"InternalEvents"
     protected $primaryKey = 'Id';
+    const CREATED_AT = 'CreationDateTime';
+    const UPDATED_AT = 'EditDateTime';
     public $timestamps = false;
 
         protected $fillable = [
