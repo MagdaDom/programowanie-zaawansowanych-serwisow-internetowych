@@ -19,6 +19,20 @@ class InternalEventService
     }
 
     public function addToDB(Request $request) {
+
+        $request->validate([
+            "Title" => ["required", "max:256"],
+            "Link" => ["required", "max:128"],
+            "Description" => ["required", "max:128"],
+            "EventDateTime" => ["required", "datetime"],
+            "PublishDateTime" => ["required", "datetime"],
+            "IsActive" => ["required", "boolean"],
+            "MetaTags" => ["required", "max:128"],
+            "Notes" => ["required", "max:128"],
+            "MetaDescription" => ["required", "max:128"],
+            "ContentHTML" => ["required", "max:128"],
+            "ShortDescription" => ["required", "max:128"],
+        ]); //podajemy tutaj reguły walidacji pól
         $model = new InternalEvent();
         $model->Title = $request->input("Title");
         $model->Link = $request->input("Link");

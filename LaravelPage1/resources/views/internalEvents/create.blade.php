@@ -1,136 +1,228 @@
-@extends ("main")
-@section ("header")
+@extends('main')
+
+@section('header')
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Naglowek</h1>
+                <h1>Nagłówek</h1>
             </div>
         </div>
+
         <div class="row">
             <div class="col-sm-12">
-                <a href="/internal-events/create" class="btn btn-primary"> Create new </a>
+                <a href="/internal-events/create" class="btn btn-primary">Create new</a>
                 <a href="/all" class="btn btn-primary">All</a>
             </div>
         </div>
     </div>
 @endsection
 
-@section("content")
+@section('content')
     <div class="container">
-        <div class="row gy-3">
-            <form method="POST">
-                @csrf
+        <form method="POST" action="{{ url()->current() }}">
+            @csrf
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="row gy-3">
                 <div class="col-md-12 col-lg-6 col-xxl-4">
-                    <div class="input-group">
-                        <label class="input-group-text">
-                            <i class="material-icons-round align-middle">label</i>
-                            Title
+                    <label for="Title" class="form-label">
+                        <i class="material-icons-round align-middle">label</i>
+                        Title
+                    </label>
+                    <input
+                        id="Title"
+                        name="Title"
+                        type="text"
+                        value="{{ old('Title') }}"
+                        class="form-control @error('Title') is-invalid @enderror"
+                    >
+                    @error('Title')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-12 col-lg-6 col-xxl-4">
+                    <label for="Link" class="form-label">
+                        <i class="material-icons-round align-middle">link</i>
+                        Link
+                    </label>
+                    <input
+                        id="Link"
+                        name="Link"
+                        type="text"
+                        value="{{ old('Link') }}"
+                        class="form-control @error('Link') is-invalid @enderror"
+                    >
+                    @error('Link')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="col-md-12 col-lg-6 col-xxl-4">
+                    <div class="form-check form-switch mt-4">
+                        <input
+                            id="IsPublic"
+                            name="IsPublic"
+                            type="checkbox"
+                            value="1"
+                            class="form-check-input @error('IsPublic') is-invalid @enderror"
+                            {{ old('IsPublic') ? 'checked' : '' }}
+                        >
+                        <label for="IsPublic" class="form-check-label">
+                            Public
                         </label>
-                        <input name="Title" class="form-control validate">
                     </div>
+                    @error('IsPublic')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-12 col-lg-6 col-xxl-4">
-                    <div class="input-group">
-                        <label class="input-group-text">
-                            <i class="material-icons-round align-middle">link</i>
-                            Link
+                    <div class="form-check form-switch mt-4">
+                        <input
+                            id="IsCancelled"
+                            name="IsCancelled"
+                            type="checkbox"
+                            value="1"
+                            class="form-check-input @error('IsCancelled') is-invalid @enderror"
+                            {{ old('IsCancelled') ? 'checked' : '' }}
+                        >
+                        <label for="IsCancelled" class="form-check-label">
+                            Cancelled
                         </label>
-                        <input name="Link" class="form-control validate">
                     </div>
+                    @error('IsCancelled')
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-12 col-lg-6 col-xxl-4">
-                    <div class="row">
-                        <div class="col-auto">
-                            <label class="form-check-label">
-                                Public
-                                <i class="material-icons-round align-middle">public</i>
-                            </label>
-                        </div>
-                        <div class="form-switch form-check col-auto">
-                            <input name="IsPublic" class="form-check-input validate" type="checkbox">
-                            <label class="form-check-label">
-                                <i class="material-icons-round align-middle">block</i>
-                                Private
-                            </label>
-                        </div>
-                    </div>
+                    <label for="EventDateTime" class="form-label">
+                        <i class="material-icons-round align-middle">event</i>
+                        Event date
+                    </label>
+                    <input
+                        id="EventDateTime"
+                        name="EventDateTime"
+                        type="date"
+                        value="{{ old('EventDateTime') }}"
+                        class="form-control @error('EventDateTime') is-invalid @enderror"
+                    >
+                    @error('EventDateTime')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-md-12 col-lg-6 col-xxl-4">
-                    <div class="row">
-                        <div class="col-auto">
-                            <label class="form-check-label">
-                                Cancelled
-                                <i class="material-icons-round align-middle">cancel</i>
-                            </label>
-                        </div>
-                        <div class="form-switch form-check col-auto">
-                            <input name="IsCancelled" class="form-check-input validate" type="checkbox">
-                            <label class="form-check-label">
-                                <i class="material-icons-round align-middle">public</i>
-                                Active
-                            </label>
-                        </div>
-                    </div>
+                    <label for="PublishDateTime" class="form-label">
+                        <i class="material-icons-round align-middle">today</i>
+                        Publish date
+                    </label>
+                    <input
+                        id="PublishDateTime"
+                        name="PublishDateTime"
+                        type="date"
+                        value="{{ old('PublishDateTime') }}"
+                        class="form-control @error('PublishDateTime') is-invalid @enderror"
+                    >
+                    @error('PublishDateTime')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="col-md-12 col-lg-6 col-xxl-4">
-                    <div class="input-group">
-                        <label class="input-group-text">
-                            <i class="material-icons-round palette-accent-text-color align-middle">event</i>
-                            Event date
-                        </label>
-                        <input name="EventDateTime" class="form-control validate" type="date">
-                    </div>
-                </div>
-                <div class="col-md-12 col-lg-6 col-xxl-4">
-                    <div class="input-group">
-                        <label class="input-group-text">
-                            <i class="material-icons-round palette-accent-text-color align-middle">today</i>
-                            Publish date
-                        </label>
-                        <input name="PublishDateTime" class="form-control validate" type="date">
-                    </div>
-                </div>
+
                 <div class="col-sm-12">
-                    <label class="form-label">
-                        <i class="material-icons-round palette-accent-text-color align-middle">description</i>
+                    <label for="ShortDescription" class="form-label">
+                        <i class="material-icons-round align-middle">description</i>
                         Short description
                     </label>
-                    <textarea name="ShortDescription" class="form-control validate"></textarea>
+                    <textarea
+                        id="ShortDescription"
+                        name="ShortDescription"
+                        class="form-control @error('ShortDescription') is-invalid @enderror"
+                        rows="3"
+                    >{{ old('ShortDescription') }}</textarea>
+                    @error('ShortDescription')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-sm-12">
-                    <label class="form-label">
-                        <i class="material-icons-round palette-accent-text-color align-middle">newspaper</i>
+                    <label for="ContentHTML" class="form-label">
+                        <i class="material-icons-round align-middle">newspaper</i>
                         Content
                     </label>
-                    <textarea name="ContentHTML" class="form-control validate"></textarea>
+                    <textarea
+                        id="ContentHTML"
+                        name="ContentHTML"
+                        class="form-control @error('ContentHTML') is-invalid @enderror"
+                        rows="6"
+                    >{{ old('ContentHTML') }}</textarea>
+                    @error('ContentHTML')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-sm-12">
-                    <label class="form-label">
-                        <i class="material-icons-round palette-accent-text-color align-middle">feed</i>
+                    <label for="MetaDescription" class="form-label">
+                        <i class="material-icons-round align-middle">feed</i>
                         Meta description
                     </label>
-                    <textarea name="MetaDescription" class="form-control validate"></textarea>
+                    <textarea
+                        id="MetaDescription"
+                        name="MetaDescription"
+                        class="form-control @error('MetaDescription') is-invalid @enderror"
+                        rows="3"
+                    >{{ old('MetaDescription') }}</textarea>
+                    @error('MetaDescription')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-sm-12">
-                    <label class="form-label">
-                        <i class="material-icons-round palette-accent-text-color align-middle">subtitles</i>
+                    <label for="MetaTags" class="form-label">
+                        <i class="material-icons-round align-middle">subtitles</i>
                         Meta tags
                     </label>
-                    <textarea name="MetaTags"class="form-control validate"></textarea>
+                    <textarea
+                        id="MetaTags"
+                        name="MetaTags"
+                        class="form-control @error('MetaTags') is-invalid @enderror"
+                        rows="3"
+                    >{{ old('MetaTags') }}</textarea>
+                    @error('MetaTags')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-sm-12">
-                    <label class="form-label">
-                        <i class="material-icons-round palette-accent-text-color align-middle">notes</i>
+                    <label for="Notes" class="form-label">
+                        <i class="material-icons-round align-middle">notes</i>
                         Notes
                     </label>
-                    <textarea name="Notes" class="form-control validate"></textarea>
+                    <textarea
+                        id="Notes"
+                        name="Notes"
+                        class="form-control @error('Notes') is-invalid @enderror"
+                        rows="3"
+                    >{{ old('Notes') }}</textarea>
+                    @error('Notes')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
+
                 <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">Create </button>
+                    <button type="submit" class="btn btn-primary">Create</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 @endsection
-
-
