@@ -18,6 +18,14 @@ class InternalEventController extends Controller
     public function create() {
         return view('internalEvents.create');
     }
+
+    public function store(Request $request) {
+        $serwis = new InternalEventService();
+
+        $serwis -> addToDb($request);
+
+        return redirect("/internal-events");
+    }
 }
 
 

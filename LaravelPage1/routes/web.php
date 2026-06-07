@@ -7,3 +7,4 @@ use Illuminate\Support\Facades\Route;
 Route::get("/", [HomeController::class, "index"]);
 Route::get("/internal-events", [InternalEventController::class, "index"]);
 Route::get("/internal-events/create", [InternalEventController::class, "create"]);
+Route::post("/internal-events/create", [InternalEventController::class, "store"]);
