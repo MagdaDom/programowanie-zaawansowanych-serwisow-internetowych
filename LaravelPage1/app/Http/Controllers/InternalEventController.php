@@ -14,4 +14,10 @@ class InternalEventController extends Controller
 
         return view('internalEvents.index', ["models" => $results]);
     }
+
+    public function create() {
+        return view('internalEvents.create');
+    }
 }
+
+
