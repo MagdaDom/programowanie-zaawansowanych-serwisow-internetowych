@@ -4,13 +4,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h1>Nowe wydarzenie</h1>
+                <h1>Edycja wydarzenia</h1>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-12">
-                <a href="/internal-events/create" class="btn btn-primary">Create new</a>
                 <a href="/internal-events" class="btn btn-primary">All</a>
             </div>
         </div>
@@ -42,7 +41,7 @@
                         id="Title"
                         name="Title"
                         type="text"
-                        value="{{ old('Title') }}"
+                        value="{{ old('Title', $model->Title) }}"
                         class="form-control @error('Title') is-invalid @enderror"
                     >
                     @error('Title')
@@ -59,7 +58,7 @@
                         id="Link"
                         name="Link"
                         type="text"
-                        value="{{ old('Link') }}"
+                        value="{{ old('Link', $model->Link) }}"
                         class="form-control @error('Link') is-invalid @enderror"
                     >
                     @error('Link')
@@ -75,7 +74,7 @@
                             type="checkbox"
                             value="1"
                             class="form-check-input @error('IsPublic') is-invalid @enderror"
-                            {{ old('IsPublic') ? 'checked' : '' }}
+                            {{ old('IsPublic', $model->IsPublic) ? 'checked' : '' }}
                         >
                         <label for="IsPublic" class="form-check-label">
                             Public
@@ -94,7 +93,7 @@
                             type="checkbox"
                             value="1"
                             class="form-check-input @error('IsCancelled') is-invalid @enderror"
-                            {{ old('IsCancelled') ? 'checked' : '' }}
+                            {{ old('IsCancelled', $model->IsCancelled) ? 'checked' : '' }}
                         >
                         <label for="IsCancelled" class="form-check-label">
                             Cancelled
@@ -114,7 +113,7 @@
                         id="EventDateTime"
                         name="EventDateTime"
                         type="datetime-local"
-                        value="{{ old('EventDateTime') }}"
+                        value="{{ old('EventDateTime', $model->EventDateTime) }}"
                         class="form-control @error('EventDateTime') is-invalid @enderror"
                     >
                     @error('EventDateTime')
@@ -131,7 +130,7 @@
                         id="PublishDateTime"
                         name="PublishDateTime"
                         type="datetime-local"
-                        value="{{ old('PublishDateTime') }}"
+                        value="{{ old('PublishDateTime', $model->PublishDateTime) }}"
                         class="form-control @error('PublishDateTime') is-invalid @enderror"
                     >
                     @error('PublishDateTime')
@@ -149,7 +148,7 @@
                         name="ShortDescription"
                         class="form-control @error('ShortDescription') is-invalid @enderror"
                         rows="3"
-                    >{{ old('ShortDescription') }}</textarea>
+                    >{{ old('ShortDescription', $model->ShortDescription) }}</textarea>
                     @error('ShortDescription')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -165,7 +164,7 @@
                         name="ContentHTML"
                         class="form-control @error('ContentHTML') is-invalid @enderror"
                         rows="6"
-                    >{{ old('ContentHTML') }}</textarea>
+                    >{{ old('ContentHTML', $model->ContentHTML) }}</textarea>
                     @error('ContentHTML')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -181,7 +180,7 @@
                         name="MetaDescription"
                         class="form-control @error('MetaDescription') is-invalid @enderror"
                         rows="3"
-                    >{{ old('MetaDescription') }}</textarea>
+                    >{{ old('MetaDescription', $model->MetaDescription) }}</textarea>
                     @error('MetaDescription')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -197,7 +196,7 @@
                         name="MetaTags"
                         class="form-control @error('MetaTags') is-invalid @enderror"
                         rows="3"
-                    >{{ old('MetaTags') }}</textarea>
+                    >{{ old('MetaTags', $model->MetaTags) }}</textarea>
                     @error('MetaTags')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -213,14 +212,14 @@
                         name="Notes"
                         class="form-control @error('Notes') is-invalid @enderror"
                         rows="3"
-                    >{{ old('Notes') }}</textarea>
+                    >{{ old('Notes', $model->Notes) }}</textarea>
                     @error('Notes')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="col-sm-12">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
                 </div>
             </div>
         </form>
