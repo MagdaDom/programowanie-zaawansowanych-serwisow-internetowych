@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800">
-            StudentHub - wydarzenia uczelniane
+            StudentHub - wydarzenia uczelniane <img src="{{ asset('content/logo.png') }}" alt="StudentHub">
         </h2>
     </x-slot>
 
