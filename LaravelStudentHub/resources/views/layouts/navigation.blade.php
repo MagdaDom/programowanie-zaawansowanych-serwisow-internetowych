@@ -27,9 +27,14 @@
                     <span>Zaloguj się</span>
                 </a>
             @else
-                <a href="{{ route('dashboard') }}" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold">
-                    Panel
-                </a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                            class="bg-primary text-white px-5 py-2 rounded-lg font-semibold inline-flex items-center gap-2">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Wyloguj</span>
+                    </button>
+                </form>
             @endguest
         </nav>
     </div>
