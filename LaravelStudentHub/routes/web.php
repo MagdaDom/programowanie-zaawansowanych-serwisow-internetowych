@@ -3,7 +3,6 @@
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ContactMessageController;
-use App\Http\Controllers\EventPhotoController;
 use App\Http\Controllers\SubscriptionController;
 
 Route::get('/', [EventController::class, 'home'])->name('home');
@@ -24,7 +23,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('/admin/news', NewsController::class)->except(['index', 'show']);
 
     Route::post('/events/{event}/register', [EventController::class, 'register'])->name('events.register');
-    Route::post('/events/{event}/photos', [EventPhotoController::class, 'store'])->name('photos.store');
 
     Route::get('/admin/messages', [ContactMessageController::class, 'index'])->name('messages.index');
     Route::delete('/admin/messages/{contactMessage}', [ContactMessageController::class, 'destroy'])->name('messages.destroy');

@@ -6,7 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
-    protected $fillable = ['title', 'content', 'user_id'];
+    protected $fillable = [
+        'title',
+        'description',
+        'publish_from',
+        'publish_until',
+        'user_id',
+    ];
+
+    protected $casts = [
+        'publish_from' => 'datetime',
+        'publish_until' => 'datetime',
+    ];
 
     public function user()
     {

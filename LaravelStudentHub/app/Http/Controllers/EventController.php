@@ -33,13 +33,20 @@ class EventController extends Controller
         $query = Event::query();
 
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('location', 'like', '%' . $request->search . '%');
+            $query->where('title', 'like', '%' . $request->search . '%');
         }
 
-        $events = $query->orderBy('start_date')->paginate(10);
+        $upcomingEvents = (clone $query)
+            ->where('event_date', '>=', now())
+            ->orderBy('event_date')
+            ->get();
 
-        return view('events.index', compact('events'));
+        $pastEvents = (clone $query)
+            ->where('event_date', '<', now())
+            ->orderByDesc('event_date')
+            ->get();
+
+        return view('events.index', compact('upcomingEvents', 'pastEvents'));
     }
 
     /**
