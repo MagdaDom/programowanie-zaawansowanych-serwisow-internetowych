@@ -8,6 +8,10 @@ use App\Http\Controllers\SubscriptionController;
 
 Route::get('/', [EventController::class, 'home'])->name('home');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
 

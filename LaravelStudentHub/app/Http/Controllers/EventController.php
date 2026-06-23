@@ -7,12 +7,26 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    public function home()
+    {
+        $events = Event::orderBy('start_date')->take(3)->get();
+        return view('home', compact('events'));
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = Event::query();
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('location', 'like', '%' . $request->search . '%');
+        }
+
+        $events = $query->orderBy('start_date')->paginate(10);
+
+        return view('events.index', compact('events'));
     }
 
     /**
@@ -20,7 +34,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        return view('events.create');
     }
 
     /**
@@ -28,7 +42,20 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|min:3|max:255',
+            'description' => 'required|min:10',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'location' => 'required|min:3|max:255',
+            'max_participants' => 'nullable|integer|min:1',
+        ]);
+
+        $validated['user_id'] = Auth::id();
+
+        Event::create($validated);
+
+        return redirect()->route('events.index')->with('success', 'Wydarzenie zostało dodane.');
     }
 
     /**
@@ -36,7 +63,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        return view('events.show', compact('event'));
     }
 
     /**
@@ -44,7 +71,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        return view('events.edit', compact('event'));
     }
 
     /**
@@ -52,7 +79,18 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|min:3|max:255',
+            'description' => 'required|min:10',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'location' => 'required|min:3|max:255',
+            'max_participants' => 'nullable|integer|min:1',
+        ]);
+
+        $event->update($validated);
+
+        return redirect()->route('events.index')->with('success', 'Wydarzenie zostało zaktualizowane.');
     }
 
     /**
@@ -60,6 +98,23 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+
+        return redirect()->route('events.index')->with('success', 'Wydarzenie zostało usunięte.');
+    }
+
+    public function register(Event $event)
+    {
+        if ($event->max_participants && $event->participants()->count() >= $event->max_participants) {
+            return back()->with('error', 'Brak wolnych miejsc.');
+        }
+
+        if ($event->participants()->where('user_id', Auth::id())->exists()) {
+            return back()->with('error', 'Jesteś już zapisany/a na to wydarzenie.');
+        }
+
+        $event->participants()->attach(Auth::id());
+
+        return back()->with('success', 'Zapisano na wydarzenie.');
     }
 }
