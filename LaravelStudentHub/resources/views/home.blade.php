@@ -1,9 +1,93 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800">
-            StudentHub - wydarzenia uczelniane <img src="{{ asset('content/logo.png') }}" alt="StudentHub">
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>StudentHub</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow">
+            <div class="max-w-7xl mx-auto px-5 py-2 flex items-center justify-between">
+                <a href="{{ route('home') }}" class="flex items-center gap-3">
+                    <img src="{{ asset('content/logo-appname.png') }}" alt="StudentHub" class="h-12">
+                </a>
+
+                <nav class="flex items-center gap-8">
+                    <a href="{{ route('news.index') }}" class="font-semibold text-primary">
+                        Aktualności
+                    </a>
+
+                    <a href="{{ route('events.index') }}" class="font-semibold text-accent">
+                        Wydarzenia
+                    </a>
+
+                    <a href="{{ route('contact.create') }}" class="font-semibold text-primary">
+                        Kontakt
+                    </a>
+
+                    @guest
+                        <a href="{{ route('register') }}" class="font-semibold text-accent">Rejestracja</a>
+                    @endguest
+
+                    @guest
+                        <a href="{{ route('login') }}" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold">
+                            <i class="bi bi-person-circle"></i>
+                            <span>Zaloguj się</span>
+                        </a>
+                    @else
+                        <a href="{{ route('dashboard') }}" class="bg-primary text-white px-5 py-2 rounded-lg font-semibold">
+                            Panel
+                        </a>
+                    @endguest
+                </nav>
+            </div>
+        </header>
+
+    <section class="text-center py-12">
+        <h1 class="text-5xl font-bold mb-5">
+            Witamy w <span class="text-primary">Student</span><span class="text-accent">Hub</span>!
+        </h1>
+
+        <p class="text-lg max-w-3xl mx-auto">
+            Bądź na bieżąco z tym, co dzieje się na uczelni, zapisuj się na ulubione wydarzenia
+            i współtwórz galerię wspomnień, dodając własne zdjęcia.
+        </p>
+
+        <p class="mt-4 text-lg">
+            Dołącz do <span class="font-semibold text-primary">Student</span><span class="font-semibold text-accent">Hub</span>
+            i bądź zawsze w centrum wydarzeń!
+        </p>
+    </section>
+
+<section class="max-w-7xl mx-auto px-6 pb-12">
+    <h2 class="text-3xl font-bold text-center mb-8">
+        Nadchodzące wydarzenia
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @forelse($events as $event)
+            <div class="bg-white rounded shadow p-6 text-center">
+                <h3 class="text-xl font-bold mb-3">{{ $event->title }}</h3>
+
+                <p class="mb-3">
+                    {{ Str::limit($event->description, 120) }}
+                </p>
+
+                <p><strong>Miejsce:</strong> {{ $event->location }}</p>
+                <p><strong>Data:</strong> {{ $event->start_date }}</p>
+
+                <a href="{{ route('events.show', $event) }}" class="text-blue-500 inline-block mt-3">
+                    Czytaj więcej...
+                </a>
+            </div>
+        @empty
+            <p class="col-span-3 text-center">
+                Brak wydarzeń.
+            </p>
+        @endforelse
+    </div>
+</section>
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -61,4 +145,5 @@
 
         </div>
     </div>
-</x-app-layout>
+</body>
+</html>

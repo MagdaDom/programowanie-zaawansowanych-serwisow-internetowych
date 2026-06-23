@@ -42,6 +42,16 @@
             <x-primary-button class="ms-3">
                 {{ __('Log in') }}
             </x-primary-button>
+            <div class="mt-6 text-center">
+                <span class="text-sm text-gray-600">
+                    Pierwszy raz w StudentHub?
+                </span>
+
+                <a href="{{ route('register') }}"
+                class="text-primary font-semibold hover:underline ml-1">
+                    Utwórz konto
+                </a>
+            </div>
         </div>
     </form>
 </x-guest-layout>
