@@ -66,7 +66,7 @@ class EventController extends Controller
             'title' => 'required|min:3|max:255',
             'short_description' => 'nullable|max:500',
             'html_content' => 'required|min:10',
-            'image_path' => 'nullable|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'event_date' => 'required|date',
             'publish_from' => 'nullable|date',
             'publish_until' => 'nullable|date|after_or_equal:publish_from',
@@ -77,6 +77,12 @@ class EventController extends Controller
 
         $validated['requires_registration'] = $request->boolean('requires_registration');
         $validated['user_id'] = Auth::id();
+
+        if ($request->hasFile('image')) {
+            $validated['image_path'] = $request->file('image')->store('events', 'public');
+        }
+
+        unset($validated['image']);
 
         Event::create($validated);
 
@@ -108,7 +114,7 @@ class EventController extends Controller
             'title' => 'required|min:3|max:255',
             'short_description' => 'nullable|max:500',
             'html_content' => 'required|min:10',
-            'image_path' => 'nullable|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'event_date' => 'required|date',
             'publish_from' => 'nullable|date',
             'publish_until' => 'nullable|date|after_or_equal:publish_from',
@@ -122,6 +128,12 @@ class EventController extends Controller
         if (!$validated['requires_registration']) {
             $validated['max_participants'] = null;
         }
+
+        if ($request->hasFile('image')) {
+            $validated['image_path'] = $request->file('image')->store('events', 'public');
+        }
+
+        unset($validated['image']);
 
         $event->update($validated);
 

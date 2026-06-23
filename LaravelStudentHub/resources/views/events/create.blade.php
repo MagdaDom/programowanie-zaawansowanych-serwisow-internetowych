@@ -4,7 +4,7 @@
     </x-slot>
 
     <div class="py-6 max-w-4xl mx-auto">
-        <form method="POST" action="{{ route('events.store') }}" class="bg-white p-6 rounded shadow">
+        <form method="POST" action="{{ route('events.store') }}" enctype="multipart/form-data" class="bg-white p-6 rounded shadow">
             @csrf
 
             <label>Tytuł</label>
@@ -16,10 +16,9 @@
             <label>Pełna treść HTML wydarzenia</label>
             <textarea name="html_content" rows="8" class="border p-2 w-full mb-3">{{ old('html_content') }}</textarea>
 
-            <label>Ścieżka do obrazka</label>
-            <input name="image_path" class="border p-2 w-full mb-3"
-                   placeholder="np. content/events/default-event.jpg"
-                   value="{{ old('image_path') }}">
+            <label>Zdjęcie wydarzenia</label>
+            <input type="file" name="image" accept="image/*" class="border p-2 w-full mb-3">
+            <img id="imagePreview" class="mt-3 max-h-60 rounded hidden" alt="Podgląd zdjęcia">
 
             <label>Data wydarzenia</label>
             <input type="datetime-local" name="event_date" class="border p-2 w-full mb-3"
@@ -54,6 +53,25 @@
                 Zapisz
             </button>
         </form>
+
+        <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const imageInput = document.querySelector('input[name="image"]');
+    const preview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', function () {
+
+        const file = this.files[0];
+
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.classList.remove('hidden');
+        }
+    });
+
+});
+</script>
 
         @if ($errors->any())
             <div class="mt-4 text-danger">

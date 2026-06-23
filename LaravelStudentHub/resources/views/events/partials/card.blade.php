@@ -1,6 +1,6 @@
 <div class="bg-white rounded shadow p-6 text-center">
     <img
-        src="{{ $event->image_path ? asset($event->image_path) : asset('content/event-default.png') }}"
+        src="{{ $event->image_path ? asset('storage/' . $event->image_path) : asset('content/event-default.png') }}"
         alt="{{ $event->title }}"
         class="w-full h-40 object-cover rounded mb-4"
     >
