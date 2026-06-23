@@ -1,11 +1,9 @@
 <x-app-layout>
-    <div class="container mx-auto p-4">
+    <div class="max-w-7xl mx-auto p-6">
 
-        <h1 class="text-2xl font-bold mb-4">
-            Wydarzenia
-        </h1>
+        <h1 class="text-3xl font-bold mb-6">Wydarzenia</h1>
 
-        <form method="GET" action="{{ route('events.index') }}">
+        <form method="GET" action="{{ route('events.index') }}" class="mb-6">
             <input
                 type="text"
                 name="search"
@@ -14,49 +12,36 @@
                 class="border p-2 rounded"
             >
 
-            <button type="submit" class="bg-blue-500 text-white px-3 py-2 rounded">
+            <button type="submit" class="bg-primary text-white px-4 py-2 rounded">
                 Szukaj
             </button>
         </form>
 
-        <br>
-
         @auth
-            <a href="{{ route('events.create') }}"
-               class="bg-green-500 text-white px-3 py-2 rounded">
+            <a href="{{ route('events.create') }}" class="bg-primary text-white px-4 py-2 rounded">
                 Dodaj wydarzenie
             </a>
         @endauth
 
-        <hr class="my-4">
+        <h2 class="text-2xl font-bold mt-8 mb-4">Nadchodzące wydarzenia</h2>
 
-        @foreach($events as $event)
-            <div class="border p-4 mb-3 rounded">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @forelse($upcomingEvents as $event)
+                @include('events.partials.card', ['event' => $event])
+            @empty
+                <p>Brak nadchodzących wydarzeń.</p>
+            @endforelse
+        </div>
 
-                <h2 class="text-xl font-bold">
-                    {{ $event->title }}
-                </h2>
+        <h2 class="text-2xl font-bold mt-10 mb-4">Wydarzenia historyczne</h2>
 
-                <p>{{ $event->description }}</p>
-
-                <p>
-                    <strong>Miejsce:</strong>
-                    {{ $event->location }}
-                </p>
-
-                <p>
-                    <strong>Data:</strong>
-                    {{ $event->start_date }}
-                </p>
-
-                <a href="{{ route('events.show', $event) }}">
-                    Szczegóły
-                </a>
-
-            </div>
-        @endforeach
-
-        {{ $events->links() }}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @forelse($pastEvents as $event)
+                @include('events.partials.card', ['event' => $event])
+            @empty
+                <p>Brak wydarzeń historycznych.</p>
+            @endforelse
+        </div>
 
     </div>
 </x-app-layout>

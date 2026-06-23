@@ -106,12 +106,22 @@ class EventController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|min:3|max:255',
-            'description' => 'required|min:10',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'location' => 'required|min:3|max:255',
-            'max_participants' => 'nullable|integer|min:1',
+            'short_description' => 'nullable|max:500',
+            'html_content' => 'required|min:10',
+            'image_path' => 'nullable|max:255',
+            'event_date' => 'required|date',
+            'publish_from' => 'nullable|date',
+            'publish_until' => 'nullable|date|after_or_equal:publish_from',
+            'requires_registration' => 'nullable|boolean',
+            'max_participants' => 'nullable|integer|min:1|required_if:requires_registration,1',
+            'recurrence' => 'required|in:none,weekly,monthly,yearly',
         ]);
+
+        $validated['requires_registration'] = $request->boolean('requires_registration');
+
+        if (!$validated['requires_registration']) {
+            $validated['max_participants'] = null;
+        }
 
         $event->update($validated);
 
@@ -130,6 +140,14 @@ class EventController extends Controller
 
     public function register(Event $event)
     {
+        if (!$event->requires_registration) {
+            return back()->with('error', 'To wydarzenie nie wymaga zapisów.');
+        }
+
+        if ($event->event_date < now()) {
+            return back()->with('error', 'Nie można zapisać się na wydarzenie historyczne.');
+        }
+
         if ($event->max_participants && $event->participants()->count() >= $event->max_participants) {
             return back()->with('error', 'Brak wolnych miejsc.');
         }
