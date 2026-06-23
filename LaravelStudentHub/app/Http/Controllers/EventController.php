@@ -10,7 +10,19 @@ class EventController extends Controller
 {
     public function home()
     {
-        $events = Event::orderBy('start_date')->take(3)->get();
+        $events = Event::where('event_date', '>=', now())
+            ->where(function ($query) {
+                $query->whereNull('publish_from')
+                    ->orWhere('publish_from', '<=', now());
+            })
+            ->where(function ($query) {
+                $query->whereNull('publish_until')
+                    ->orWhere('publish_until', '>=', now());
+            })
+            ->orderBy('event_date')
+            ->take(3)
+            ->get();
+
         return view('home', compact('events'));
     }
     /**
@@ -45,13 +57,18 @@ class EventController extends Controller
     {
         $validated = $request->validate([
             'title' => 'required|min:3|max:255',
-            'description' => 'required|min:10',
-            'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
-            'location' => 'required|min:3|max:255',
-            'max_participants' => 'nullable|integer|min:1',
+            'short_description' => 'nullable|max:500',
+            'html_content' => 'required|min:10',
+            'image_path' => 'nullable|max:255',
+            'event_date' => 'required|date',
+            'publish_from' => 'nullable|date',
+            'publish_until' => 'nullable|date|after_or_equal:publish_from',
+            'requires_registration' => 'nullable|boolean',
+            'max_participants' => 'nullable|integer|min:1|required_if:requires_registration,1',
+            'recurrence' => 'required|in:none,weekly,monthly,yearly',
         ]);
 
+        $validated['requires_registration'] = $request->boolean('requires_registration');
         $validated['user_id'] = Auth::id();
 
         Event::create($validated);
