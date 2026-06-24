@@ -3,29 +3,31 @@
 
         <h1 class="text-3xl font-bold mb-6">Wydarzenia</h1>
 
-        <form method="GET" action="{{ route('events.index') }}" class="mb-6">
-            <input
-                type="text"
-                name="search"
-                placeholder="Szukaj wydarzeń..."
-                value="{{ request('search') }}"
-                class="border p-2 rounded"
-            >
+        <div class="flex gap-4 items-center">
 
-            <button type="submit" class="bg-primary text-white px-4 py-2 rounded">
-                Szukaj
-            </button>
-        </form>
+            <form method="GET" action="{{ route('events.index') }}">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Szukaj wydarzeń..."
+                    value="{{ request('search') }}"
+                    class="border p-2 rounded"
+                >
 
-        @auth
-            <a href="{{ route('events.create') }}" class="bg-primary text-white px-4 py-2 rounded">
-                Dodaj wydarzenie
-            </a>
-        @endauth
+                <button type="submit" class="bg-primary text-white px-4 py-2 rounded">
+                    <i class="bi bi-search mr-2"></i>Szukaj
+                </button>
+            </form>
+            @auth
+                <a href="{{ route('events.create') }}" class="bg-accent text-white px-4 py-2 rounded">
+                    <i class="bi bi-calendar-plus mr-2"></i>Dodaj wydarzenie
+                </a>
+            @endauth
+        </div>
 
-        <h2 class="text-2xl font-bold mt-8 mb-4">Nadchodzące wydarzenia</h2>
+        <h2 class="text-2xl font-bold mt-8 mb-4 text-accent">Nadchodzące wydarzenia</h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             @forelse($upcomingEvents as $event)
                 @include('events.partials.card', ['event' => $event])
             @empty
@@ -33,7 +35,7 @@
             @endforelse
         </div>
 
-        <h2 class="text-2xl font-bold mt-10 mb-4">Wydarzenia historyczne</h2>
+        <h2 class="text-2xl font-bold mt-10 mb-4 text-primary">Wydarzenia historyczne</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             @forelse($pastEvents as $event)

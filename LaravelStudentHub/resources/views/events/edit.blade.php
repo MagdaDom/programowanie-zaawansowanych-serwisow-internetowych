@@ -1,9 +1,9 @@
 <x-app-layout>
 
-    <div class="py-6 max-w-4xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         <form method="POST" action="{{ route('events.update', $event) }}" enctype="multipart/form-data" class="bg-white p-6 rounded shadow">
             @csrf
-            @method('PUT')            
+            @method('PUT')
             <h1 class="text-primary text-3xl font-bold mb-6">Edytuj wydarzenie</h1>
 
             <div class="flex gap-4 mb-4">
@@ -101,7 +101,7 @@
             
         </form>
 
-        <div class="mt-4 flex justify-between items-center">
+        <div class="mt-4 py-4 flex justify-between items-center">
             <div class="flex gap-2">
                 <a href="{{ route('events.index') }}"
                 class="bg-accent text-white px-4 py-2 rounded">
@@ -122,7 +122,6 @@
                     <i class="bi bi-trash-fill"></i>Usuń wydarzenie
                 </button>
             </form>
-
         </div>
 
         <script>
