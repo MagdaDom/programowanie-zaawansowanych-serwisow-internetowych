@@ -52,7 +52,7 @@ class InternalEventController extends Controller
 
     public function createView() {
         $model = $this->serwis->createModel();
-        return view('InternalEvents.create', ['title'=>'Internal events', 'model' -> $model]);
+        return view('InternalEvents.create', ['title'=>'Internal events', 'model' => $model]);
     }
 
     public function addToDb(Request $request) {

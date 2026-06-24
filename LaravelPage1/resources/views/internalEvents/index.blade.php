@@ -1,5 +1,15 @@
 @extends('main')
 
+@php
+    $title = 'Internal Events';
+@endphp
+
+@section('menu')
+    <a href="/internal-events/create" class="btn btn-success">
+        Add
+    </a>
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row g-3">
