@@ -17,6 +17,23 @@
 @endsection
 
 @section('content')
+/*
+<div class="container">
+    <form method="POST" action="/internal-events/update/{{ $model->Id}}">
+    @csrf
+    <div class="row gy-3">
+        <div class="col-sm-12 col-lg-6 col-xxl-4">
+        <div class="input-group">
+            <label class="input-group-text">
+                <i class="material-icons-round align-middle">label</i>
+                Title
+            </label>
+            <input name="Title" class="form-control validate" value="{{ $model -> Title }}">
+        </div>
+    </div>
+</div>
+*/
+
     <div class="container">
         <form method="POST" action="{{ url()->current() }}">
             @csrf

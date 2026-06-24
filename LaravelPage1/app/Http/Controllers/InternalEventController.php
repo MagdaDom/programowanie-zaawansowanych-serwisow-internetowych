@@ -40,6 +40,11 @@ class InternalEventController extends Controller
         return view('internalEvents.edit', ["model" => $this->serwis->getById($id)]);
     }
 
+    public function editView($id) {
+        $model = $this->serwis->getById($id);
+        return view('InternalEvents.edit', ['model' => $model, 'title'=>'Internal events']);
+    }
+
     public function update(Request $request, $id) {
         //$serwis = new InternalEventService();
 
