@@ -22,13 +22,15 @@ class InternalEventService
         $request->validate([
             "Title" => ["required", "max:256"],
             "Link" => ["required", "max:128"],
+            "ContentHTML" => ["required"],
             "EventDateTime" => ["required", "date"],
             "PublishDateTime" => ["required", "date"],
             "MetaTags" => ["required", "max:128"],
             "Notes" => ["required", "max:128"],
             "MetaDescription" => ["required", "max:128"],
-            "ContentHTML" => ["required"],
             "ShortDescription" => ["required", "max:128"],
+            //"IsCancelled" => ["required"],
+            //"IsPublic" => ["required"],
         ]);
 
         $model = InternalEvent::findOrFail($id);
@@ -52,6 +54,13 @@ class InternalEventService
     public function getById(int $id) : InternalEvent
     {
         return InternalEvent::find($id);
+    }
+
+    public function createModel() {
+        $model = new InternalEvent();
+        $model->EventDateTime = date("Y-m-d");
+        $model->PublishDateTime = date("Y-m-d");
+        return $model;
     }
 
     public function addToDB(Request $request) {

@@ -18,7 +18,12 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Internal Events</h1>
+                <h1>Laravel page</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @yield('menu')
             </div>
         </div>
     </div>

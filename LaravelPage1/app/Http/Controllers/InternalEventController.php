@@ -46,11 +46,18 @@ class InternalEventController extends Controller
     }
 
     public function update(Request $request, $id) {
-        //$serwis = new InternalEventService();
-
         $this->serwis->update($request, $id);
-
         return redirect("/internal-events");
+    }
+
+    public function createView() {
+        $model = $this->serwis->createModel();
+        return view('InternalEvents.create', ['title'=>'Internal events', 'model' -> $model]);
+    }
+
+    public function addToDb(Request $request) {
+        $this->serwis->addToDb($request);
+        return redirect("InternalEvents");
     }
 }
 
