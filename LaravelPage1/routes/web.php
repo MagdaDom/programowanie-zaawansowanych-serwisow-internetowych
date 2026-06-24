@@ -3,6 +3,14 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InternalEventController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AttachmentController;
+
+Route::get("/attachments", [AttachmentController::class, "index"]);
+Route::get("/attachments/create", [AttachmentController::class, "create"]);
+Route::post("/attachments/add-to-db", [AttachmentController::class, "addToDB"]);
+Route::get("/attachments/edit/{id}", [AttachmentController::class, "edit"]);
+Route::post("/attachments/update/{id}", [AttachmentController::class, "update"]);
+Route::get("/attachments/delete/{id}", [AttachmentController::class, "delete"]);
 
 Route::get("/", [HomeController::class, "index"]);
 Route::get("/internal-events", [InternalEventController::class, "index"]);
