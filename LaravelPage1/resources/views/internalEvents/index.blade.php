@@ -23,7 +23,7 @@
                     </div>
                     <div class="card-footer">
                         <a href="/internal-events/edit/{{$event->Id}}" class="btn btn-primary">Edit</a>
-                        <a class="btn btn-danger delete-button" data-id="{{$event->Id}}" onclick="del(this)">Delete</a>
+                        <a href="/internal-events/delete/{{ $event->Id }}" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             </div>

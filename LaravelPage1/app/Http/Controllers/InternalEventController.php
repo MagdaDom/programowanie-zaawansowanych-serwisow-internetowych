@@ -59,6 +59,12 @@ class InternalEventController extends Controller
         $this->serwis->addToDb($request);
         return redirect("InternalEvents");
     }
+
+    public function delete($id)
+    {
+        $this->serwis->delete($id);
+        return redirect('/internal-events');
+    }
 }
 
 
