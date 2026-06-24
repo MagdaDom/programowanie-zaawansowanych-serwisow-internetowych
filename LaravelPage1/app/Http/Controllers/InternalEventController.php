@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Services\InternalEventService;
 use Illuminate\Http\Request;
+use App\Models\InternalEvent;
 
 class InternalEventController extends Controller
 {
-    public function index() {
-        $serwis = new InternalEventService();
+    private InternalEventService $serwis;
 
-        $results = $serwis->getAll();
+    public function __construct() {
+        $this->serwis = new InternalEventService();
+    }
+
+    public function index() {
+        //$serwis = new InternalEventService();
+
+        $results = $this->serwis->getAll();
 
         return view('internalEvents.index', ["models" => $results]);
     }
@@ -20,23 +27,23 @@ class InternalEventController extends Controller
     }
 
     public function store(Request $request) {
-        $serwis = new InternalEventService();
+        //$serwis = new InternalEventService();
 
-        $serwis -> addToDb($request);
+        $this->serwis -> addToDb($request);
 
         return redirect("/internal-events");
     }
 
     public function edit($id) {
-        $serwis = new InternalEventService();
+        //$serwis = new InternalEventService();
 
-        return view('internalEvents.edit', ["model" => $serwis->getById($id)]);
+        return view('internalEvents.edit', ["model" => $this->serwis->getById($id)]);
     }
 
     public function update(Request $request, $id) {
-        $serwis = new InternalEventService();
+        //$serwis = new InternalEventService();
 
-        $serwis->update($request, $id);
+        $this->serwis->update($request, $id);
 
         return redirect("/internal-events");
     }

@@ -9,6 +9,10 @@ use Illuminate\Support\Collection;
 
 class InternalEventService
 {
+    public function get() {
+        return InternalEvent::all();
+    }
+
     public function getAll() {
         return InternalEvent::all();
     }
