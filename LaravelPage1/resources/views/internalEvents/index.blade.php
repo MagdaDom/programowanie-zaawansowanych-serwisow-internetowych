@@ -20,6 +20,12 @@
                         <p class="card-title h5"> {{$event->Title}}</p>
                         <p><strong>{{$event->ShortDescription}}</strong></p>
                         {!! $event->ContentHTML !!}
+                        <hr>
+                        <strong>Attachments:</strong>
+
+                        @foreach($event->InternalEventsAttachments as $item)
+                            <p>{{ $item->Attachment->Title }}</p>
+                        @endforeach
                     </div>
                     <div class="card-footer">
                         <a href="/internal-events/edit/{{$event->Id}}" class="btn btn-primary">Edit</a>

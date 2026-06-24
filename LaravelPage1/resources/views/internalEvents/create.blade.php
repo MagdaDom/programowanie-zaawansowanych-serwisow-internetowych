@@ -24,7 +24,7 @@
 
 @section('content')
     <div class="container">
-        <form method="POST" action="{{ url()->current() }}">
+        <form method="POST" action="/internal-events/add-to-db">
             @csrf
 
             @if ($errors->any())

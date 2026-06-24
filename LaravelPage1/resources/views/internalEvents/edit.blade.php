@@ -18,7 +18,7 @@
 
 @section('content')
     <div class="container">
-        <form method="POST" action="{{ url()->current() }}">
+        <form method="POST" action="/internal-events/update/{{ $model->Id }}">
             @csrf
 
             @if ($errors->any())
