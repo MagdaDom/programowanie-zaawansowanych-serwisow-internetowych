@@ -4,6 +4,14 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InternalEventController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\TaskController;
+
+Route::get("/tasks", [TaskController::class, "index"]);
+Route::get("/tasks/create", [TaskController::class, "create"]);
+Route::post("/tasks/add-to-db", [TaskController::class, "addToDB"]);
+Route::get("/tasks/edit/{id}", [TaskController::class, "edit"]);
+Route::post("/tasks/update/{id}", [TaskController::class, "update"]);
+Route::get("/tasks/delete/{id}", [TaskController::class, "delete"]);
 
 Route::get("/attachments", [AttachmentController::class, "index"]);
 Route::get("/attachments/create", [AttachmentController::class, "create"]);
