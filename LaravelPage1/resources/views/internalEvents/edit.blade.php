@@ -220,8 +220,22 @@
 
                 <div class="col-sm-12">
                     <button type="submit" class="btn btn-primary">Edit</button>
+
+                    <a href="/internal-events/add-attachment/{{ $model->Id }}" class="btn btn-secondary">
+                        Add attachment
+                    </a>
                 </div>
             </div>
         </form>
+
+        <hr>
+
+        <h3>Attachments</h3>
+
+        @foreach($model->InternalEventsAttachments as $item)
+            <p>
+                {{ $item->Attachment->Title }}
+            </p>
+        @endforeach
     </div>
 @endsection

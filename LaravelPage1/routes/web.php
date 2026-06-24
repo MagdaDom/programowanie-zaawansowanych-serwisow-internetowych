@@ -11,6 +11,15 @@ Route::post("/attachments/add-to-db", [AttachmentController::class, "addToDB"]);
 Route::get("/attachments/edit/{id}", [AttachmentController::class, "edit"]);
 Route::post("/attachments/update/{id}", [AttachmentController::class, "update"]);
 Route::get("/attachments/delete/{id}", [AttachmentController::class, "delete"]);
+Route::get(
+    '/internal-events/add-attachment/{id}',
+    [InternalEventController::class, 'addAttachment']
+);
+
+Route::post(
+    '/internal-events/add-attachment/{id}',
+    [InternalEventController::class, 'addAttachmentToDB']
+);
 
 Route::get("/", [HomeController::class, "index"]);
 Route::get("/internal-events", [InternalEventController::class, "index"]);

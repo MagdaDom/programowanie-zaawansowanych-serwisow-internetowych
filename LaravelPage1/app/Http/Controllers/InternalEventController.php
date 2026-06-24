@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\InternalEventService;
+use App\Services\InternalEventsAttachmentService;
 use Illuminate\Http\Request;
 use App\Models\InternalEvent;
 
@@ -64,6 +65,29 @@ class InternalEventController extends Controller
     {
         $this->serwis->delete($id);
         return redirect('/internal-events');
+    }
+
+    public function addAttachment($id)
+    {
+        $service = new InternalEventsAttachmentService();
+
+        return view(
+            'internalEvents.addAttachment',
+            [
+                'attachments' => $service->getAttachments(),
+                'internalEventId' => $id,
+                'title' => 'Internal events'
+            ]
+        );
+    }
+
+    public function addAttachmentToDB(Request $request, $id)
+    {
+        $service = new InternalEventsAttachmentService();
+
+        $service->addToDB($request, $id);
+
+        return redirect('/internal-events/edit/' . $id);
     }
 }
 
