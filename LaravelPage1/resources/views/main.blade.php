@@ -15,21 +15,18 @@
 </head>
 
 <body>
-@yield ("header")
-<hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Internal Events</h1>
+            </div>
+        </div>
+    </div>
+    <hr>
 
+    @yield('content')
 
-<div>
-    Początek widoku
-</div>
-
-@yield('content')
-
-<div>
-    Koniec widoku
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 
 </html>
