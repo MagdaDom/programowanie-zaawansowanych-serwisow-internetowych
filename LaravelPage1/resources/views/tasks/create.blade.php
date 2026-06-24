@@ -10,7 +10,8 @@
 
     <form method="POST" action="/tasks/add-to-db">
         @csrf
-                @if ($errors->any())
+
+        @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
@@ -21,19 +22,23 @@
         @endif
 
         <div class="mb-3">
-            <label>Title</label>
-            <input name="Title" class="form-control">
+            <label class="form-label">Title</label>
+            <input
+                name="Title"
+                class="form-control"
+                value="{{ old('Title') }}"
+            >
         </div>
 
         <div class="mb-3">
-            <label>Internal Event</label>
+            <label class="form-label">Internal Event</label>
 
-            <select
-                name="InternalEventId"
-                class="form-control"
-            >
+            <select name="InternalEventId" class="form-control">
                 @foreach($internalEvents as $event)
-                    <option value="{{ $event->Id }}">
+                    <option
+                        value="{{ $event->Id }}"
+                        {{ old('InternalEventId') == $event->Id ? 'selected' : '' }}
+                    >
                         {{ $event->Title }}
                     </option>
                 @endforeach
@@ -41,37 +46,45 @@
         </div>
 
         <div class="mb-3">
-            <label>Start</label>
+            <label class="form-label">Start Date</label>
+
             <input
                 type="datetime-local"
                 name="StartDateTime"
+                value="{{ old('StartDateTime') }}"
                 class="form-control"
             >
         </div>
 
         <div class="mb-3">
-            <label>Deadline</label>
+            <label class="form-label">Deadline</label>
+
             <input
                 type="datetime-local"
                 name="Deadline"
+                value="{{ old('Deadline') }}"
                 class="form-control"
             >
         </div>
 
         <div class="mb-3">
-            <label>Description</label>
+            <label class="form-label">Description</label>
+
             <textarea
                 name="Description"
                 class="form-control"
-            ></textarea>
+                rows="4"
+            >{{ old('Description') }}</textarea>
         </div>
 
         <div class="mb-3">
-            <label>Notes</label>
+            <label class="form-label">Notes</label>
+
             <textarea
                 name="Notes"
                 class="form-control"
-            ></textarea>
+                rows="3"
+            >{{ old('Notes') }}</textarea>
         </div>
 
         <div class="form-check mb-3">
@@ -80,6 +93,7 @@
                 name="IsDone"
                 value="1"
                 class="form-check-input"
+                {{ old('IsDone') ? 'checked' : '' }}
             >
 
             <label class="form-check-label">
@@ -87,10 +101,7 @@
             </label>
         </div>
 
-        <button
-            type="submit"
-            class="btn btn-primary"
-        >
+        <button type="submit" class="btn btn-primary">
             Create
         </button>
 

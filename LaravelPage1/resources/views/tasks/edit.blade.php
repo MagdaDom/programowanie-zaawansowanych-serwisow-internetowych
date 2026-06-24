@@ -11,26 +11,34 @@
     <form method="POST" action="/tasks/update/{{ $model->Id }}">
         @csrf
 
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="mb-3">
-            <label>Title</label>
+            <label class="form-label">Title</label>
+
             <input
                 name="Title"
                 class="form-control"
-                value="{{ $model->Title }}"
+                value="{{ old('Title', $model->Title) }}"
             >
         </div>
 
         <div class="mb-3">
-            <label>Internal Event</label>
+            <label class="form-label">Internal Event</label>
 
-            <select
-                name="InternalEventId"
-                class="form-control"
-            >
+            <select name="InternalEventId" class="form-control">
                 @foreach($internalEvents as $event)
                     <option
                         value="{{ $event->Id }}"
-                        {{ $model->InternalEventId == $event->Id ? 'selected' : '' }}
+                        {{ old('InternalEventId', $model->InternalEventId) == $event->Id ? 'selected' : '' }}
                     >
                         {{ $event->Title }}
                     </option>
@@ -39,39 +47,45 @@
         </div>
 
         <div class="mb-3">
-            <label>Start</label>
+            <label class="form-label">Start Date</label>
+
             <input
                 type="datetime-local"
                 name="StartDateTime"
-                value="{{ $model->StartDateTime }}"
+                value="{{ old('StartDateTime', date('Y-m-d\TH:i', strtotime($model->StartDateTime))) }}"
                 class="form-control"
             >
         </div>
 
         <div class="mb-3">
-            <label>Deadline</label>
+            <label class="form-label">Deadline</label>
+
             <input
                 type="datetime-local"
                 name="Deadline"
-                value="{{ $model->Deadline }}"
+                value="{{ old('Deadline', date('Y-m-d\TH:i', strtotime($model->Deadline))) }}"
                 class="form-control"
             >
         </div>
 
         <div class="mb-3">
-            <label>Description</label>
+            <label class="form-label">Description</label>
+
             <textarea
                 name="Description"
                 class="form-control"
-            >{{ $model->Description }}</textarea>
+                rows="4"
+            >{{ old('Description', $model->Description) }}</textarea>
         </div>
 
         <div class="mb-3">
-            <label>Notes</label>
+            <label class="form-label">Notes</label>
+
             <textarea
                 name="Notes"
                 class="form-control"
-            >{{ $model->Notes }}</textarea>
+                rows="3"
+            >{{ old('Notes', $model->Notes) }}</textarea>
         </div>
 
         <div class="form-check mb-3">
@@ -80,7 +94,7 @@
                 name="IsDone"
                 value="1"
                 class="form-check-input"
-                {{ $model->IsDone ? 'checked' : '' }}
+                {{ old('IsDone', $model->IsDone) ? 'checked' : '' }}
             >
 
             <label class="form-check-label">
@@ -88,10 +102,7 @@
             </label>
         </div>
 
-        <button
-            type="submit"
-            class="btn btn-primary"
-        >
+        <button type="submit" class="btn btn-primary">
             Edit
         </button>
 
