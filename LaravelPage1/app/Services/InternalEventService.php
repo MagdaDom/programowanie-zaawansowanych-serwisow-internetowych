@@ -59,8 +59,8 @@ class InternalEventService
 
     public function createModel() {
         $model = new InternalEvent();
-        $model->EventDateTime = date("Y-m-d");
-        $model->PublishDateTime = date("Y-m-d");
+        $model->EventDateTime = date("Y-m-d\TH:i");
+        $model->PublishDateTime = date("Y-m-d\TH:i");
         return $model;
     }
 

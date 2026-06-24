@@ -29,7 +29,7 @@ class InternalEventController extends Controller
     public function store(Request $request) {
         //$serwis = new InternalEventService();
 
-        $this->serwis -> addToDb($request);
+        $this->serwis -> addToDB($request);
 
         return redirect("/internal-events");
     }
@@ -55,8 +55,8 @@ class InternalEventController extends Controller
         return view('InternalEvents.create', ['title'=>'Internal events', 'model' => $model]);
     }
 
-    public function addToDb(Request $request) {
-        $this->serwis->addToDb($request);
+    public function addToDB(Request $request) {
+        $this->serwis->addToDB($request);
         return redirect("InternalEvents");
     }
 

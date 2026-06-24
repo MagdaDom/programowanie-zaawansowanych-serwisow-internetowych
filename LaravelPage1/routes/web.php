@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Route;
 Route::get("/", [HomeController::class, "index"]);
 Route::get("/internal-events", [InternalEventController::class, "index"]);
 Route::get("/internal-events/create", [InternalEventController::class, "create"]);
-Route::post("/internal-events/create", [InternalEventController::class, "store"]);
+//Route::post("/internal-events/create", [InternalEventController::class, "store"]);
+Route::post("/internal-events/add-to-db", [InternalEventController::class, "addToDB"]);
 
 Route::get("/internal-events/edit/{id}", [InternalEventController::class, "edit"]);
 Route::post("/internal-events/update/{id}", [InternalEventController::class, "update"]);
 Route::get("/internal-events/create", [InternalEventController::class, "create"]);
-Route::post("/internal-events/add-to-db", [InternalEventController::class, "addToDB"]);
 
-Route::delete("/internal-events/delete/{id}", [InternalEventController::class, "delete"]);
+Route::get("/internal-events/delete/{id}", [InternalEventController::class, "delete"]);
