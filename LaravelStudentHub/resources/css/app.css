@@ -1,8 +1,0 @@
-/* StudentHub */
-@import './site.css';
-@import './news.css';
-@import './events.css';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
