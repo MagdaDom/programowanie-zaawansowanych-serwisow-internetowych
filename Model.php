@@ -4,10 +4,10 @@ class Model
 {
     private int $id;
     private string $title;
-    private string $creationDateTime;
-    private string $editDateTime;
     private ?string $notes;
     private bool $isActive;
+    private string $creationDateTime;
+    private string $editDateTime;
 
     public function __construct(
         int $id = 0,

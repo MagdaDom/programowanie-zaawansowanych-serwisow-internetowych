@@ -6,8 +6,8 @@ class InternalEvent extends Model
     private string $link;
     private bool $isPublic;
     private bool $isCancelled;
-    private string $eventDateTime;
     private string $publishDateTime;
+    private string $eventDateTime;
     private string $shortDescription;
     private string $contentHTML;
     private ?string $metaDescription;
