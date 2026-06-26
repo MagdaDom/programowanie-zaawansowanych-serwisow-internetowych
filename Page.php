@@ -74,6 +74,7 @@ abstract class Page
                     <form method="POST">
                         <button name="' . self::ACTION . '" value="' . self::CREATE_VIEW . '" class="btn btn-primary">Create new</button>
                         <button name="' . self::ACTION . '" value="" class="btn btn-primary">All</button>
+                        <a href="index.php" class="btn btn-secondary">Home</a>
                     </form>
                 </div>
             </div>
