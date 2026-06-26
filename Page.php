@@ -48,37 +48,37 @@ abstract class Page
     protected function generateHead(): string
     {
         return '<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>' . $this->getTitle() . '</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-        <link
-            href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
-            rel="stylesheet">
-    </head>';
+        <html>
+        <head>
+            <meta charset="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>' . $this->getTitle() . '</title>
+            <link rel="stylesheet" href="css/bootstrap.min.css" />
+            <link
+                href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+                rel="stylesheet">
+        </head>';
     }
 
     protected function generateHeader(): string
     {
         return '<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h1>' . $this->getTitle() . '</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1>' . $this->getTitle() . '</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <form method="POST">
+                        <button name="' . self::ACTION . '" value="' . self::CREATE_VIEW . '" class="btn btn-primary">Create new</button>
+                        <button name="' . self::ACTION . '" value="" class="btn btn-primary">All</button>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <form method="POST">
-                    <button name="' . self::ACTION . '" value="' . self::CREATE_VIEW . '" class="btn btn-primary">Create new</button>
-                    <button name="' . self::ACTION . '" value="" class="btn btn-primary">All</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <hr>';
+        <hr>';
     }
 
     protected function generateFooter(): string
@@ -90,7 +90,13 @@ abstract class Page
 
     public static function openConnection(): PDO
     {
-        return new PDO("mysql:host=localhost;dbname=phpadvanced;charset=utf8", "root", "");
+        try {
+            return new PDO("mysql:host=localhost;dbname=phpadvanced;charset=utf8", "root", "");
+        } catch (PDOException $ex) {
+            echo $ex->getMessage();
+            return null;
+        }
+        
     }
 
     protected function delete(): void
@@ -107,6 +113,7 @@ abstract class Page
 
     public function initialize(): void
     {
+        echo print_r($_POST);
         echo $this->generateHead();
         echo $this->generateHeader();
 
