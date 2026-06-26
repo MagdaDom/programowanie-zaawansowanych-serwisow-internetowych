@@ -10,7 +10,7 @@ class InternalEventsPage extends Page
         return $this->model;
     }
 
-    public function setModel() {
+    public function setModel($model) {
         $this->model = $model;
         return $this;
     }
